@@ -1,12 +1,6 @@
 import { SubHero, SecHead } from '../components';
 import { SEASONS } from '../data';
-import type { PageParams } from '../types';
-
-interface SeasonsPageProps {
-  go: (route: string, params?: PageParams) => void;
-}
-
-export function SeasonsPage({ go }: SeasonsPageProps) {
+export function SeasonsPage() {
   return (
     <main>
       <SubHero

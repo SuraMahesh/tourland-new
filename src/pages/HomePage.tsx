@@ -199,10 +199,9 @@ function DateRangePicker({ value, onChange }: { value: string; onChange: (v: str
 interface HomePageProps {
   go: (route: string, params?: PageParams) => void;
   t: Tweaks;
-  setTweak: (key: string | keyof Tweaks, value: any) => void;
 }
 
-export function HomePage({ go, t, setTweak }: HomePageProps) {
+export function HomePage({ go, t }: HomePageProps) {
   const ref = useReveal();
   const [reel, setReel] = useState(0);
   const [dateRange, setDateRange] = useState('Feb 14 – 28, 2026');

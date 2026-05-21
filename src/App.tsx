@@ -20,7 +20,7 @@ const TWEAK_DEFAULTS: Tweaks = {
 };
 
 function AppContent() {
-  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [t] = useTweaks(TWEAK_DEFAULTS);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -44,14 +44,14 @@ function AppContent() {
     <div data-screen-label={currentRoute}>
       <Header route={currentRoute} go={go} transparent={isHome} />
       <Routes>
-        <Route path="/" element={<HomePage go={go} t={t} setTweak={setTweak} />} />
-        <Route path="/destinations" element={<DestinationsPage go={go} t={t} setTweak={setTweak} />} />
+        <Route path="/" element={<HomePage go={go} t={t} />} />
+        <Route path="/destinations" element={<DestinationsPage go={go} />} />
         <Route path="/destination/:id" element={<DestinationDetailPage go={go} />} />
-        <Route path="/seasons" element={<SeasonsPage go={go} />} />
+        <Route path="/seasons" element={<SeasonsPage />} />
         <Route path="/activities" element={<ActivitiesPage go={go} />} />
-        <Route path="/planner" element={<PlannerPage go={go} />} />
-        <Route path="/reviews" element={<ReviewsPage go={go} />} />
-        <Route path="/contact" element={<ContactPage go={go} />} />
+        <Route path="/planner" element={<PlannerPage />} />
+        <Route path="/reviews" element={<ReviewsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
       <Footer go={go} />
       <WaFab />

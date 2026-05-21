@@ -34,15 +34,6 @@ export function Header({ route, go, transparent = false }: HeaderProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Scroll to section function
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setMobileMenuOpen(false);
-    }
-  };
-
   const isTransparent = transparent && !scrolled;
 
   const handleNavClick = (route: string) => {

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { SubHero, MiniMap } from '../components';
+import { MiniMap } from '../components';
 import { DESTINATIONS } from '../data';
 import type { PageParams } from '../types';
 

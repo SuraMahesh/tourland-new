@@ -1,13 +1,7 @@
 import { useState } from 'react';
 import { SubHero } from '../components';
 import { WHATSAPP_LINK, contactViaWhatsApp } from '../utils/whatsapp';
-import type { PageParams } from '../types';
-
-interface ContactPageProps {
-  go: (route: string, params?: PageParams) => void;
-}
-
-export function ContactPage({ go }: ContactPageProps) {
+export function ContactPage() {
   const [sent, setSent] = useState(false);
 
   return (

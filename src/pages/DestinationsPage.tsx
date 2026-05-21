@@ -5,11 +5,9 @@ import type { PageParams } from '../types';
 
 interface DestinationsPageProps {
   go: (route: string, params?: PageParams) => void;
-  t: any;
-  setTweak: (key: string, value: any) => void;
 }
 
-export function DestinationsPage({ go, t, setTweak }: DestinationsPageProps) {
+export function DestinationsPage({ go }: DestinationsPageProps) {
   const [region, setRegion] = useState('All');
   const regions = ['All', ...new Set(DESTINATIONS.map((d) => d.region))];
   const filtered = region === 'All' ? DESTINATIONS : DESTINATIONS.filter((d) => d.region === region);

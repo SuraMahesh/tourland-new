@@ -3,7 +3,6 @@ import { SubHero } from '../components';
 import { ACTIVITIES } from '../data';
 import { generateTripPDF } from '../utils/pdf';
 import { openWhatsApp, createTripInquiryMessage } from '../utils/whatsapp';
-import type { PageParams } from '../types';
 
 const U = (id: string, w: number = 1600) => {
   return `https://images.unsplash.com/photo-${id}?w=${w}&q=80&auto=format&fit=crop`;
@@ -41,10 +40,6 @@ interface ItineraryDay {
   activities: string[];
 }
 
-interface PlannerPageProps {
-  go: (route: string, params?: PageParams) => void;
-}
-
 const PLANNER_STEPS: PlannerStep[] = [
   { n: 1, t: 'Dates', d: 'When and how long?' },
   { n: 2, t: 'Regions', d: 'Where do you want to go?' },
@@ -63,7 +58,7 @@ const TOUR_REGIONS: TourRegion[] = [
   { id: 'trinco', name: 'Trincomalee', days: 2, blurb: 'East-coast reefs and quiet bays.' },
 ];
 
-export function PlannerPage({ go }: PlannerPageProps) {
+export function PlannerPage() {
   const [step, setStep] = useState<number>(1);
   const [trip, setTrip] = useState<TripData>({
     startDate: '2026-02-14',

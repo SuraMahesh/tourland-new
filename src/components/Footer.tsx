@@ -1,5 +1,4 @@
 import { NAV } from '../data';
-import { Logo } from './Logo';
 import { MiniMap } from './MiniMap';
 
 interface FooterProps {

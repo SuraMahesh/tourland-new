@@ -1,13 +1,7 @@
 import { useState } from 'react';
 import { SubHero, ReviewCard } from '../components';
 import { REVIEWS } from '../data';
-import type { PageParams } from '../types';
-
-interface ReviewsPageProps {
-  go: (route: string, params?: PageParams) => void;
-}
-
-export function ReviewsPage({ go }: ReviewsPageProps) {
+export function ReviewsPage() {
   const [sent, setSent] = useState(false);
   const [rating, setRating] = useState(0);
 
