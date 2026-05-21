@@ -35,7 +35,7 @@ export function ActivitiesPage({ go }: ActivitiesPageProps) {
             </button>
           ))}
         </div>
-        <div className="grid" style={{ gridTemplateColumns: '1fr 1.4fr', gap: 48, alignItems: 'start' }}>
+        <div className="activity-grid">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {list.map((a) => (
               <button

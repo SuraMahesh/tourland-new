@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Logo } from './Logo';
 import { NAV } from '../data';
+import { motion } from 'framer-motion';
 
 interface HeaderProps {
   route: string;
@@ -11,12 +12,36 @@ interface HeaderProps {
 export function Header({ route, go, transparent = false }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const f = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', f, { passive: true });
     return () => window.removeEventListener('scroll', f);
   }, []);
+
+  // Handle responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setMobileMenuOpen(false);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Scroll to section function
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setMobileMenuOpen(false);
+    }
+  };
 
   const isTransparent = transparent && !scrolled;
 
@@ -35,9 +60,16 @@ export function Header({ route, go, transparent = false }: HeaderProps) {
         {/* Desktop Navigation */}
         <nav className="nav nav-desktop">
           {NAV.map(([k, l]) => (
-            <a key={k} className={route === k ? 'active' : ''} onClick={() => go(k)}>
+            <motion.a
+              key={k}
+              className={route === k ? 'active' : ''}
+              onClick={() => go(k)}
+              whileHover={{ rotate: 2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              style={{ cursor: 'pointer', display: 'inline-block' }}
+            >
               {l}
-            </a>
+            </motion.a>
           ))}
         </nav>
 
@@ -60,12 +92,13 @@ export function Header({ route, go, transparent = false }: HeaderProps) {
           className="mobile-menu-btn"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           style={{
-            display: 'none',
+            display: isMobile ? 'block' : 'none',
             background: 'none',
             border: 'none',
             cursor: 'pointer',
             padding: '8px',
             fontSize: '24px',
+            zIndex: 1000,
           }}
         >
           {mobileMenuOpen ? '✕' : '☰'}
@@ -73,63 +106,59 @@ export function Header({ route, go, transparent = false }: HeaderProps) {
       </div>
 
       {/* Mobile Navigation Menu */}
-      {mobileMenuOpen && (
-        <div className="mobile-nav-overlay">
-          <div className="mobile-nav-header">
-            <span className="mobile-nav-brand">TourLand</span>
-            <button
-              className="mobile-nav-close"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              ✕
-            </button>
-          </div>
-
-          <nav className="mobile-nav-premium">
-            {[
-              { key: 'destinations', label: 'Destinations', img: 'https://images.unsplash.com/photo-1546708973-c0d27b302cee?w=800&q=60&auto=format&fit=crop' },
-              { key: 'activities', label: 'Activities', img: 'https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=800&q=60&auto=format&fit=crop' },
-              { key: 'planner', label: 'Plan Tour', img: 'https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=800&q=60&auto=format&fit=crop' },
-              { key: 'contact', label: 'Contact', img: 'https://images.unsplash.com/photo-1518509562904-e7ef99cddc85?w=800&q=60&auto=format&fit=crop' },
-            ].map((item) => (
-              <PremiumNavLink
-                key={item.key}
-                label={item.label}
-                img={item.img}
-                isActive={route === item.key}
-                onClick={() => handleNavClick(item.key)}
-              />
+      {mobileMenuOpen && isMobile && (
+        <motion.div
+          className="mobile-menu-overlay"
+          style={{
+            position: 'fixed',
+            top: '60px',
+            left: 0,
+            right: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            zIndex: 999,
+          }}
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <nav
+            className="mobile-menu-nav"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '16px',
+              gap: '8px',
+            }}
+          >
+            {NAV.map(([navRoute, label], index) => (
+              <motion.button
+                key={navRoute}
+                onClick={() => handleNavClick(navRoute)}
+                className={`mobile-menu-item ${navRoute === route ? 'active' : ''}`}
+                style={{
+                  padding: '12px 16px',
+                  textAlign: 'left',
+                  background: 'none',
+                  border: 'none',
+                  color: 'white',
+                  fontSize: '16px',
+                  cursor: 'pointer',
+                  textTransform: 'capitalize',
+                }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ delay: index * 0.05, duration: 0.3 }}
+              >
+                {label}
+              </motion.button>
             ))}
           </nav>
-
-          <div className="mobile-nav-footer-premium">
-            <button className="mobile-footer-btn">WhatsApp +94 77 200 8000</button>
-          </div>
-        </div>
+        </motion.div>
       )}
     </header>
   );
 }
 
-function PremiumNavLink({
-  label,
-  img,
-  isActive,
-  onClick,
-}: {
-  label: string;
-  img: string;
-  isActive: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button className={`premium-nav-link ${isActive ? 'active' : ''}`} onClick={onClick}>
-      <div className="premium-nav-bg" style={{ backgroundImage: `url(${img})` }} />
-      <div className="premium-nav-overlay" />
-      <div className="premium-nav-content">
-        <span className="premium-nav-label">{label}</span>
-        {isActive && <span className="premium-nav-indicator">✓</span>}
-      </div>
-    </button>
-  );
-}
+

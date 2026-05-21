@@ -46,7 +46,7 @@ export function DestinationDetailPage({ go }: DestinationDetailPageProps) {
       </section>
 
       <section className="container sec" style={{ paddingTop: 80 }}>
-        <div className="grid" style={{ gridTemplateColumns: '1.5fr 1fr', gap: 64 }}>
+        <div className="destination-content" >
           <div>
             <div className="eyebrow">About</div>
             {d.desc.split('\n\n').map((paragraph, i) => (

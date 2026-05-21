@@ -460,6 +460,7 @@ textarea {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -850,6 +851,7 @@ textarea {
   from {
     transform: scale(1);
   }
+
   to {
     transform: scale(1.12);
   }
@@ -1209,6 +1211,7 @@ textarea {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
   }
@@ -1239,15 +1242,19 @@ textarea {
 .gap-2 {
   gap: 8px;
 }
+
 .gap-3 {
   gap: 12px;
 }
+
 .gap-4 {
   gap: 16px;
 }
+
 .gap-6 {
   gap: 24px;
 }
+
 .gap-8 {
   gap: 32px;
 }
@@ -1255,18 +1262,23 @@ textarea {
 .mt-1 {
   margin-top: 8px;
 }
+
 .mt-2 {
   margin-top: 16px;
 }
+
 .mt-3 {
   margin-top: 24px;
 }
+
 .mt-4 {
   margin-top: 32px;
 }
+
 .mt-6 {
   margin-top: 48px;
 }
+
 .mt-8 {
   margin-top: 64px;
 }
@@ -1398,7 +1410,7 @@ textarea {
   }
 
   /* Reduce padding in step content */
-  main section > .planner-grid > div:first-child {
+  main section>.planner-grid>div:first-child {
     padding: 24px !important;
   }
 
@@ -1516,17 +1528,77 @@ textarea {
   display: grid;
   gap: 16px;
   width: 100%;
-  grid-template-columns: repeat(1, 1fr);     /* Mobile */
+  grid-template-columns: repeat(1, 1fr);
+  /* Mobile */
 }
 
 @media (min-width: 768px) {
   .responsive-grid {
-    grid-template-columns: repeat(2, 1fr);   /* Tablet */
+    grid-template-columns: repeat(2, 1fr);
+    /* Tablet */
   }
 }
 
 @media (min-width: 1024px) {
   .responsive-grid {
-    grid-template-columns: repeat(3, 1fr);   /* Large Screen */
+    grid-template-columns: repeat(3, 1fr);
+    /* Large Screen */
   }
 }
+
+.destination-content {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 768px) {
+  .destination-content {
+    grid-template-columns: repeat(2, 1fr);
+    /* Tablet */
+  }
+}
+
+.activity-grid {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 768px) {
+  .activity-grid {
+    grid-template-columns: repeat(2, 1fr);
+    /* Tablet */
+  }
+}
+
+.destination-section {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 768px) {
+  .destination-section {
+   grid-template-columns: 1fr 1fr;
+    /* Tablet */
+  }
+}
+
+.destination-page {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 768px) {
+  .destination-page {
+    grid-template-columns: 3fr 1fr;
+    /* Tablet */
+  }
+}
+

@@ -34,17 +34,7 @@ export function DestinationsPage({ go, t, setTweak }: DestinationsPageProps) {
               Filter by region, season, or interest.
             </h2>
           </div>
-          <div className="rh">
-            {(['grid', 'asym', 'carousel'] as const).map((v) => (
-              <button
-                key={v}
-                className={'chip' + (t.cardLayout === v ? ' active' : '')}
-                onClick={() => setTweak('cardLayout', v)}
-              >
-                {v}
-              </button>
-            ))}
-          </div>
+    
         </div>
 
         <div className="flex gap-2 mt-2" style={{ flexWrap: 'wrap', marginBottom: 48 }}>
@@ -59,8 +49,8 @@ export function DestinationsPage({ go, t, setTweak }: DestinationsPageProps) {
           ))}
         </div>
 
-        <div className="grid" style={{ gridTemplateColumns: '1fr 320px', alignItems: 'start', gap: 48 }}>
-          <div className="grid grid-3">
+        <div className="destination-page" >
+          <div className="destination-section">
             {filtered.map((d) => (
               <DestinationCard
                 key={d.id}
@@ -68,6 +58,7 @@ export function DestinationsPage({ go, t, setTweak }: DestinationsPageProps) {
                 variant="grid"
                 onClick={() => go('destination', { id: d.id })}
               />
+           
             ))}
           </div>
           <aside style={{ position: 'sticky', top: 96, padding: 24, background: 'var(--bone)', borderRadius: 'var(--r-lg)', border: '1px solid var(--line-2)' }}>
