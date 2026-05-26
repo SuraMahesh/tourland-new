@@ -1,8 +1,58 @@
 import { useState } from 'react';
 import { SubHero } from '../components';
 import { WHATSAPP_LINK, contactViaWhatsApp } from '../utils/whatsapp';
+
+const COUNTRIES = [
+  { code: '+1', flag: '🇺🇸' },
+  { code: '+44', flag: '🇬🇧' },
+  { code: '+61', flag: '🇦🇺' },
+  { code: '+64', flag: '🇳🇿' },
+  { code: '+91', flag: '🇮🇳' },
+  { code: '+94', flag: '🇱🇰' },
+  { code: '+86', flag: '🇨🇳' },
+  { code: '+81', flag: '🇯🇵' },
+  { code: '+33', flag: '🇫🇷' },
+  { code: '+49', flag: '🇩🇪' },
+  { code: '+39', flag: '🇮🇹' },
+  { code: '+34', flag: '🇪🇸' },
+  { code: '+31', flag: '🇳🇱' },
+  { code: '+46', flag: '🇸🇪' },
+  { code: '+47', flag: '🇳🇴' },
+  { code: '+45', flag: '🇩🇰' },
+  { code: '+358', flag: '🇫🇮' },
+  { code: '+41', flag: '🇨🇭' },
+  { code: '+43', flag: '🇦🇹' },
+  { code: '+32', flag: '🇧🇪' },
+];
+
 export function ContactPage() {
   const [sent, setSent] = useState(false);
+  const [countryCode, setCountryCode] = useState('+94');
+  const [phone, setPhone] = useState('');
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', topic: 'New trip enquiry', message: '' });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Invalid email';
+    if (!phone.trim()) newErrors.phone = 'Phone is required';
+    else if (phone.length < 7) newErrors.phone = 'Phone too short';
+    if (!formData.message.trim()) newErrors.message = 'Message is required';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateForm()) {
+      setSent(true);
+    }
+  };
 
   return (
     <main>
@@ -97,27 +147,99 @@ export function ContactPage() {
             ) : (
               <form
                 className="grid"
-                style={{ gridTemplateColumns: '1fr 1fr', gap: 8 }}
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSent(true);
-                }}
+                style={{ gridTemplateColumns: '1fr 1fr', gap: 16 }}
+                onSubmit={handleSubmit}
               >
                 <div className="field">
                   <label>Name</label>
-                  <input required placeholder="Your full name" />
+                  <input
+                    placeholder="Your full name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    style={{ borderColor: errors.name ? 'var(--sunset)' : 'var(--line)' }}
+                  />
+                  {errors.name && <span style={{ fontSize: 12, color: 'var(--sunset)', marginTop: 4 }}>{errors.name}</span>}
                 </div>
                 <div className="field">
                   <label>Email</label>
-                  <input required type="email" placeholder="you@email.com" />
+                  <input
+                    type="email"
+                    placeholder="you@email.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    style={{ borderColor: errors.email ? 'var(--sunset)' : 'var(--line)' }}
+                  />
+                  {errors.email && <span style={{ fontSize: 12, color: 'var(--sunset)', marginTop: 4 }}>{errors.email}</span>}
                 </div>
-                <div className="field">
+                <div className="field" style={{ gridColumn: '1/-1' }}>
                   <label>Phone (with WhatsApp)</label>
-                  <input placeholder="+1 555 …" />
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: 8 }}>
+                    <div style={{ position: 'relative',}}>
+                      <button
+                        type="button"
+                        onClick={() => setOpenDropdown(!openDropdown)}
+                        className="country-dropdown-btn"
+                        style={{
+                          width: '100%',
+                          padding: '12px 6px',
+                          border: '1px solid var(--line)',
+                          borderRadius: 'var(--r)',
+                          background: 'var(--bone)',
+                          fontSize: 15,
+                          fontWeight: 500,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        <span>{COUNTRIES.find((c) => c.code === countryCode)?.flag} {countryCode}</span>
+                        <span style={{ fontSize: 12 }}>▼</span>
+                      </button>
+                      {openDropdown && (
+                        <div className="country-dropdown-menu">
+                          {COUNTRIES.map((c) => (
+                            <button
+                              key={c.code}
+                              type="button"
+                              onClick={() => {
+                                setCountryCode(c.code);
+                                setOpenDropdown(false);
+                              }}
+                              className="country-option"
+                            >
+                              <span>{c.flag}</span>
+                              <span>{c.code}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <input
+                      type="tel"
+                      placeholder="77 200 8000"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+                      style={{
+                        padding: '12px 14px',
+                        border: `1px solid ${errors.phone ? 'var(--sunset)' : 'var(--line)'}`,
+                        borderRadius: 'var(--r)',
+                        background: 'var(--bone)',
+                        fontSize: 15,
+                        transition: 'border 0.2s ease',
+                      }}
+                    />
+                  </div>
+                  {errors.phone && <span style={{ fontSize: 12, color: 'var(--sunset)', marginTop: 6, display: 'block' }}>{errors.phone}</span>}
                 </div>
-                <div className="field">
+                <div className="field" style={{ gridColumn: '1/-1' }}>
                   <label>Topic</label>
-                  <select>
+                  <select
+                    value={formData.topic}
+                    onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
+                    className="topic-select"
+                  >
                     <option>New trip enquiry</option>
                     <option>Existing booking</option>
                     <option>Airport pickup</option>
@@ -126,7 +248,13 @@ export function ContactPage() {
                 </div>
                 <div className="field" style={{ gridColumn: '1/-1' }}>
                   <label>Message</label>
-                  <textarea placeholder="Tell us about your trip — dates, who's coming, what you love…" />
+                  <textarea
+                    placeholder="Tell us about your trip — dates, who's coming, what you love…"
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    style={{ borderColor: errors.message ? 'var(--sunset)' : 'var(--line)' }}
+                  />
+                  {errors.message && <span style={{ fontSize: 12, color: 'var(--sunset)', marginTop: 6, display: 'block' }}>{errors.message}</span>}
                 </div>
                 <div style={{ gridColumn: '1/-1', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="mute" style={{ fontSize: 12 }}>

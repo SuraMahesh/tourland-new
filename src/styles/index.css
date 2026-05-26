@@ -1323,6 +1323,7 @@ textarea {
   gap: 8px;
 }
 
+
 .field label {
   font-size: 12px;
   font-weight: 500;
@@ -1355,6 +1356,261 @@ textarea {
   resize: vertical;
   font-family: inherit;
   line-height: 1.5;
+}
+
+/* ---------- Custom Dropdown ---------- */
+.country-dropdown-btn {
+  transition: all 0.2s ease;
+}
+
+.country-dropdown-btn:hover {
+  border-color: var(--ink);
+  background: white;
+}
+
+.country-dropdown-btn:focus {
+  border-color: var(--ink);
+  background: white;
+  outline: none;
+}
+
+.country-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  max-height: 280px;
+  overflow-y: auto;
+  animation: slideDown 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.country-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.country-option:hover {
+  background: var(--paper);
+  transform: translateX(4px);
+}
+
+.country-option:active {
+  background: var(--sand-2);
+}
+
+.country-option span:first-child {
+  font-size: 18px;
+}
+
+.country-option span:last-child {
+  font-weight: 600;
+  color: var(--sunset);
+}
+
+/* Topic select styling */
+.topic-select {
+  width: 100%;
+  padding: 12px 14px;
+  padding-right: 36px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--bone) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%230a1410" d="M1 1l5 5 5-5"/></svg>') no-repeat right 12px center;
+  background-size: 12px 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  font-family: var(--font-body);
+  color: var(--ink);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.topic-select:hover {
+  border-color: var(--ink);
+  background-color: white;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%230a1410" d="M1 1l5 5 5-5"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px 8px;
+}
+
+.topic-select:focus {
+  border-color: var(--ink);
+  background-color: white;
+  outline: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%230a1410" d="M1 1l5 5 5-5"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px 8px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .country-dropdown-menu {
+    max-height: 240px;
+  }
+
+  .country-option {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .country-option span:first-child {
+    font-size: 16px;
+  }
+}
+
+/* ---------- Contact Form Responsive ---------- */
+/* Desktop: 2 columns */
+@media (min-width: 769px) {
+  .contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+}
+
+/* Tablet: Adjust form layout */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .contact-wrapper {
+    gap: 32px;
+  }
+}
+
+/* Mobile: Stack everything vertically */
+@media (max-width: 768px) {
+  .contact-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* Form grid - 1 column on small mobile */
+  .grid[style*="gridTemplateColumns: '1fr 1fr'"] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Phone field - keep side by side on mobile */
+  [style*="gridTemplateColumns: '1fr 4fr'"] {
+    grid-template-columns: 80px 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Form padding and spacing */
+  .field {
+    gap: 6px !important;
+    margin-bottom: 8px;
+  }
+
+  .field label {
+    font-size: 12px !important;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 16px !important;
+    padding: 12px 12px !important;
+    min-height: 44px !important;
+    width: 100% !important;
+  }
+
+  /* Topic select mobile styling */
+  .topic-select {
+    font-size: 16px !important;
+    padding: 12px 12px !important;
+    padding-right: 32px !important;
+    min-height: 44px !important;
+    background-position: right 10px center !important;
+  }
+
+  /* Dropdown button sizing */
+  .country-dropdown-btn {
+    font-size: 14px !important;
+    padding: 10px 10px !important;
+  }
+
+  /* Error messages */
+  .field span[style*="color: var(--sunset)"] {
+    font-size: 11px !important;
+    margin-top: 3px !important;
+  }
+}
+
+/* Extra small mobile (< 480px) */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px !important;
+  }
+
+  .field {
+    gap: 4px !important;
+  }
+
+  .field label {
+    font-size: 11px !important;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 15px !important;
+    padding: 10px 10px !important;
+    min-height: 40px !important;
+  }
+
+  /* Topic select extra small mobile */
+  .topic-select {
+    font-size: 15px !important;
+    padding: 10px 10px !important;
+    padding-right: 28px !important;
+    min-height: 40px !important;
+    background-position: right 8px center !important;
+  }
+
+  /* Phone field stacking */
+  [style*="gridTemplateColumns: '80px 1fr'"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .country-dropdown-btn {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+    font-size: 14px !important;
+    padding: 10px 10px !important;
+    min-height: 40px !important;
+  }
 }
 
 /* ---------- Planner page ---------- */
