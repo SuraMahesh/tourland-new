@@ -13,7 +13,7 @@ export function ContactPage() {
         img="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=2000&q=80&auto=format&fit=crop"
       />
       <section className="container sec">
-        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'start' }}>
+        <div className="contact-wrapper" >
           <div>
             <div className="eyebrow">Three ways to reach us</div>
             <h2 className="h-3" style={{ margin: '14px 0 32px' }}>
@@ -83,7 +83,7 @@ export function ContactPage() {
             </div>
           </div>
 
-          <div style={{ padding: 36, background: 'var(--bone)', borderRadius: 'var(--r-lg)', border: '1px solid var(--line-2)' }}>
+          <div style={{ padding: 8, background: 'var(--bone)', borderRadius: 'var(--r-lg)', border: '1px solid var(--line-2)' }}>
             <div className="eyebrow">Email us</div>
             <h3 className="h-3 mt-2" style={{ margin: '14px 0 32px' }}>
               Send a message.
@@ -97,7 +97,7 @@ export function ContactPage() {
             ) : (
               <form
                 className="grid"
-                style={{ gridTemplateColumns: '1fr 1fr', gap: 18 }}
+                style={{ gridTemplateColumns: '1fr 1fr', gap: 8 }}
                 onSubmit={(e) => {
                   e.preventDefault();
                   setSent(true);
