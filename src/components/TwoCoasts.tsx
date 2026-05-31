@@ -32,7 +32,7 @@ export function TwoCoasts({ go }: TwoCoastsProps) {
         02
       </div>
 
-      <div className="grid" style={{ gridTemplateColumns: '1.05fr 1.5fr', gap: 96, alignItems: 'start', position: 'relative' }}>
+      <div className="season-wrap" >
         {/* LEFT — headline + island */}
         <div>
           <div className="idx-strip" style={{ color: 'rgba(248,244,234,.5)' }}>
@@ -169,13 +169,14 @@ function CoastRow({ c, isLast }: { c: typeof COAST_DATA[0]; isLast: boolean }) {
   return (
     <div
       style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 480px',
-        gap: 32,
-        alignItems: 'center',
-        padding: '24px 4px',
+        // display: 'grid',
+        // gridTemplateColumns: '1fr 480px',
+        // gap: 32,
+        // alignItems: 'center',
+        // padding: '24px 4px',
         borderBottom: isLast ? 'none' : '1px solid rgba(248,244,234,.08)',
       }}
+      className='coast-wrap'
     >
       <div>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}>

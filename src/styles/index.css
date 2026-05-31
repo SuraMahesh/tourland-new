@@ -1468,6 +1468,7 @@ textarea {
     opacity: 0;
     transform: translateY(-8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1870,5 +1871,46 @@ textarea {
   .contact-wrapper {
     grid-template-columns: 1fr 1fr;
     /* Tablet */
+  }
+}
+
+.things-wrap {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 768px) {
+  .things-wrap {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.season-wrap {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 768px) {
+  .season-wrap {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.coast-wrap {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  grid-template-columns: repeat(1, 1fr);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .coast-wrap {
+    grid-template-columns: 1fr 1fr;
   }
 }

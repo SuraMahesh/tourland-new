@@ -367,7 +367,7 @@ export function HomePage({ go, t }: HomePageProps) {
 
       <section className="sec container">
         <SecHead n="03" eyebrow="Things to do" title="Curated experiences. Nothing on the bus-tour list." lede="Local guides, eco-rated operators, small groups." />
-        <div className="grid grid-3">
+        <div className="things-wrap">
           {ACTIVITIES.slice(0, 6).map((a) => (
             <article key={a.id} className="card reveal" onClick={() => go('activities')} style={{ cursor: 'pointer' }}>
               <div className="ph" style={{ aspectRatio: '5/4' }}>
