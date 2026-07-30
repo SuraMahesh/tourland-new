@@ -1,8 +1,10 @@
 import { useState, useMemo } from 'react';
 import { SubHero } from '../components';
-import { ACTIVITIES } from '../data';
+import { ACTIVITIES, VEHICLES, DAILY_KM_ALLOWANCE } from '../data';
 import { generateTripPDF } from '../utils/pdf';
-import { openWhatsApp, createTripInquiryMessage } from '../utils/whatsapp';
+import { openWhatsApp, createTripInquiryMessage, createBookingMessage } from '../utils/whatsapp';
+import { openBookingEmail, BOOKING_EMAIL } from '../utils/email';
+import type { VehicleId, TouristDetails, BookingDetails } from '../types';
 
 const U = (id: string, w: number = 1600) => {
   return `https://images.unsplash.com/photo-${id}?w=${w}&q=80&auto=format&fit=crop`;
@@ -19,6 +21,8 @@ interface TourRegion {
   name: string;
   days: number;
   blurb: string;
+  lat: number;
+  lng: number;
 }
 
 interface TripData {
@@ -27,7 +31,8 @@ interface TripData {
   travellers: { adults: number; children: number };
   regions: string[];
   activities: string[];
-  transfer: 'private' | 'suv' | 'ev';
+  vehicle: VehicleId;
+  estKm: number;
   pickupAirport: boolean;
   style: 'relaxed' | 'balanced' | 'packed';
 }
@@ -44,19 +49,73 @@ const PLANNER_STEPS: PlannerStep[] = [
   { n: 1, t: 'Dates', d: 'When and how long?' },
   { n: 2, t: 'Regions', d: 'Where do you want to go?' },
   { n: 3, t: 'Activities', d: 'Pick experiences.' },
-  { n: 4, t: 'Transfers', d: 'Airport pickup and extras.' },
+  { n: 4, t: 'Vehicle', d: 'Choose your ride.' },
 ];
 
 const TOUR_REGIONS: TourRegion[] = [
-  { id: 'colombo', name: 'Colombo', days: 1, blurb: 'Arrival, dinner on Galle Face.' },
-  { id: 'sigiriya', name: 'Sigiriya & Dambulla', days: 2, blurb: 'Rock fortress, cave temples, balloon ride.' },
-  { id: 'kandy', name: 'Kandy', days: 2, blurb: 'Temple of the Tooth, lakeside walks.' },
-  { id: 'nuwaraeliya', name: 'Nuwara Eliya', days: 1, blurb: 'Tea estates, Pedro factory tour.' },
-  { id: 'ella', name: 'Ella', days: 2, blurb: 'Nine Arches Bridge, Little Adam\'s Peak.' },
-  { id: 'yala', name: 'Yala / Udawalawe', days: 2, blurb: 'Leopard or elephant safari, jungle lodge.' },
-  { id: 'mirissa', name: 'Mirissa & Galle', days: 3, blurb: 'Whales, fort, beach down-time.' },
-  { id: 'trinco', name: 'Trincomalee', days: 2, blurb: 'East-coast reefs and quiet bays.' },
+  { id: 'colombo', name: 'Colombo', days: 1, blurb: 'Arrival, dinner on Galle Face.', lat: 6.93, lng: 79.85 },
+  { id: 'sigiriya', name: 'Sigiriya & Dambulla', days: 2, blurb: 'Rock fortress, cave temples, balloon ride.', lat: 7.95, lng: 80.75 },
+  { id: 'kandy', name: 'Kandy', days: 2, blurb: 'Temple of the Tooth, lakeside walks.', lat: 7.29, lng: 80.64 },
+  { id: 'nuwaraeliya', name: 'Nuwara Eliya', days: 1, blurb: 'Tea estates, Pedro factory tour.', lat: 6.97, lng: 80.78 },
+  { id: 'ella', name: 'Ella', days: 2, blurb: 'Nine Arches Bridge, Little Adam\'s Peak.', lat: 6.87, lng: 81.05 },
+  { id: 'yala', name: 'Yala / Udawalawe', days: 2, blurb: 'Leopard or elephant safari, jungle lodge.', lat: 6.37, lng: 81.42 },
+  { id: 'mirissa', name: 'Mirissa & Galle', days: 3, blurb: 'Whales, fort, beach down-time.', lat: 5.95, lng: 80.46 },
+  { id: 'trinco', name: 'Trincomalee', days: 2, blurb: 'East-coast reefs and quiet bays.', lat: 8.58, lng: 81.21 },
 ];
+
+/* ---------- Rough distance estimate from selected regions ---------- */
+const CMB_AIRPORT = { lat: 7.18, lng: 79.88 };
+const ROAD_WINDING_FACTOR = 1.4; // straight-line → real Sri Lankan roads
+const LOCAL_KM_PER_DAY = 25; // sightseeing driving around each base
+
+function haversineKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }): number {
+  const R = 6371;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(b.lat - a.lat);
+  const dLng = toRad(b.lng - a.lng);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+function estimateRouteKm(regionIds: string[], days: number): number {
+  const stops = regionIds
+    .map((id) => TOUR_REGIONS.find((r) => r.id === id))
+    .filter((r): r is TourRegion => r !== undefined);
+  const route = [CMB_AIRPORT, ...stops, CMB_AIRPORT];
+  let km = 0;
+  for (let i = 1; i < route.length; i++) {
+    km += haversineKm(route[i - 1], route[i]) * ROAD_WINDING_FACTOR;
+  }
+  km += days * LOCAL_KM_PER_DAY;
+  return Math.ceil(km / 50) * 50;
+}
+
+/* ---------- Pricing (per vehicle, never per person) ---------- */
+const ADVANCE_RATE = 0.1; // 10% advance confirms the booking
+const ADVANCE_DAYS_BEFORE = 14; // due two weeks before the tour
+
+function tripPricing(trip: TripData) {
+  const vehicle = VEHICLES.find((x) => x.id === trip.vehicle) ?? VEHICLES[1];
+  const base = trip.days * vehicle.perDay;
+  const includedKm = trip.days * DAILY_KM_ALLOWANCE;
+  const routeKm = trip.estKm > 0 ? trip.estKm : estimateRouteKm(trip.regions, trip.days);
+  const extraKm = Math.max(0, routeKm - includedKm);
+  const extraKmCharge = Math.round(extraKm * (vehicle.perDay / DAILY_KM_ALLOWANCE));
+  const total = base + extraKmCharge;
+  const advance = Math.round(total * ADVANCE_RATE);
+  return { vehicle, base, includedKm, routeKm, extraKm, extraKmCharge, total, advance };
+}
+
+function advanceDueDate(startDate: string): Date {
+  const d = new Date(startDate);
+  d.setDate(d.getDate() - ADVANCE_DAYS_BEFORE);
+  return d;
+}
+
+const fmtLong = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
 export function PlannerPage() {
   const [step, setStep] = useState<number>(1);
@@ -66,7 +125,8 @@ export function PlannerPage() {
     travellers: { adults: 2, children: 0 },
     regions: ['colombo', 'sigiriya', 'kandy', 'ella', 'mirissa'],
     activities: ['safari', 'train', 'whale'],
-    transfer: 'private',
+    vehicle: 'sedan',
+    estKm: 0,
     pickupAirport: true,
     style: 'balanced',
   });
@@ -169,7 +229,7 @@ export function PlannerPage() {
             {step === 1 && <Step1Dates trip={trip} set={set} />}
             {step === 2 && <Step2Regions trip={trip} set={set} />}
             {step === 3 && <Step3Activities trip={trip} set={set} />}
-            {step === 4 && <Step4Transfer trip={trip} set={set} />}
+            {step >= 4 && <Step4Transfer trip={trip} set={set} />}
 
             <div
               className="mt-8 flex"
@@ -192,7 +252,16 @@ export function PlannerPage() {
                   Continue <span className="arrow">→</span>
                 </button>
               ) : (
-                <button className="btn btn-primary" onClick={() => setStep(5)}>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setStep(5);
+                    setTimeout(
+                      () => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' }),
+                      80
+                    );
+                  }}
+                >
                   Review & book <span className="arrow">→</span>
                 </button>
               )}
@@ -243,7 +312,7 @@ function Step1Dates({
           <label>Duration · {trip.days} days</label>
           <input
             type="range"
-            min="5"
+            min="1"
             max="28"
             value={trip.days}
             onChange={(e) => set({ days: +e.target.value })}
@@ -258,7 +327,7 @@ function Step1Dates({
               marginTop: 4,
             }}
           >
-            <span>5</span>
+            <span>1</span>
             <span>28</span>
           </div>
         </div>
@@ -502,7 +571,7 @@ function Step3Activities({
       <div className="eyebrow">Step 03</div>
       <h2 className="h-3 mt-2">Choose your experiences.</h2>
       <p className="mute mt-2" style={{ maxWidth: 520 }}>
-        We'll slot these into your itinerary on the appropriate days. Add or remove anytime — your draft auto-saves.
+        We'll slot these into your itinerary on the appropriate days. We can provide and arrange all of these — just pick what you'd love to do.
       </p>
 
       <div className="grid mt-6" style={{ gridTemplateColumns: '1fr 1fr', gap: 14 }}>
@@ -555,7 +624,7 @@ function Step3Activities({
                   opacity: 0.8,
                 }}
               >
-                {on ? '✓' : '+'} {a.price.replace('from ', '').replace('Guide ', '')}
+                {on ? '✓ Added' : '+ Add'}
               </div>
             </button>
           );
@@ -565,7 +634,7 @@ function Step3Activities({
   );
 }
 
-/* ---------- Step 4: Transfer ---------- */
+/* ---------- Step 4: Vehicle ---------- */
 function Step4Transfer({
   trip,
   set,
@@ -573,49 +642,108 @@ function Step4Transfer({
   trip: TripData;
   set: (patch: Partial<TripData>) => void;
 }) {
+  const v = VEHICLES.find((x) => x.id === trip.vehicle) ?? VEHICLES[1];
+  const includedKm = trip.days * DAILY_KM_ALLOWANCE;
+  const perKm = v.perDay / DAILY_KM_ALLOWANCE;
+  const autoKm = estimateRouteKm(trip.regions, trip.days);
+  const effKm = trip.estKm > 0 ? trip.estKm : autoKm;
+  const extraKm = Math.max(0, effKm - includedKm);
+
   return (
     <div>
       <div className="eyebrow">Step 04</div>
-      <h2 className="h-3 mt-2">Airport pickup & transfers.</h2>
+      <h2 className="h-3 mt-2">Choose your vehicle.</h2>
       <p className="mute mt-2" style={{ maxWidth: 520 }}>
-        The driver is the same person for your whole trip. They know the roads, the lunch spots, and which sambol is the spiciest.
+        You pay for the vehicle, not per person. Every option comes with a private driver and {DAILY_KM_ALLOWANCE} km per day — pooled across your whole tour, so a quiet beach day banks kilometres for a big travel day.
       </p>
 
       <div className="mt-6 grid" style={{ gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }}>
-        {(
-          [
-            ['private' as const, 'Private car & driver', 'A/C sedan, English-speaking, your whole trip', '+$0 (incl.)'],
-            ['suv' as const, 'Premium SUV', 'More space, same driver-guide', '+$280'],
-            ['ev' as const, 'Electric car', 'Same service, zero emissions', '+$190'],
-          ] as const
-        ).map(([k, t, d, p]) => (
-          <button
-            key={k}
-            onClick={() => set({ transfer: k })}
-            style={{
-              padding: '22px 22px',
-              textAlign: 'left',
-              borderRadius: 'var(--r)',
-              background: trip.transfer === k ? 'var(--ink)' : 'var(--paper)',
-              color: trip.transfer === k ? 'var(--bone)' : 'var(--ink)',
-              border: '1px solid ' + (trip.transfer === k ? 'var(--ink)' : 'var(--line)'),
-              cursor: 'pointer',
-            }}
-          >
-            <div style={{ fontSize: 16, fontWeight: 500 }}>{t}</div>
-            <div
+        {VEHICLES.map((veh) => {
+          const on = trip.vehicle === veh.id;
+          return (
+            <button
+              key={veh.id}
+              onClick={() => set({ vehicle: veh.id })}
               style={{
-                fontSize: 13,
-                opacity: 0.7,
-                margin: '6px 0 14px',
-                lineHeight: 1.45,
+                padding: '22px 22px',
+                textAlign: 'left',
+                borderRadius: 'var(--r)',
+                background: on ? 'var(--ink)' : 'var(--paper)',
+                color: on ? 'var(--bone)' : 'var(--ink)',
+                border: '1px solid ' + (on ? 'var(--ink)' : 'var(--line)'),
+                cursor: 'pointer',
               }}
             >
-              {d}
+              <div style={{ fontSize: 16, fontWeight: 500 }}>{veh.name}</div>
+              <div className="mono" style={{ fontSize: 11, opacity: 0.6, marginTop: 2 }}>
+                {veh.seats}
+              </div>
+              <div
+                style={{
+                  fontSize: 13,
+                  opacity: 0.7,
+                  margin: '6px 0 14px',
+                  lineHeight: 1.45,
+                }}
+              >
+                {veh.blurb}
+              </div>
+              <div style={{ fontSize: 13, fontWeight: 600 }}>
+                ${veh.perDay} / day · {DAILY_KM_ALLOWANCE} km incl.
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <div
+        className="mt-6"
+        style={{
+          padding: '24px 28px',
+          border: '1px solid var(--line)',
+          borderRadius: 'var(--r)',
+          background: 'var(--paper)',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
+            marginBottom: 14,
+          }}
+        >
+          <div>
+            <div className="eyebrow">Rough route estimate</div>
+            <div className="mute" style={{ fontSize: 12, marginTop: 4 }}>
+              Airport → {trip.regions.length} region{trip.regions.length !== 1 ? 's' : ''} in your order → airport, plus local driving
             </div>
-            <div style={{ fontSize: 13, fontWeight: 600 }}>{p}</div>
-          </button>
-        ))}
+          </div>
+          <div style={{ fontSize: 22, fontWeight: 600, fontFamily: 'var(--font-mono)' }}>
+            ~{autoKm.toLocaleString()} km
+          </div>
+        </div>
+        <div className="field" style={{ maxWidth: 320 }}>
+          <label>Or type your own estimate · km</label>
+          <input
+            type="number"
+            min="0"
+            step="50"
+            value={trip.estKm || ''}
+            placeholder={`~${autoKm.toLocaleString()} km (auto)`}
+            onChange={(e) => set({ estKm: Math.max(0, +e.target.value || 0) })}
+          />
+        </div>
+        <div className="mute" style={{ fontSize: 13, marginTop: 10, lineHeight: 1.5 }}>
+          Your {trip.days}-day tour includes {includedKm.toLocaleString()} km. Beyond that, extra kilometres are charged at ${perKm.toFixed(2)}/km for the {v.name.toLowerCase()} (vehicle day rate ÷ {DAILY_KM_ALLOWANCE}).
+          {extraKm > 0 ? (
+            <>
+              {' '}At ~{effKm.toLocaleString()} km, that's {extraKm.toLocaleString()} extra km ≈ ${Math.round(extraKm * perKm).toLocaleString()}.
+            </>
+          ) : (
+            <> Your route fits inside the included distance — no extra charge.</>
+          )}
+        </div>
       </div>
 
       <div
@@ -666,7 +794,7 @@ function Step4Transfer({
               fontWeight: 500,
             }}
           >
-            + $35
+            Included
           </div>
           <input
             type="checkbox"
@@ -687,6 +815,19 @@ function Step4Transfer({
         }}
       >
         <strong>Drop-off:</strong> we'll get you back to CMB for your return flight. No extra charge.
+      </div>
+
+      <div
+        className="mt-3"
+        style={{
+          padding: '18px 22px',
+          background: 'rgba(217,119,66,.1)',
+          borderRadius: 'var(--r)',
+          fontSize: 13,
+          lineHeight: 1.5,
+        }}
+      >
+        <strong>On request:</strong> tour guide, accommodation and meals can all be arranged for you — charged at cost, not included in the vehicle price. Tell us what you need and we'll quote it.
       </div>
     </div>
   );
@@ -810,12 +951,7 @@ function ItinerarySidebar({
       year: 'numeric',
     });
 
-  const base =
-    trip.days * 165 * trip.travellers.adults + trip.days * 95 * trip.travellers.children;
-  const transferAdd = trip.transfer === 'suv' ? 280 : trip.transfer === 'ev' ? 190 : 0;
-  const pickup = trip.pickupAirport ? 35 : 0;
-  const activityAdd = trip.activities.length * 65;
-  const total = base + transferAdd + pickup + activityAdd;
+  const { vehicle, base, includedKm, routeKm, extraKm, extraKmCharge, total } = tripPricing(trip);
 
   return (
     <aside
@@ -947,11 +1083,7 @@ function ItinerarySidebar({
             marginTop: 6,
           }}
         >
-          For {trip.travellers.adults} adult{trip.travellers.adults > 1 ? 's' : ''}
-          {trip.travellers.children > 0
-            ? ` + ${trip.travellers.children} child${trip.travellers.children > 1 ? 'ren' : ''}`
-            : ''}{' '}
-          · all-in
+          Per vehicle · not per person
         </div>
 
         <div
@@ -965,25 +1097,38 @@ function ItinerarySidebar({
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>Land arrangements</span>
+            <span>{vehicle.name} × {trip.days} day{trip.days > 1 ? 's' : ''}</span>
             <span>${base.toLocaleString()}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>Experiences ×{trip.activities.length}</span>
-            <span>${activityAdd}</span>
+            <span>Distance included</span>
+            <span>{includedKm.toLocaleString()} km</span>
           </div>
-          {transferAdd > 0 && (
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>Est. route distance</span>
+            <span>~{routeKm.toLocaleString()} km</span>
+          </div>
+          {extraKmCharge > 0 && (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>Transfer upgrade</span>
-              <span>${transferAdd}</span>
+              <span>Extra {extraKm.toLocaleString()} km × ${(vehicle.perDay / DAILY_KM_ALLOWANCE).toFixed(2)}</span>
+              <span>${extraKmCharge.toLocaleString()}</span>
             </div>
           )}
-          {pickup > 0 && (
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>Airport pickup</span>
-              <span>${pickup}</span>
-            </div>
-          )}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>Airport pickup & drop-off</span>
+            <span>Included</span>
+          </div>
+        </div>
+
+        <div
+          style={{
+            marginTop: 14,
+            fontSize: 11,
+            lineHeight: 1.5,
+            color: 'rgba(248,244,234,.5)',
+          }}
+        >
+          Guide, accommodation & meals arranged on request at cost. Activities quoted separately.
         </div>
 
         <div style={{ marginTop: 22, display: 'flex', gap: 8 }}>
@@ -998,6 +1143,7 @@ function ItinerarySidebar({
                     travelers: trip.travellers,
                     regions: trip.regions,
                     startDate: trip.startDate,
+                    vehicle: vehicle.name,
                   })
                 });
               } else {
@@ -1009,7 +1155,7 @@ function ItinerarySidebar({
           </button>
           <button
             className="btn btn-outline-dark btn-sm"
-            onClick={() => generateTripPDF(trip, itinerary, `tourland-trip-${trip.days}days.pdf`)}
+            onClick={() => generateTripPDF({ ...trip, estKm: routeKm }, itinerary, `tourland-trip-${trip.days}days.pdf`)}
           >
             PDF
           </button>
@@ -1029,55 +1175,333 @@ function ItinerarySidebar({
   );
 }
 
-/* ---------- Final review ---------- */
+/* ---------- Final review & booking ---------- */
 function FinalReview({ trip, itinerary }: { trip: TripData; itinerary: ItineraryDay[] }) {
+  const [tourist, setTourist] = useState<TouristDetails>({
+    name: '',
+    country: '',
+    email: '',
+    phone: '',
+  });
+  const [booked, setBooked] = useState(false);
+  const [showErrors, setShowErrors] = useState(false);
+
+  const p = tripPricing(trip);
+  const start = new Date(trip.startDate);
+  const end = new Date(start);
+  end.setDate(start.getDate() + trip.days - 1);
+  const due = advanceDueDate(trip.startDate);
+  const dueIsPast = due.getTime() < Date.now();
+  const balance = p.total - p.advance;
+
+  const regionNames = trip.regions
+    .map((id) => TOUR_REGIONS.find((r) => r.id === id)?.name)
+    .filter((n): n is string => n !== undefined);
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(tourist.email.trim());
+  const fieldOk: Record<keyof TouristDetails, boolean> = {
+    name: tourist.name.trim().length >= 2,
+    country: tourist.country.trim().length >= 2,
+    email: emailOk,
+    phone: tourist.phone.trim().length >= 7,
+  };
+  const valid = fieldOk.name && fieldOk.country && fieldOk.email && fieldOk.phone;
+
+  const booking: BookingDetails = {
+    tourist: {
+      name: tourist.name.trim(),
+      country: tourist.country.trim(),
+      email: tourist.email.trim(),
+      phone: tourist.phone.trim(),
+    },
+    startDate: fmtLong(start),
+    endDate: fmtLong(end),
+    days: trip.days,
+    travellers: trip.travellers,
+    vehicleName: p.vehicle.name,
+    vehiclePerDay: p.vehicle.perDay,
+    regions: regionNames,
+    routeKm: p.routeKm,
+    includedKm: p.includedKm,
+    extraKmCharge: p.extraKmCharge,
+    total: p.total,
+    advance: p.advance,
+    advanceDueDate: dueIsPast ? 'now (tour starts in under two weeks)' : fmtLong(due),
+  };
+
+  const summary: [string, string][] = [
+    ['Dates', `${fmtLong(start)} → ${fmtLong(end)}`],
+    ['Duration', `${trip.days} day${trip.days > 1 ? 's' : ''}`],
+    [
+      'Travellers',
+      `${trip.travellers.adults} adult${trip.travellers.adults > 1 ? 's' : ''}${
+        trip.travellers.children > 0 ? ` + ${trip.travellers.children} child${trip.travellers.children > 1 ? 'ren' : ''}` : ''
+      }`,
+    ],
+    ['Vehicle', `${p.vehicle.name} · $${p.vehicle.perDay}/day`],
+    ['Est. distance', `~${p.routeKm.toLocaleString()} km`],
+    ['Trip style', trip.style],
+  ];
+
+  const fields: { key: keyof TouristDetails; label: string; type: string; placeholder: string; error: string }[] = [
+    { key: 'name', label: 'Full name *', type: 'text', placeholder: 'As in your passport', error: 'Please enter your full name.' },
+    { key: 'country', label: 'Country *', type: 'text', placeholder: 'e.g. United Kingdom', error: 'Please enter your country.' },
+    { key: 'email', label: 'Email *', type: 'email', placeholder: 'you@example.com', error: 'Please enter a valid email address.' },
+    { key: 'phone', label: 'Contact number *', type: 'tel', placeholder: '+44 7700 900123', error: 'Please enter a valid contact number.' },
+  ];
+
   return (
-    <div
-      className="mt-8"
-      style={{
-        padding: 48,
-        background: 'var(--ink)',
-        color: 'var(--bone)',
-        borderRadius: 'var(--r-xl)',
-      }}
-    >
-      <div className="eyebrow on-dark">✓ Draft ready</div>
-      <h3 className="h-2 mt-2" style={{ color: 'var(--bone)' }}>
-        Your draft is saved.
-      </h3>
-      <p
+    <div id="booking" className="mt-8">
+      {/* Full plan view */}
+      <div
         style={{
-          color: 'rgba(248,244,234,.7)',
-          maxWidth: 640,
-          fontSize: 16,
-          marginTop: 14,
+          padding: 48,
+          background: 'var(--bone)',
+          borderRadius: 'var(--r-xl)',
+          border: '1px solid var(--line-2)',
         }}
       >
-        A real planner — Sandali in Colombo — will read this draft within four hours and reply with refinements: hotel availability, road conditions, season-specific notes.
-      </p>
-      <div className="flex gap-3 mt-6">
-        <button
-          className="btn btn-on-dark btn-lg"
-          onClick={() => {
-            openWhatsApp({
-              message: createTripInquiryMessage({
-                duration: trip.days,
-                travelers: trip.travellers,
-                regions: trip.regions,
-                startDate: trip.startDate,
-              })
-            });
+        <div className="eyebrow">Step 05 · Review</div>
+        <h3 className="h-2 mt-2">Your full tour plan.</h3>
+
+        <div
+          className="grid mt-6"
+          style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 14 }}
+        >
+          {summary.map(([label, value]) => (
+            <div
+              key={label}
+              style={{
+                padding: '16px 18px',
+                background: 'var(--paper)',
+                border: '1px solid var(--line)',
+                borderRadius: 'var(--r)',
+              }}
+            >
+              <div className="eyebrow">{label}</div>
+              <div style={{ marginTop: 6, fontWeight: 500, fontSize: 15, textTransform: label === 'Trip style' ? 'capitalize' : 'none' }}>
+                {value}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 eyebrow">Route · {regionNames.join(' → ')}</div>
+        <ol style={{ margin: '16px 0 0', padding: 0, listStyle: 'none' }}>
+          {itinerary.map((day) => (
+            <li
+              key={day.day}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '64px 1fr',
+                gap: 16,
+                padding: '12px 0',
+                borderBottom: '1px dashed var(--line)',
+                alignItems: 'baseline',
+              }}
+            >
+              <div className="mono" style={{ color: 'var(--sunset)' }}>
+                Day {String(day.day).padStart(2, '0')}
+                <div style={{ fontSize: 10, color: 'var(--mute)', marginTop: 2 }}>{day.date}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 15, fontWeight: 500 }}>{day.title}</div>
+                <div className="mute" style={{ fontSize: 13, marginTop: 2 }}>
+                  {day.activities.join(' · ')}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        {/* Pricing breakdown */}
+        <div
+          className="mt-6"
+          style={{
+            padding: '24px 28px',
+            background: 'var(--paper)',
+            border: '1px solid var(--line)',
+            borderRadius: 'var(--r)',
+            maxWidth: 520,
           }}
         >
-          💬 WhatsApp to confirm
-        </button>
-        <button
-          className="btn btn-outline-dark btn-lg"
-          onClick={() => generateTripPDF(trip, itinerary, `tourland-trip-${trip.days}days.pdf`)}
+          <div className="eyebrow" style={{ marginBottom: 14 }}>Pricing · per vehicle, not per person</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 14 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span>{p.vehicle.name} × {trip.days} day{trip.days > 1 ? 's' : ''}</span>
+              <span>${p.base.toLocaleString()}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mute">
+              <span>Distance included</span>
+              <span>{p.includedKm.toLocaleString()} km</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mute">
+              <span>Est. route distance</span>
+              <span>~{p.routeKm.toLocaleString()} km</span>
+            </div>
+            {p.extraKmCharge > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Extra {p.extraKm.toLocaleString()} km × ${(p.vehicle.perDay / DAILY_KM_ALLOWANCE).toFixed(2)}</span>
+                <span>${p.extraKmCharge.toLocaleString()}</span>
+              </div>
+            )}
+            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mute">
+              <span>Airport pickup & drop-off</span>
+              <span>Included</span>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                paddingTop: 10,
+                borderTop: '1px solid var(--line)',
+                fontWeight: 600,
+                fontSize: 16,
+              }}
+            >
+              <span>Total estimate</span>
+              <span>${p.total.toLocaleString()} USD</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Payment terms */}
+        <div
+          className="mt-4"
+          style={{
+            padding: '22px 28px',
+            background: 'rgba(217,119,66,.1)',
+            borderRadius: 'var(--r)',
+            fontSize: 14,
+            lineHeight: 1.6,
+            maxWidth: 520,
+          }}
         >
-          📄 Download PDF
-        </button>
+          <strong>Payment terms</strong>
+          <div style={{ marginTop: 8 }}>
+            💳 Advance payment (10%): <strong>${p.advance.toLocaleString()}</strong> —{' '}
+            {dueIsPast ? (
+              <>due <strong>now</strong> (your tour starts in under two weeks)</>
+            ) : (
+              <>due by <strong>{fmtLong(due)}</strong> (two weeks before your tour)</>
+            )}
+            <br />
+            💵 Balance: <strong>${balance.toLocaleString()}</strong> — payable during the tour.
+          </div>
+          <div className="mute" style={{ fontSize: 13, marginTop: 8 }}>
+            Your booking is confirmed once the advance is received. Guide, accommodation & meals are arranged on request at cost.
+          </div>
+        </div>
+
+        {!booked ? (
+          <>
+            {/* Tourist details */}
+            <div className="mt-8 eyebrow">Your details · for the booking confirmation email</div>
+            <div className="grid mt-3" style={{ gridTemplateColumns: '1fr 1fr', gap: 20, maxWidth: 720 }}>
+              {fields.map((f) => (
+                <div className="field" key={f.key}>
+                  <label>{f.label}</label>
+                  <input
+                    type={f.type}
+                    value={tourist[f.key]}
+                    placeholder={f.placeholder}
+                    onChange={(e) => setTourist((t) => ({ ...t, [f.key]: e.target.value }))}
+                    style={showErrors && !fieldOk[f.key] ? { borderColor: 'var(--sunset)' } : undefined}
+                  />
+                  {showErrors && !fieldOk[f.key] && (
+                    <div style={{ fontSize: 12, color: 'var(--sunset)', marginTop: 4 }}>{f.error}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex gap-3 mt-6" style={{ alignItems: 'center', flexWrap: 'wrap' }}>
+              <button
+                className="btn btn-primary btn-lg"
+                onClick={() => {
+                  if (!valid) {
+                    setShowErrors(true);
+                    return;
+                  }
+                  setBooked(true);
+                  setTimeout(
+                    () => document.getElementById('booking-confirmed')?.scrollIntoView({ behavior: 'smooth' }),
+                    80
+                  );
+                }}
+              >
+                Book this tour <span className="arrow">→</span>
+              </button>
+              <span className="mute" style={{ fontSize: 13 }}>
+                No payment taken now — we confirm availability first.
+              </span>
+            </div>
+          </>
+        ) : null}
       </div>
+
+      {/* Booking confirmation */}
+      {booked && (
+        <div
+          id="booking-confirmed"
+          className="mt-4"
+          style={{
+            padding: 48,
+            background: 'var(--ink)',
+            color: 'var(--bone)',
+            borderRadius: 'var(--r-xl)',
+          }}
+        >
+          <div className="eyebrow on-dark">✓ Booking ready</div>
+          <h3 className="h-2 mt-2" style={{ color: 'var(--bone)' }}>
+            Thank you, {tourist.name.trim().split(' ')[0]}!
+          </h3>
+          <p
+            style={{
+              color: 'rgba(248,244,234,.7)',
+              maxWidth: 640,
+              fontSize: 16,
+              marginTop: 14,
+              lineHeight: 1.6,
+            }}
+          >
+            Send your booking now and we'll reply to <strong style={{ color: 'var(--bone)' }}>{tourist.email.trim()}</strong> within
+            four hours confirming availability, with payment instructions for the{' '}
+            <strong style={{ color: 'var(--bone)' }}>${p.advance.toLocaleString()} advance</strong>
+            {dueIsPast ? ' (due now — your tour starts in under two weeks)' : ` (due by ${fmtLong(due)})`}.
+          </p>
+          <div
+            className="mono"
+            style={{ color: 'rgba(248,244,234,.55)', marginTop: 16, fontSize: 13, lineHeight: 1.7 }}
+          >
+            {tourist.name.trim()} · {tourist.country.trim()} · {tourist.phone.trim()}
+            <br />
+            {fmtLong(start)} → {fmtLong(end)} · {p.vehicle.name} · ~{p.routeKm.toLocaleString()} km · ${p.total.toLocaleString()} USD
+          </div>
+          <div className="flex gap-3 mt-6" style={{ flexWrap: 'wrap' }}>
+            <button className="btn btn-on-dark btn-lg" onClick={() => openBookingEmail(booking)}>
+              📧 Email my booking
+            </button>
+            <button
+              className="btn btn-outline-dark btn-lg"
+              onClick={() => openWhatsApp({ message: createBookingMessage(booking) })}
+            >
+              💬 WhatsApp it instead
+            </button>
+            <button
+              className="btn btn-outline-dark btn-lg"
+              onClick={() =>
+                generateTripPDF({ ...trip, estKm: p.routeKm }, itinerary, `tourland-trip-${trip.days}days.pdf`)
+              }
+            >
+              📄 Download PDF
+            </button>
+          </div>
+          <div style={{ fontSize: 12, color: 'rgba(248,244,234,.45)', marginTop: 14 }}>
+            The email opens in your mail app, pre-filled with your details and full plan, addressed to {BOOKING_EMAIL}.
+          </div>
+        </div>
+      )}
     </div>
   );
 }

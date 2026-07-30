@@ -24,10 +24,19 @@ export interface Activity {
   category: string;
   duration: string;
   difficulty: string;
-  price: string;
   img: string;
   overview: string;
   steps: string[];
+}
+
+export type VehicleId = 'hatchback' | 'sedan' | 'suv' | 'kdh' | 'bus';
+
+export interface Vehicle {
+  id: VehicleId;
+  name: string;
+  perDay: number;
+  seats: string;
+  blurb: string;
 }
 
 export interface Hotel {
@@ -73,4 +82,28 @@ export interface Tweaks {
 export interface PageParams {
   id?: string;
   [key: string]: any;
+}
+
+export interface TouristDetails {
+  name: string;
+  country: string;
+  email: string;
+  phone: string;
+}
+
+export interface BookingDetails {
+  tourist: TouristDetails;
+  startDate: string;
+  endDate: string;
+  days: number;
+  travellers: { adults: number; children: number };
+  vehicleName: string;
+  vehiclePerDay: number;
+  regions: string[];
+  routeKm: number;
+  includedKm: number;
+  extraKmCharge: number;
+  total: number;
+  advance: number;
+  advanceDueDate: string;
 }

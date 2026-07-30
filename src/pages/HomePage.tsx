@@ -380,7 +380,7 @@ export function HomePage({ go, t }: HomePageProps) {
                 <h4>{a.name}</h4>
                 <p>{a.overview.slice(0, 110)}…</p>
                 <div className="meta">
-                  <span>{a.price}</span>
+                  <span>We can arrange</span>
                   <span>·</span>
                   <span>{a.steps.length} steps</span>
                 </div>

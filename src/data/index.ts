@@ -1,4 +1,4 @@
-import type { Destination, Region, Activity, Hotel, Season, Review, HowItWorks } from '../types';
+import type { Destination, Region, Activity, Hotel, Season, Review, HowItWorks, Vehicle } from '../types';
 
 const U = (id: string, w: number = 1600) => {
   return `https://images.unsplash.com/photo-${id}?w=${w}&q=80&auto=format&fit=crop`;
@@ -78,39 +78,65 @@ export const REGIONS: Region[] = [
   { id: 'wild', name: 'Wildlife Parks', blurb: 'Yala leopards, Udawalawe elephants, Wilpattu.' },
 ];
 
+/** Tour pricing is per vehicle, per day — never per person. */
+export const DAILY_KM_ALLOWANCE = 200;
+
+export const VEHICLES: Vehicle[] = [
+  {
+    id: 'hatchback', name: 'Hatchback', perDay: 80, seats: '1–2 travellers',
+    blurb: 'Compact and nimble — ideal for solo travellers and couples with light luggage.',
+  },
+  {
+    id: 'sedan', name: 'Sedan', perDay: 100, seats: '1–3 travellers',
+    blurb: 'A/C comfort with a full boot. The classic choice for couples.',
+  },
+  {
+    id: 'suv', name: 'SUV', perDay: 120, seats: '1–4 travellers',
+    blurb: 'Extra space and higher clearance for hill-country roads.',
+  },
+  {
+    id: 'kdh', name: 'KDH Van', perDay: 150, seats: '4–8 travellers',
+    blurb: 'The Sri Lanka favourite — roomy van for families and small groups.',
+  },
+  {
+    id: 'bus', name: 'Tour Bus', perDay: 250, seats: '9+ travellers',
+    blurb: 'Full-size coach for large groups and events.',
+  },
+];
+
 export const ACTIVITIES: Activity[] = [
   {
-    id: 'safari', name: 'Leopard Safari, Yala', category: 'Wildlife', duration: '½ day', difficulty: 'Easy', price: 'from $85',
+    id: 'safari', name: 'Leopard Safari, Yala', category: 'Wildlife', duration: '½ day', difficulty: 'Easy',
     img: U('1745526180300-443ef46e6a73'),
     overview: 'Dawn or dusk jeep safaris through Block 1, with the highest leopard density on Earth.',
     steps: ['Pickup at 4:30am from your hotel', '2–3 hour drive through scrubland', 'Lunch packed by our partner camp', 'Return by midday or sunset'],
   },
   {
-    id: 'train', name: 'Kandy → Ella Train', category: 'Adventure', duration: '7 hrs', difficulty: 'Easy', price: '$8 reserved',
+    id: 'train', name: 'Kandy → Ella Train', category: 'Adventure', duration: '7 hrs', difficulty: 'Easy',
     img: U('1571406761758-9a3eed5338ef'),
     overview: 'The world\'s most scenic rail ride. Tea fields, viaducts, and doorways you can sit in.',
     steps: ['Book reserved 1st class 30 days out', 'Board at Kandy 08:47', 'Sit on the right for tea views', 'Disembark Ella 15:30'],
   },
   {
-    id: 'perahera', name: 'Esala Perahera, Kandy', category: 'Festivals', duration: 'Evening', difficulty: 'Easy', price: '$15 grandstand',
+    id: 'perahera', name: 'Esala Perahera, Kandy', category: 'Festivals', duration: 'Evening', difficulty: 'Easy',
     img: U('1665849050430-5e8c16bacf7e'),
     overview: 'Sri Lanka\'s grandest cultural procession — 100+ elephants, fire dancers, drummers. July/August only.',
     steps: ['Reserve grandstand seats 2 months ahead', 'Arrive 2 hours early', 'Watch the Randoli Perahera (final night)', 'Stay over in Kandy'],
   },
   {
-    id: 'whale', name: 'Blue Whale Watching', category: 'Wildlife', duration: '4 hrs', difficulty: 'Easy', price: 'from $55',
+    id: 'whale', name: 'Blue Whale Watching', category: 'Wildlife', duration: '4 hrs', difficulty: 'Easy',
     img: U('1713516694779-a354da50afec'),
     overview: 'Mirissa\'s continental shelf draws the largest animal on Earth between December and April.',
     steps: ['Pre-book a slow, eco-rated boat', 'Depart 6:30am', 'Spot blow plumes 8–11km offshore', 'Back to harbour by 11'],
   },
   {
-    id: 'cook', name: 'Village Curry Cookery', category: 'Food', duration: '3 hrs', difficulty: 'Easy', price: '$35',
+    id: 'cook', name: 'Village Curry Cookery', category: 'Food', duration: '3 hrs', difficulty: 'Easy',
     img: U('1747164628765-9394c8496a9c'),
     overview: 'Hand-grind spices, make pol sambol, simmer dhal — eat your work with a Ceylon family.',
     steps: ['Market visit at Nuwara Eliya', 'Cook 6 dishes with our host', 'Sit-down lunch on the verandah', 'Take recipes home'],
   },
   {
-    id: 'hike', name: 'Adam\'s Peak Pilgrimage', category: 'Adventure', duration: 'Overnight', difficulty: 'Hard', price: 'Guide $40',
+    id: 'hike', name: 'Adam\'s Peak Pilgrimage', category: 'Adventure', duration: 'Overnight', difficulty: 'Hard',
     img: U('1711797750174-c3750dd9d7c9'),
     overview: 'Climb 5,500 steps in the dark to a 2,243m summit. Sunrise above the cloud-line. Dec–May.',
     steps: ['Bus to Dalhousie · arrive 9pm', 'Climb starts 2am', 'Summit before 6am sunrise', 'Descend by 9am, sleep all day'],

@@ -64,7 +64,7 @@ export function ActivitiesPage({ go }: ActivitiesPageProps) {
                   </div>
                 </div>
                 <div style={{ fontSize: 13, fontFamily: 'var(--font-mono)' }}>
-                  {a.price.replace('from ', '')}
+                  {a.difficulty}
                 </div>
               </button>
             ))}
@@ -120,8 +120,8 @@ export function ActivitiesPage({ go }: ActivitiesPageProps) {
                   <div style={{ marginTop: 4, fontWeight: 500 }}>{active.difficulty}</div>
                 </div>
                 <div>
-                  <div className="eyebrow">From</div>
-                  <div style={{ marginTop: 4, fontWeight: 500 }}>{active.price}</div>
+                  <div className="eyebrow">Booking</div>
+                  <div style={{ marginTop: 4, fontWeight: 500 }}>We can provide</div>
                 </div>
               </div>
               <div className="mt-4 eyebrow">How it works</div>

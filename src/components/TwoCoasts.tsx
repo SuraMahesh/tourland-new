@@ -99,11 +99,12 @@ export function TwoCoasts({ go }: TwoCoastsProps) {
               borderRadius: 'var(--r-lg)',
               background: 'linear-gradient(135deg, rgba(217,119,66,.18), rgba(31,138,138,.12))',
               border: '1px solid rgba(248,244,234,.15)',
-              display: 'grid',
-              gridTemplateColumns: 'auto 1fr auto',
+              // display: 'grid',
+              // gridTemplateColumns: 'auto 1fr auto',
               gap: 24,
               alignItems: 'center',
             }}
+            className='right-wrap'
           >
             <div>
               <div className="eyebrow on-dark" style={{ color: 'rgba(248,244,234,.6)' }}>
@@ -228,7 +229,7 @@ function CoastRow({ c, isLast }: { c: typeof COAST_DATA[0]; isLast: boolean }) {
           {c.note}
         </div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12,minmax(28px,1fr))', gap: 6 }}>
+      <div className='calender-box-wrap'>
         {c.season.map((on, i) => {
           const isPeak = on && c.peak.includes(i);
           const isToday = i === TODAY_MONTH;
@@ -275,7 +276,7 @@ function IslandWithMonsoons({ activeNow }: { activeNow: typeof COAST_DATA }) {
   const eActive = activeNow.some((c) => c.id === 'east');
 
   return (
-    <div style={{ marginTop: 48, position: 'relative', display: 'flex', alignItems: 'center', gap: 32 }}>
+    <div className='how-wrap'>
       <svg viewBox="0 0 240 280" width="240" height="280" style={{ flexShrink: 0 }}>
         <defs>
           <marker id="ar-sw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">

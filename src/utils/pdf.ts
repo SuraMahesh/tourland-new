@@ -2,13 +2,16 @@
  * PDF Generation Utilities
  */
 
+import { VEHICLES, DAILY_KM_ALLOWANCE } from '../data';
+
 interface TripData {
   startDate: string;
   days: number;
   travellers: { adults: number; children: number };
   regions: string[];
   activities: string[];
-  transfer: string;
+  vehicle: string;
+  estKm: number;
   pickupAirport: boolean;
   style: string;
 }
@@ -72,12 +75,21 @@ function createTripHTML(trip: TripData, itinerary: ItineraryDay[]): string {
   const formatDate = (d: Date) =>
     d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
-  // Calculate pricing
-  const base = trip.days * 165 * trip.travellers.adults + trip.days * 95 * trip.travellers.children;
-  const transferAdd = trip.transfer === 'suv' ? 280 : trip.transfer === 'ev' ? 190 : 0;
-  const pickup = trip.pickupAirport ? 35 : 0;
-  const activityAdd = trip.activities.length * 65;
-  const total = base + transferAdd + pickup + activityAdd;
+  // Pricing is per vehicle, per day — never per person
+  const vehicle = VEHICLES.find((v) => v.id === trip.vehicle) ?? VEHICLES[1];
+  const base = trip.days * vehicle.perDay;
+  const includedKm = trip.days * DAILY_KM_ALLOWANCE;
+  const extraKm = Math.max(0, (trip.estKm || 0) - includedKm);
+  const perKm = vehicle.perDay / DAILY_KM_ALLOWANCE;
+  const extraKmCharge = Math.round(extraKm * perKm);
+  const total = base + extraKmCharge;
+
+  // 10% advance confirms the booking, due two weeks before the tour
+  const advance = Math.round(total * 0.1);
+  const advanceDue = new Date(startDate);
+  advanceDue.setDate(advanceDue.getDate() - 14);
+  const advanceDueLabel =
+    advanceDue.getTime() < Date.now() ? 'now (tour starts in under two weeks)' : formatDate(advanceDue);
 
   return `
     <div style="font-family: Arial, sans-serif;">
@@ -136,36 +148,54 @@ function createTripHTML(trip: TripData, itinerary: ItineraryDay[]): string {
       </div>
 
       <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
-        <h2 style="color: #2c3e50; margin-top: 0;">Estimated Pricing</h2>
+        <h2 style="color: #2c3e50; margin-top: 0;">Estimated Pricing — Per Vehicle, Not Per Person</h2>
         <table style="width: 100%; border-collapse: collapse;">
           <tr>
-            <td style="padding: 8px; border: 1px solid #bdc3c7;">Land arrangements</td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7;">${vehicle.name} · $${vehicle.perDay}/day × ${trip.days} days</td>
             <td style="padding: 8px; border: 1px solid #bdc3c7; text-align: right; font-weight: bold;">$${base.toLocaleString()}</td>
           </tr>
           <tr style="background: #ecf0f1;">
-            <td style="padding: 8px; border: 1px solid #bdc3c7;">Experiences (×${trip.activities.length})</td>
-            <td style="padding: 8px; border: 1px solid #bdc3c7; text-align: right; font-weight: bold;">$${activityAdd}</td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7;">Distance included (${DAILY_KM_ALLOWANCE} km/day, pooled across the tour)</td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7; text-align: right; font-weight: bold;">${includedKm.toLocaleString()} km</td>
           </tr>
-          ${transferAdd > 0 ? `
+          ${trip.estKm > 0 ? `
           <tr>
-            <td style="padding: 8px; border: 1px solid #bdc3c7;">Transfer upgrade (${trip.transfer})</td>
-            <td style="padding: 8px; border: 1px solid #bdc3c7; text-align: right; font-weight: bold;">$${transferAdd}</td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7;">Estimated route distance (rough, based on selected regions)</td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7; text-align: right; font-weight: bold;">~${trip.estKm.toLocaleString()} km</td>
           </tr>
           ` : ''}
-          ${pickup > 0 ? `
+          ${extraKmCharge > 0 ? `
+          <tr>
+            <td style="padding: 8px; border: 1px solid #bdc3c7;">Extra distance · ${extraKm.toLocaleString()} km × $${perKm.toFixed(2)}/km</td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7; text-align: right; font-weight: bold;">$${extraKmCharge.toLocaleString()}</td>
+          </tr>
+          ` : ''}
           <tr style="background: #ecf0f1;">
-            <td style="padding: 8px; border: 1px solid #bdc3c7;">Airport pickup</td>
-            <td style="padding: 8px; border: 1px solid #bdc3c7; text-align: right; font-weight: bold;">$${pickup}</td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7;">Airport pickup & drop-off (CMB)</td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7; text-align: right; font-weight: bold;">Included</td>
           </tr>
-          ` : ''}
           <tr style="background: #d97742; color: white;">
             <td style="padding: 12px; border: 1px solid #c26436; font-weight: bold; font-size: 14px;">TOTAL ESTIMATE</td>
             <td style="padding: 12px; border: 1px solid #c26436; text-align: right; font-weight: bold; font-size: 14px;">$${total.toLocaleString()} USD</td>
           </tr>
         </table>
         <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 3px; font-size: 11px; color: #666;">
-          <strong>Note:</strong> This is an estimate. Final pricing will be confirmed by our team after reviewing availability and any custom requests.
+          <strong>Note:</strong> Extra kilometres beyond the included allowance are charged at the vehicle day rate ÷ ${DAILY_KM_ALLOWANCE} per km. Tour guide, accommodation and meals can be arranged on request and are charged at cost — not included above. Activity prices are quoted separately on request. Final pricing will be confirmed by our team.
         </div>
+      </div>
+
+      <div style="background: #fdf3ec; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #d97742;">
+        <h2 style="color: #2c3e50; margin-top: 0;">Payment Terms</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 8px; border: 1px solid #bdc3c7;">Advance payment (10%) — confirms your booking, due ${advanceDueLabel === formatDate(advanceDue) ? `by ${advanceDueLabel} (two weeks before the tour)` : advanceDueLabel}</td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7; text-align: right; font-weight: bold;">$${advance.toLocaleString()}</td>
+          </tr>
+          <tr style="background: #ecf0f1;">
+            <td style="padding: 8px; border: 1px solid #bdc3c7;">Balance — payable during the tour</td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7; text-align: right; font-weight: bold;">$${(total - advance).toLocaleString()}</td>
+          </tr>
+        </table>
       </div>
 
       <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #bdc3c7; font-size: 11px; color: #777; text-align: center;">
