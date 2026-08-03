@@ -2,15 +2,29 @@ interface LogoProps {
   size?: number;
 }
 
-export function Logo({ size = 28 }: LogoProps) {
+export function Logo({ size = 30 }: LogoProps) {
   return (
     <div className="logo">
-      <div className="logo-mark" style={{ width: size, height: size, fontSize: size * 0.5 }}>
-        <svg width={size * 0.55} height={size * 0.55} viewBox="0 0 24 24" fill="none">
-          <path d="M12 2 L19 12 L12 22 L5 12 Z" fill="currentColor" opacity="0.85" />
-          <circle cx="12" cy="12" r="2.4" fill="var(--jungle)" />
-        </svg>
-      </div>
+      <svg
+        className="logo-leaf"
+        width={size}
+        height={size}
+        viewBox="0 0 96 96"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M50 8 C68 18 80 40 76 60 C72 80 52 91 36 85 C20 79 12 58 18 40 C23 25 36 12 50 8 Z"
+          fill="currentColor"
+        />
+        <path
+          d="M50 21 C58 37 57 54 44 72"
+          stroke="#d97742"
+          strokeWidth="5"
+          strokeLinecap="round"
+        />
+        <circle cx="42" cy="79" r="3.5" fill="#d97742" />
+      </svg>
       <span>TourLand</span>
     </div>
   );

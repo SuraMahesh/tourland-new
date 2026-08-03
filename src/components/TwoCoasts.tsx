@@ -59,7 +59,7 @@ export function TwoCoasts({ go }: TwoCoastsProps) {
         {/* RIGHT — four regions, each with month strip */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
           <div
-            className="flex"
+            className="flex month-strip-row"
             style={{
               justifyContent: 'space-between',
               alignItems: 'baseline',
@@ -68,7 +68,7 @@ export function TwoCoasts({ go }: TwoCoastsProps) {
             }}
           >
             <span className="eyebrow on-dark">Region</span>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12,minmax(28px,1fr))', gap: 6, flex: 1, maxWidth: 480, marginLeft: 'auto' }}>
+            <div className="month-strip" style={{ display: 'grid', gridTemplateColumns: 'repeat(12,minmax(28px,1fr))', gap: 6, flex: 1, maxWidth: 480, marginLeft: 'auto' }}>
               {MONTHS_SHORT.map((m, i) => (
                 <div
                   key={i}

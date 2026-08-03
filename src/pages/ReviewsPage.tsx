@@ -22,7 +22,7 @@ export function ReviewsPage() {
 
       <section style={{ background: 'linear-gradient(135deg, var(--ink) 0%, rgba(44,62,80,.95) 100%)', color: 'var(--bone)', padding: '80px 40px' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 40, maxWidth: 900, margin: '0 auto' }}>
+          <div className="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 40, maxWidth: 900, margin: '0 auto' }}>
             {stats.map((stat, i) => (
               <div key={i} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: 48, marginBottom: 16, color: 'var(--sunset)' }}>{stat.icon}</div>
@@ -51,7 +51,7 @@ export function ReviewsPage() {
           ))}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'start' }}>
+        <div className="grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'start' }}>
           <div style={{ padding: '60px 48px', background: 'linear-gradient(135deg, var(--bone) 0%, rgba(248,244,234,.5) 100%)', borderRadius: 'var(--r-lg)', border: '1px solid var(--line-2)' }}>
             <div style={{ marginBottom: 32 }}>
               <div className="eyebrow" style={{ marginBottom: 12 }}>Share your story</div>

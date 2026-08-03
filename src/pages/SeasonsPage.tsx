@@ -49,7 +49,7 @@ export function SeasonsPage() {
 
         <div className="mt-8">
           <SecHead n="02" eyebrow="By month" title="What's good when." />
-          <div style={{ borderRadius: 'var(--r-lg)', overflow: 'hidden', border: '1px solid var(--line)' }}>
+          <div className="season-table" style={{ borderRadius: 'var(--r-lg)', overflow: 'hidden', border: '1px solid var(--line)' }}>
             <div
               style={{
                 display: 'grid',

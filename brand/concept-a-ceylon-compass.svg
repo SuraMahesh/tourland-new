@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none">
+  <!-- Concept A · Ceylon Compass — evolution of the current diamond mark.
+       Story: Ceylon, "gem of the Indian Ocean" — a faceted sapphire that is
+       also a compass rose. The orange NE facet points the journey. -->
+  <rect width="96" height="96" rx="22" fill="#0d3b2e"/>
+  <path d="M48 12 L55.5 40.5 L84 48 L55.5 55.5 L48 84 L40.5 55.5 L12 48 L40.5 40.5 Z" fill="#f8f4ea"/>
+  <path d="M48 12 L55.5 40.5 L48 48 Z" fill="#d97742"/>
+  <path d="M48 48 L55.5 55.5 L48 84 Z" fill="#e8dcc4"/>
+  <path d="M12 48 L40.5 40.5 L48 48 Z" fill="#e8dcc4"/>
+  <circle cx="48" cy="48" r="4.5" fill="#d97742"/>
+</svg>

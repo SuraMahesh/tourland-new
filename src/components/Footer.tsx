@@ -19,12 +19,14 @@ export function Footer({ go }: FooterProps) {
             fontSize: 20,
             letterSpacing: '-.02em',
           }}>
-            <div className="logo-mark" style={{ background: 'var(--sunset)', color: 'var(--ink)' }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2 L19 12 L12 22 L5 12 Z" fill="currentColor" opacity="0.85" />
-                <circle cx="12" cy="12" r="2.4" fill="var(--ink)" />
-              </svg>
-            </div>
+            <svg width="24" height="24" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+              <path
+                d="M50 8 C68 18 80 40 76 60 C72 80 52 91 36 85 C20 79 12 58 18 40 C23 25 36 12 50 8 Z"
+                fill="var(--bone)"
+              />
+              <path d="M50 21 C58 37 57 54 44 72" stroke="var(--sunset)" strokeWidth="5" strokeLinecap="round" />
+              <circle cx="42" cy="79" r="3.5" fill="var(--sunset)" />
+            </svg>
             TourLand
           </div>
           <p style={{
