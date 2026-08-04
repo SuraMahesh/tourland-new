@@ -338,7 +338,7 @@ export function HomePage({ go, t }: HomePageProps) {
         <SecHead
           n="01"
           eyebrow="Where to go"
-          title="Eight regions, one small island."
+          title="Six regions, one small island."
           lede="From hill-country tea estates to leopard country and surf coves — handpicked by planners who've travelled every one."
         // right={
         //   <div className="flex gap-2">
@@ -354,7 +354,7 @@ export function HomePage({ go, t }: HomePageProps) {
         //   </div>
         // }
         />
-        <DestinationGrid layout={t.cardLayout} dest={DESTINATIONS} onPick={(id) => go('destination', { id })} />
+        <DestinationGrid layout={t.cardLayout} dest={DESTINATIONS.slice(0, 8)} onPick={(id) => go('destination', { id })} />
         <div className="mt-6 center">
           <button className="btn btn-light" onClick={() => go('destinations')}>
             See all 28 destinations <span className="arrow">→</span>
