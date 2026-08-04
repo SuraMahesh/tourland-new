@@ -207,15 +207,17 @@ export function HomePage({ go, t }: HomePageProps) {
   const [dateRange, setDateRange] = useState('Feb 14 – 28, 2026');
 
   useEffect(() => {
-    const id = setInterval(() => setReel((r) => (r + 1) % 4), 5500);
+    const id = setInterval(() => setReel((r) => (r + 1) % 6), 5500);
     return () => clearInterval(id);
   }, []);
 
   const HERO_REELS = [
-    { img: 'https://images.unsplash.com/photo-1571406761758-9a3eed5338ef?w=2400&q=80&auto=format&fit=crop', label: 'Train, Kandy → Ella', coords: '06° 56′ N · 80° 38′ E' },
-    { img: 'https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=2400&q=80&auto=format&fit=crop', label: 'Sigiriya rock fortress', coords: '07° 57′ N · 80° 45′ E' },
-    { img: 'https://images.unsplash.com/photo-1546708973-c0d27b302cee?w=2400&q=80&auto=format&fit=crop', label: 'Tea estates, Hill Country', coords: '06° 58′ N · 80° 46′ E' },
-    { img: 'https://images.unsplash.com/photo-1518509562904-e7ef99cddc85?w=2400&q=80&auto=format&fit=crop', label: 'East coast, Trincomalee', coords: '08° 35′ N · 81° 12′ E' },
+    { img: 'https://images.unsplash.com/photo-1578519050142-afb511e518de?w=2400&q=80&auto=format&fit=crop', label: 'Nine Arch Bridge, Ella', coords: '06° 56′ N · 80° 38′ E' },
+    { img: 'https://images.unsplash.com/photo-1612862862126-865765df2ded?w=2400&q=80&auto=format&fit=crop', label: 'Sigiriya rock fortress', coords: '07° 57′ N · 80° 45′ E' },
+    { img: 'https://images.unsplash.com/photo-1544015759-237f87d55ef3?w=2400&q=80&auto=format&fit=crop', label: 'Tea estates, Hill Country', coords: '06° 58′ N · 80° 46′ E' },
+    { img: 'https://images.unsplash.com/photo-1465924655546-6c184df810a9?w=2400&q=80&auto=format&fit=crop', label: 'Stilt fishermen, South coast', coords: '05° 58′ N · 80° 26′ E' },
+    { img: 'https://images.unsplash.com/photo-1756671401467-100a1946e300?w=2400&q=80&auto=format&fit=crop', label: 'East coast, Trincomalee', coords: '08° 35′ N · 81° 12′ E' },
+    { img: 'https://images.unsplash.com/photo-1665849050332-8d5d7e59afb6?w=2400&q=80&auto=format&fit=crop', label: 'Temple of the Tooth, Kandy', coords: '07° 18′ N · 80° 38′ E' },
   ];
 
   const now = HERO_REELS[reel];
@@ -229,7 +231,6 @@ export function HomePage({ go, t }: HomePageProps) {
               <img src={r.img} alt="" loading={i === 0 ? 'eager' : 'lazy'} />
             </div>
           ))}
-          <div className="hero-shade" />
         </div>
         <div className="hero-inner">
           <div className="hero-top">
@@ -320,7 +321,7 @@ export function HomePage({ go, t }: HomePageProps) {
         </div>
       </section>
 
-      <Marquee
+      {/* <Marquee
         items={[
           <span key="a">Wildlife</span>,
           <span key="b">Tea Country</span>,
@@ -331,7 +332,7 @@ export function HomePage({ go, t }: HomePageProps) {
           <span key="g">Whales</span>,
           <span key="h">Trains</span>,
         ]}
-      />
+      /> */}
 
       <section className="sec container">
         <SecHead

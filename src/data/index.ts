@@ -16,7 +16,7 @@ export const DESTINATIONS: Destination[] = [
   {
     id: 'ella', name: 'Ella', region: 'Hill Country',
     tag: 'Tea & viaducts', lat: 6.86, lng: 81.05,
-    img: U('1571406761758-9a3eed5338ef'),
+    img: U('1578519050142-afb511e518de'),
     desc: 'Ella is a misty hill town cradled in the heart of Sri Lanka\'s tea country, where lush green plantations cascade down emerald hillsides. The town is most famous for the Nine Arches Bridge—a breathtaking colonial-era railway viaduct—and Little Adam\'s Peak, a short hike offering 360-degree views of the surrounding valleys. The cool mountain air, friendly locals, and authentic tea plantations create an enchanting escape from Sri Lanka\'s coastal heat.\n\nStaying in Ella means waking to mist-covered valleys, taking train rides past impossible cliff faces, and wandering through working tea estates where you can meet the women who pick the leaves for your morning cup. The town has evolved into a traveler\'s haven without losing its soul—simple guesthouses dot the hillside, and the local cuisine takes full advantage of fresh mountain vegetables.',
     best: 'Feb–Sep · all day', fee: 'Free',
     nearby: ['nuwaraeliya', 'haputale'],
@@ -24,7 +24,7 @@ export const DESTINATIONS: Destination[] = [
   {
     id: 'yala', name: 'Yala National Park', region: 'Wildlife',
     tag: 'Leopard country', lat: 6.37, lng: 81.51,
-    img: U('1745526180300-443ef46e6a73'),
+    img: U('1705936981588-a4192f66fcfb'),
     desc: 'Yala National Park is one of the world\'s oldest and most bio-diverse wildlife sanctuaries, protecting Sri Lanka\'s most elusive treasure: the Sri Lankan leopard. With the highest concentration of wild leopards anywhere on Earth, Yala offers the most authentic safari experience in Asia. Visitors also encounter sloth bears, Asian elephants, mugger crocodiles, and over 200 bird species in this vast reserve of thorny scrubland and lagoons.\n\nA dawn safari through Yala is a sensory awakening—the sound of trumpeting elephants, the sight of a spotted cat padding across rocky outcrops, and the knowledge that you\'re witnessing one of nature\'s rarest predators in its natural habitat. The park\'s diverse ecosystems, from coastal wetlands to rocky plateaus, ensure that every journey yields different encounters and landscapes.',
     best: 'Feb–Jul · dawn safari', fee: '$45 jeep',
     nearby: ['mirissa', 'udawalawe'],
@@ -32,7 +32,7 @@ export const DESTINATIONS: Destination[] = [
   {
     id: 'mirissa', name: 'Mirissa', region: 'Coastal Belt · South',
     tag: 'Blue whale coast', lat: 5.95, lng: 80.46,
-    img: U('1713516694779-a354da50afec'),
+    img: U('1704797390501-37d39f2f6921'),
     desc: 'Mirissa is a crescent bay on Sri Lanka\'s southern coast, famous for blue-whale watching during December through March, when these majestic creatures migrate through warm waters. The town perfectly balances adventure and relaxation: mornings on the water seeking the world\'s largest animal, afternoons surfing reef breaks, and sunsets at clifftop bars with the Indian Ocean stretching to the horizon.\n\nThe charm of Mirissa lies in its laid-back atmosphere and diverse offerings—from seasoned surfers chasing perfect waves to marine biologists tracking whale migration patterns. The town\'s restaurants showcase fresh catches of the day, local fishermen still work traditional fishing poles in the shallow waters at sunrise, and the beach remains a gathering place for travelers from every corner of the world.',
     best: 'Dec–Apr · mornings', fee: 'Free',
     nearby: ['galle', 'tangalle'],
@@ -48,7 +48,7 @@ export const DESTINATIONS: Destination[] = [
   {
     id: 'galle', name: 'Galle Fort', region: 'Coastal Belt · South',
     tag: 'Colonial walled city', lat: 6.03, lng: 80.21,
-    img: U('1744943776860-edee0425bca5'),
+    img: U('1704797390325-b057758d8c3d'),
     desc: 'Galle Fort is a 17th-century Dutch colonial fortress that stands as one of the best-preserved fortifications in Asia and a UNESCO World Heritage Site. The coral-stone ramparts, built with precision and ingenuity, enclose a perfectly preserved old town where time seems to have paused. Walking the fort\'s walls at sunset, with the Indian Ocean crashing against the ramparts and colonial buildings glowing in golden light, is an experience that connects you directly to centuries of maritime history.\n\nWithin the fort, narrow lanes reveal hidden courtyards, restored colonial mansions that now house boutique hotels and restaurants, art galleries, and shops selling everything from antiques to contemporary crafts. The fort remains a living community, not a museum—residents still occupy the colonial houses, fishermen still repair their nets on the beach, and the atmosphere blends historical preservation with authentic local life.',
     best: 'Nov–Apr · dusk', fee: 'Free',
     nearby: ['mirissa', 'unawatuna'],
@@ -107,13 +107,13 @@ export const VEHICLES: Vehicle[] = [
 export const ACTIVITIES: Activity[] = [
   {
     id: 'safari', name: 'Leopard Safari, Yala', category: 'Wildlife', duration: '½ day', difficulty: 'Easy',
-    img: U('1745526180300-443ef46e6a73'),
+    img: U('1705936981588-a4192f66fcfb'),
     overview: 'Dawn or dusk jeep safaris through Block 1, with the highest leopard density on Earth.',
     steps: ['Pickup at 4:30am from your hotel', '2–3 hour drive through scrubland', 'Lunch packed by our partner camp', 'Return by midday or sunset'],
   },
   {
     id: 'train', name: 'Kandy → Ella Train', category: 'Adventure', duration: '7 hrs', difficulty: 'Easy',
-    img: U('1571406761758-9a3eed5338ef'),
+    img: U('1578519050142-afb511e518de'),
     overview: 'The world\'s most scenic rail ride. Tea fields, viaducts, and doorways you can sit in.',
     steps: ['Book reserved 1st class 30 days out', 'Board at Kandy 08:47', 'Sit on the right for tea views', 'Disembark Ella 15:30'],
   },
@@ -125,7 +125,7 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'whale', name: 'Blue Whale Watching', category: 'Wildlife', duration: '4 hrs', difficulty: 'Easy',
-    img: U('1713516694779-a354da50afec'),
+    img: U('1704797390501-37d39f2f6921'),
     overview: 'Mirissa\'s continental shelf draws the largest animal on Earth between December and April.',
     steps: ['Pre-book a slow, eco-rated boat', 'Depart 6:30am', 'Spot blow plumes 8–11km offshore', 'Back to harbour by 11'],
   },

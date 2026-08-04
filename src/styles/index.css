@@ -301,12 +301,10 @@ textarea {
   background: rgba(248, 244, 234, 0.8);
   backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border-bottom: 1px solid var(--line-2);
 }
 
 .hd.is-transparent {
   background: transparent;
-  border-bottom: 1px solid rgba(248, 244, 234, 0.14);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   color: var(--bone);
@@ -865,12 +863,6 @@ textarea {
   to {
     transform: scale(1.12);
   }
-}
-
-.hero-shade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(10, 20, 16, 0.55) 0%, rgba(10, 20, 16, 0.15) 40%, rgba(10, 20, 16, 0.85) 100%);
 }
 
 .hero-inner {
