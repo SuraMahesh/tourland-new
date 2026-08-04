@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useReveal } from '../hooks/useReveal';
-import { Marquee, SecHead, DestinationCard, ReviewCard, TwoCoasts } from '../components';
+import { SecHead, DestinationCard, ReviewCard, TwoCoasts } from '../components';
 import { DESTINATIONS, ACTIVITIES, REVIEWS, HOW_IT_WORKS } from '../data';
 import type { Tweaks, PageParams } from '../types';
 
