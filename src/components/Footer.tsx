@@ -1,5 +1,4 @@
 import { NAV } from '../data';
-import { MiniMap } from './MiniMap';
 
 interface FooterProps {
   go: (route: string, params?: any) => void;
