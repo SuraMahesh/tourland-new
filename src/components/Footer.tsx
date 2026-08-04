@@ -38,9 +38,9 @@ export function Footer({ go }: FooterProps) {
           }}>
             Sri Lanka, curated. Independent local trip-builder based in Colombo and Galle. Travel agency licence SLTDA 04/0089.
           </p>
-          <div className="lk-mini">
+          {/* <div className="lk-mini">
             <MiniMap small />
-          </div>
+          </div> */}
         </div>
         <div>
           <h6>Explore</h6>

@@ -1609,7 +1609,7 @@ textarea {
   display: grid;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .container {
     padding: 12px 16px;
   }
@@ -2083,4 +2083,131 @@ textarea {
   font-size: 12px;
   font-weight: 500;
   border-radius: 8px;
+}
+
+/* Planner Step 5 — pricing breakdown & payment terms:
+   stacked column on mobile/tablet, one row on large screens */
+.plan-pay-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 1100px) {
+  .plan-pay-row {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .plan-pay-row > div {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+/* ---------- Planner step progress bar ---------- */
+.planner-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 48px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--bone);
+}
+
+.planner-step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 24px;
+  min-height: 44px;
+  text-align: left;
+  border-right: 1px solid var(--line-2);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.planner-step:last-child {
+  border-right: none;
+}
+
+.planner-step.is-active {
+  background: var(--ink);
+  color: var(--bone);
+}
+
+.planner-step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--mute);
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.planner-step.is-active .planner-step-num {
+  background: var(--sunset);
+  color: var(--ink);
+}
+
+.planner-step-label {
+  min-width: 0;
+}
+
+.planner-step-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.planner-step-title {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tablet — keep labels, tighten spacing */
+@media (max-width: 1023px) {
+  .planner-step {
+    gap: 10px;
+    padding: 16px 14px;
+  }
+
+  .planner-step-title {
+    font-size: 14px;
+  }
+}
+
+/* Mobile — circles only, centered, comfortable tap targets */
+@media (max-width: 767px) {
+  .planner-steps {
+    margin-bottom: 32px;
+  }
+
+  .planner-step {
+    justify-content: center;
+    gap: 0;
+    padding: 12px 8px;
+  }
+
+  .planner-step-label {
+    display: none;
+  }
+
+  .planner-step-num {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
 }

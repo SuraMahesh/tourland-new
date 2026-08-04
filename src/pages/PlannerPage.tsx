@@ -160,77 +160,22 @@ export function PlannerPage() {
         img={U('1604920900522-43c8e2ce7027', 2000)}
       />
 
-      <section className="container" style={{ paddingTop: 48, paddingBottom: 120 }}>
+      <section className="container" style={{ paddingTop: 48, paddingBottom: 120, marginTop: 12 }}>
         {/* Progress */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-            gap: 0,
-            marginBottom: 48,
-            border: '1px solid var(--line)',
-            borderRadius: 'var(--r-lg)',
-            overflow: 'hidden',
-            background: 'var(--bone)',
-          }}
-        >
-          {PLANNER_STEPS.map((s) => {
-            const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-            return (
-              <button
-                key={s.n}
-                onClick={() => setStep(s.n)}
-                style={{
-                  padding: isMobile ? '14px 12px' : '22px 24px',
-                  textAlign: 'left',
-                  background: step === s.n ? 'var(--ink)' : 'transparent',
-                  color: step === s.n ? 'var(--bone)' : 'var(--ink)',
-                  borderRight: s.n < 4 ? '1px solid var(--line-2)' : 'none',
-                  transition: 'all .2s',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: isMobile ? 8 : 16,
-                  cursor: 'pointer',
-                  border: 'none',
-                  minHeight: 44,
-                }}
-              >
-                <div
-                  style={{
-                    width: isMobile ? 32 : 36,
-                    height: isMobile ? 32 : 36,
-                    borderRadius: '50%',
-                    background: step === s.n ? 'var(--sunset)' : 'var(--paper)',
-                    color: step === s.n ? 'var(--ink)' : 'var(--mute)',
-                    display: 'grid',
-                    placeItems: 'center',
-                    fontWeight: 600,
-                    fontSize: isMobile ? 12 : 14,
-                    flexShrink: 0,
-                  }}
-                >
-                  {step > s.n ? '✓' : `0${s.n}`}
-                </div>
-                {!isMobile && (
-                  <div>
-                    <div
-                      style={{
-                        fontSize: 11,
-                        letterSpacing: '.1em',
-                        textTransform: 'uppercase',
-                        opacity: 0.6,
-                      }}
-                    >
-                      Step 0{s.n}
-                    </div>
-                    <div style={{ fontSize: 16, fontWeight: 500, letterSpacing: '-.01em', marginTop: 2 }}>
-                      {s.t}
-                    </div>
-                  </div>
-                )}
-              </button>
-            );
-          })}
+        <div className="planner-steps">
+          {PLANNER_STEPS.map((s) => (
+            <button
+              key={s.n}
+              onClick={() => setStep(s.n)}
+              className={'planner-step' + (step === s.n ? ' is-active' : '')}
+            >
+              <div className="planner-step-num">{step > s.n ? '✓' : `0${s.n}`}</div>
+              <div className="planner-step-label">
+                <div className="planner-step-eyebrow">Step 0{s.n}</div>
+                <div className="planner-step-title">{s.t}</div>
+              </div>
+            </button>
+          ))}
         </div>
 
         <div className="planner-grid" style={{ gridTemplateColumns: '1.5fr 1fr', gap: 48, alignItems: 'start' }}>
@@ -1278,8 +1223,7 @@ function FinalReview({ trip, itinerary }: { trip: TripData; itinerary: Itinerary
     ['Duration', `${trip.days} day${trip.days > 1 ? 's' : ''}`],
     [
       'Travellers',
-      `${trip.travellers.adults} adult${trip.travellers.adults > 1 ? 's' : ''}${
-        trip.travellers.children > 0 ? ` + ${trip.travellers.children} child${trip.travellers.children > 1 ? 'ren' : ''}` : ''
+      `${trip.travellers.adults} adult${trip.travellers.adults > 1 ? 's' : ''}${trip.travellers.children > 0 ? ` + ${trip.travellers.children} child${trip.travellers.children > 1 ? 'ren' : ''}` : ''
       }`,
     ],
     ['Vehicle', `${p.vehicle.name} · $${p.vehicle.perDay}/day`],
@@ -1330,112 +1274,117 @@ function FinalReview({ trip, itinerary }: { trip: TripData; itinerary: Itinerary
           ))}
         </div>
 
-        <div className="mt-6 eyebrow">Route · {regionNames.join(' → ')}</div>
-        <ol style={{ margin: '16px 0 0', padding: 0, listStyle: 'none' }}>
-          {itinerary.map((day) => (
-            <li
-              key={day.day}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '64px 1fr',
-                gap: 16,
-                padding: '12px 0',
-                borderBottom: '1px dashed var(--line)',
-                alignItems: 'baseline',
-              }}
-            >
-              <div className="mono" style={{ color: 'var(--sunset)' }}>
-                Day {String(day.day).padStart(2, '0')}
-                <div style={{ fontSize: 10, color: 'var(--mute)', marginTop: 2 }}>{day.date}</div>
-              </div>
-              <div>
-                <div style={{ fontSize: 15, fontWeight: 500 }}>{day.title}</div>
-                <div className="mute" style={{ fontSize: 13, marginTop: 2 }}>
-                  {day.activities.join(' · ')}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <div className="mt-6">
+          <div>
+            <div className="eyebrow">Route · {regionNames.join(' → ')}</div>
+            <ol style={{ margin: '16px 0 0', padding: 0, listStyle: 'none' }}>
+              {itinerary.map((day) => (
+                <li
+                  key={day.day}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '64px 1fr',
+                    gap: 16,
+                    padding: '12px 0',
+                    borderBottom: '1px dashed var(--line)',
+                    alignItems: 'baseline',
+                  }}
+                >
+                  <div className="mono" style={{ color: 'var(--sunset)' }}>
+                    Day {String(day.day).padStart(2, '0')}
+                    <div style={{ fontSize: 10, color: 'var(--mute)', marginTop: 2 }}>{day.date}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 15, fontWeight: 500 }}>{day.title}</div>
+                    <div className="mute" style={{ fontSize: 13, marginTop: 2 }}>
+                      {day.activities.join(' · ')}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
 
-        {/* Pricing breakdown */}
-        <div
-          className="mt-6"
-          style={{
-            padding: '24px 28px',
-            background: 'var(--paper)',
-            border: '1px solid var(--line)',
-            borderRadius: 'var(--r)',
-            maxWidth: 520,
-          }}
-        >
-          <div className="eyebrow" style={{ marginBottom: 14 }}>Pricing · per vehicle, not per person</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 14 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>{p.vehicle.name} × {trip.days} day{trip.days > 1 ? 's' : ''}</span>
-              <span>${p.base.toLocaleString()}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mute">
-              <span>Distance included</span>
-              <span>{p.includedKm.toLocaleString()} km</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mute">
-              <span>Est. route distance</span>
-              <span>~{p.routeKm.toLocaleString()} km</span>
-            </div>
-            {p.extraKmCharge > 0 && (
+          {/* Pricing breakdown */}
+
+        </div>
+        <div className="flex flex-col xl:flex-row gap-2 w-full mt-4">
+          <div
+            style={{
+              padding: '24px 28px',
+              background: 'var(--paper)',
+              border: '1px solid var(--line)',
+              borderRadius: 'var(--r)',
+              width: '100%',
+            }}
+
+          >
+            <div className="eyebrow" style={{ marginBottom: 14 }}>Pricing · per vehicle, not per person</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 14 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>Extra {p.extraKm.toLocaleString()} km × ${(p.vehicle.perDay / DAILY_KM_ALLOWANCE).toFixed(2)}</span>
-                <span>${p.extraKmCharge.toLocaleString()}</span>
+                <span>{p.vehicle.name} × {trip.days} day{trip.days > 1 ? 's' : ''}</span>
+                <span>${p.base.toLocaleString()}</span>
               </div>
-            )}
-            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mute">
-              <span>Airport pickup & drop-off</span>
-              <span>Included</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mute">
+                <span>Distance included</span>
+                <span>{p.includedKm.toLocaleString()} km</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mute">
+                <span>Est. route distance</span>
+                <span>~{p.routeKm.toLocaleString()} km</span>
+              </div>
+              {p.extraKmCharge > 0 && (
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>Extra {p.extraKm.toLocaleString()} km × ${(p.vehicle.perDay / DAILY_KM_ALLOWANCE).toFixed(2)}</span>
+                  <span>${p.extraKmCharge.toLocaleString()}</span>
+                </div>
+              )}
+              <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mute">
+                <span>Airport pickup & drop-off</span>
+                <span>Included</span>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  paddingTop: 10,
+                  borderTop: '1px solid var(--line)',
+                  fontWeight: 600,
+                  fontSize: 16,
+                }}
+              >
+                <span>Total estimate</span>
+                <span>${p.total.toLocaleString()} USD</span>
+              </div>
             </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                paddingTop: 10,
-                borderTop: '1px solid var(--line)',
-                fontWeight: 600,
-                fontSize: 16,
-              }}
-            >
-              <span>Total estimate</span>
-              <span>${p.total.toLocaleString()} USD</span>
+          </div>
+          <div
+            style={{
+              padding: '22px 28px',
+              background: 'rgba(217,119,66,.1)',
+              borderRadius: 'var(--r)',
+              fontSize: 14,
+              lineHeight: 1.6,
+              width: '100%',
+            }}
+          >
+            <strong>Payment terms</strong>
+            <div style={{ marginTop: 8 }}>
+              💳 Advance payment (10%): <strong>${p.advance.toLocaleString()}</strong> —{' '}
+              {dueIsPast ? (
+                <>due <strong>now</strong> (your tour starts in under two weeks)</>
+              ) : (
+                <>due by <strong>{fmtLong(due)}</strong> (two weeks before your tour)</>
+              )}
+              <br />
+              💵 Balance: <strong>${balance.toLocaleString()}</strong> — payable during the tour.
+            </div>
+            <div className="mute" style={{ fontSize: 13, marginTop: 8 }}>
+              Your booking is confirmed once the advance is received. Guide, accommodation & meals are arranged on request at cost.
             </div>
           </div>
         </div>
 
-        {/* Payment terms */}
-        <div
-          className="mt-4"
-          style={{
-            padding: '22px 28px',
-            background: 'rgba(217,119,66,.1)',
-            borderRadius: 'var(--r)',
-            fontSize: 14,
-            lineHeight: 1.6,
-            maxWidth: 520,
-          }}
-        >
-          <strong>Payment terms</strong>
-          <div style={{ marginTop: 8 }}>
-            💳 Advance payment (10%): <strong>${p.advance.toLocaleString()}</strong> —{' '}
-            {dueIsPast ? (
-              <>due <strong>now</strong> (your tour starts in under two weeks)</>
-            ) : (
-              <>due by <strong>{fmtLong(due)}</strong> (two weeks before your tour)</>
-            )}
-            <br />
-            💵 Balance: <strong>${balance.toLocaleString()}</strong> — payable during the tour.
-          </div>
-          <div className="mute" style={{ fontSize: 13, marginTop: 8 }}>
-            Your booking is confirmed once the advance is received. Guide, accommodation & meals are arranged on request at cost.
-          </div>
-        </div>
 
         {!booked ? (
           <>
