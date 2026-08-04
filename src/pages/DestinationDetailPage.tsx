@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { MiniMap } from '../components';
+import { MapView } from '../components';
 import { DESTINATIONS } from '../data';
 import type { PageParams } from '../types';
 
@@ -102,7 +102,7 @@ export function DestinationDetailPage({ go }: DestinationDetailPageProps) {
               ))}
             </div>
             <div className="mt-4">
-              <MiniMap pins={[d]} active={d.id} />
+              <MapView pins={[d]} active={d.id} height={320} />
             </div>
           </aside>
         </div>

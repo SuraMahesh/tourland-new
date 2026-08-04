@@ -4,6 +4,7 @@ export { Footer } from './Footer';
 export { WaFab } from './WaFab';
 export { Marquee } from './Marquee';
 export { MiniMap } from './MiniMap';
+export { MapView } from './MapView';
 export { DestinationCard, HotelCard, ReviewCard } from './Cards';
 export { SubHero } from './SubHero';
 export { SecHead } from './SecHead';

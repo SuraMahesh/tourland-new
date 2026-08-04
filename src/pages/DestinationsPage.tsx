@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SubHero, DestinationCard, MiniMap } from '../components';
+import { SubHero, DestinationCard, MapView } from '../components';
 import { DESTINATIONS } from '../data';
 import type { PageParams } from '../types';
 
@@ -63,7 +63,7 @@ export function DestinationsPage({ go }: DestinationsPageProps) {
             <div className="eyebrow" style={{ marginBottom: 12 }}>
               Map view
             </div>
-            <MiniMap pins={filtered} onPick={(id) => go('destination', { id })} />
+            <MapView pins={filtered} onPick={(id) => go('destination', { id })} />
             <div style={{ marginTop: 18, fontSize: 13, color: 'var(--mute)', lineHeight: 1.5 }}>
               Tap a pin to open. {filtered.length} {filtered.length === 1 ? 'destination' : 'destinations'} shown.
             </div>
