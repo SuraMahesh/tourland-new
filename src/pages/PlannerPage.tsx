@@ -63,6 +63,22 @@ const TOUR_REGIONS: TourRegion[] = [
   { id: 'trinco', name: 'Trincomalee', days: 2, blurb: 'East-coast reefs and quiet bays.', lat: 8.58, lng: 81.21 },
 ];
 
+/* Which experiences actually happen in each region — an activity is only
+   offered (or mentioned in the itinerary) when its destination is on the tour. */
+const REGION_ACTIVITIES: Record<string, string[]> = {
+  colombo: [],
+  sigiriya: [],
+  kandy: ['train', 'perahera', 'cook'],
+  nuwaraeliya: ['train', 'cook', 'hike'],
+  ella: ['train', 'hike'],
+  yala: ['safari'],
+  mirissa: ['whale', 'cook'],
+  trinco: ['whale'],
+};
+
+const activitiesAvailableFor = (regionIds: string[]): string[] =>
+  Array.from(new Set(regionIds.flatMap((id) => REGION_ACTIVITIES[id] ?? [])));
+
 /* ---------- Rough distance estimate from selected regions ---------- */
 const CMB_AIRPORT = { lat: 7.18, lng: 79.88 };
 const ROAD_WINDING_FACTOR = 1.4; // straight-line → real Sri Lankan roads
@@ -121,10 +137,10 @@ export function PlannerPage() {
   const [step, setStep] = useState<number>(1);
   const [trip, setTrip] = useState<TripData>({
     startDate: '2026-02-14',
-    days: 12,
+    days: 2,
     travellers: { adults: 2, children: 0 },
-    regions: ['colombo', 'sigiriya', 'kandy', 'ella', 'mirissa'],
-    activities: ['safari', 'train', 'whale'],
+    regions: ['colombo'],
+    activities: [],
     vehicle: 'sedan',
     estKm: 0,
     pickupAirport: true,
@@ -315,7 +331,12 @@ function Step1Dates({
             min="1"
             max="28"
             value={trip.days}
-            onChange={(e) => set({ days: +e.target.value })}
+            onChange={(e) => {
+              const days = +e.target.value;
+              const regions = trip.regions.slice(0, days);
+              const allowed = activitiesAvailableFor(regions);
+              set({ days, regions, activities: trip.activities.filter((a) => allowed.includes(a)) });
+            }}
             style={{ padding: 0, background: 'transparent', border: 0, marginTop: 14 }}
           />
           <div
@@ -457,19 +478,23 @@ function Step2Regions({
     (a, r) => a + r.days,
     0
   );
-  const toggle = (id: string) =>
-    set({
-      regions: trip.regions.includes(id)
-        ? trip.regions.filter((x) => x !== id)
-        : [...trip.regions, id],
-    });
+  const atCap = trip.regions.length >= trip.days;
+  const setRegions = (regions: string[]) => {
+    const allowed = activitiesAvailableFor(regions);
+    set({ regions, activities: trip.activities.filter((a) => allowed.includes(a)) });
+  };
+  const toggle = (id: string) => {
+    const selected = trip.regions.includes(id);
+    if (!selected && atCap) return;
+    setRegions(selected ? trip.regions.filter((x) => x !== id) : [...trip.regions, id]);
+  };
 
   return (
     <div>
       <div className="eyebrow">Step 02</div>
       <h2 className="h-3 mt-2">Pick your regions.</h2>
       <p className="mute mt-2" style={{ maxWidth: 520 }}>
-        Drag to reorder, click to toggle. The classic route runs Colombo → Cultural Triangle → Hill Country → South Coast.
+        Each destination needs at least one full day, so a {trip.days}-day trip fits up to {trip.days} {trip.days === 1 ? 'stop' : 'stops'}. The classic route runs Colombo → Cultural Triangle → Hill Country → South Coast.
       </p>
 
       <div className="mt-6 flex" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
@@ -482,9 +507,7 @@ function Step2Regions({
         <button
           className="btn btn-light btn-sm"
           onClick={() =>
-            set({
-              regions: ['colombo', 'sigiriya', 'kandy', 'ella', 'mirissa'],
-            })
+            setRegions(['colombo', 'sigiriya', 'kandy', 'ella', 'mirissa'].slice(0, trip.days))
           }
         >
           Reset to classic
@@ -494,10 +517,12 @@ function Step2Regions({
       <div className="grid mt-3" style={{ gridTemplateColumns: '1fr 1fr', gap: 12 }}>
         {TOUR_REGIONS.map((r) => {
           const on = trip.regions.includes(r.id);
+          const blocked = !on && atCap;
           return (
             <button
               key={r.id}
               onClick={() => toggle(r.id)}
+              disabled={blocked}
               style={{
                 padding: '18px 20px',
                 textAlign: 'left',
@@ -509,7 +534,8 @@ function Step2Regions({
                 gridTemplateColumns: '1fr auto',
                 gap: 12,
                 alignItems: 'center',
-                cursor: 'pointer',
+                cursor: blocked ? 'not-allowed' : 'pointer',
+                opacity: blocked ? 0.45 : 1,
               }}
             >
               <div>
@@ -528,7 +554,20 @@ function Step2Regions({
         })}
       </div>
 
-      {totalDays !== trip.days && (
+      {atCap ? (
+        <div
+          className="mt-4"
+          style={{
+            padding: '14px 18px',
+            background: 'rgba(31,138,138,.08)',
+            borderRadius: 'var(--r)',
+            fontSize: 13,
+            color: 'var(--ink)',
+          }}
+        >
+          Your {trip.days}-day trip is full — one destination per day. Extend the duration in Step 1 to add more stops.
+        </div>
+      ) : totalDays !== trip.days && (
         <div
           className="mt-4"
           style={{
@@ -566,16 +605,35 @@ function Step3Activities({
         : [...trip.activities, id],
     });
 
+  const availableIds = activitiesAvailableFor(trip.regions);
+  const available = ACTIVITIES.filter((a) => availableIds.includes(a.id));
+
   return (
     <div>
       <div className="eyebrow">Step 03</div>
       <h2 className="h-3 mt-2">Choose your experiences.</h2>
       <p className="mute mt-2" style={{ maxWidth: 520 }}>
-        We'll slot these into your itinerary on the appropriate days. We can provide and arrange all of these — just pick what you'd love to do.
+        We'll slot these into your itinerary on the appropriate days. Only experiences available in your selected destinations are shown.
       </p>
 
+      {available.length === 0 && (
+        <div
+          className="mt-6"
+          style={{
+            padding: '18px 20px',
+            background: 'rgba(31,138,138,.08)',
+            borderRadius: 'var(--r)',
+            fontSize: 14,
+            color: 'var(--ink)',
+            maxWidth: 560,
+          }}
+        >
+          No signature experiences in your selected destinations yet. Go back to Step 2 and add stops like Yala, Kandy, Ella, or Mirissa to unlock safaris, the hill-country train, and whale watching.
+        </div>
+      )}
+
       <div className="grid mt-6" style={{ gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-        {ACTIVITIES.map((a) => {
+        {available.map((a) => {
           const on = trip.activities.includes(a.id);
           return (
             <button
@@ -871,15 +929,16 @@ function buildItinerary(trip: TripData): ItineraryDay[] {
     }
   });
 
+  const lastStop = ordered[ordered.length - 1];
   while (dayNo <= trip.days) {
     const date = new Date(start);
     date.setDate(start.getDate() + dayNo - 1);
     days.push({
       day: dayNo,
       date: date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }),
-      region: 'Beach time',
-      title: 'Free day · Mirissa',
-      activities: ['Surf, swim, sundowner.'],
+      region: lastStop?.name ?? 'At leisure',
+      title: lastStop ? `Free day · ${lastStop.name}` : 'Free day',
+      activities: ['At leisure · driver on call.'],
     });
     dayNo++;
   }
@@ -892,28 +951,13 @@ function relevantActivities(
   picked: string[],
   isFirst: boolean
 ): string[] {
-  const map: Record<string, string[]> = {
-    sigiriya: ['safari', 'perahera'],
-    kandy: ['train', 'perahera', 'cook'],
-    nuwaraeliya: ['cook', 'train'],
-    ella: ['train', 'hike'],
-    yala: ['safari'],
-    mirissa: ['whale', 'cook'],
-    trinco: ['whale'],
-    colombo: [],
-  };
-
-  const local = (map[regionId] || []).filter((id) => picked.includes(id));
+  const local = (REGION_ACTIVITIES[regionId] || []).filter((id) => picked.includes(id));
   const named = local
     .map((id) => ACTIVITIES.find((a) => a.id === id)?.name)
     .filter((n): n is string => n !== undefined);
 
   if (isFirst && regionId === 'colombo') {
-    return [
-      'Airport pickup at CMB',
-      'Galle Face Hotel high tea',
-      'Sunset on Galle Face Green',
-    ];
+    return ['Airport pickup at CMB'];
   }
 
   if (named.length === 0) {
