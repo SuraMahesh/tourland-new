@@ -1,4 +1,4 @@
-# TourLand App - Complete Functionality Audit
+# Modotravels App - Complete Functionality Audit
 
 **Last Updated:** 2026-05-20  
 **Status:** ✅ All pages fully implemented and functional
@@ -132,8 +132,8 @@
 **Status:** FULLY IMPLEMENTED ✓
 - [x] SubHero header
 - [x] Left column: Three contact methods
-  - [x] WhatsApp with green badge (+94 77 200 8000, 6 min avg reply)
-  - [x] Email (hello@tourland.lk, 4 hour reply)
+  - [x] WhatsApp with green badge (+94 77 654 6377, 6 min avg reply)
+  - [x] Email (hello@Modotravels.lk, 4 hour reply)
 - [x] Right column: **Email form** with:
   - [x] Name field (required)
   - [x] Email field (required)
@@ -180,7 +180,7 @@ All data is properly typed and complete:
 ### Utility Components:
 - [x] MiniMap - SVG map of Sri Lanka with pins
 - [x] WaFab - WhatsApp floating action button
-- [x] Logo - Diamond-shaped TourLand logo
+- [x] Logo - Diamond-shaped Modotravels logo
 
 ---
 

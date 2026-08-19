@@ -4,7 +4,7 @@ export function SeasonsPage() {
   return (
     <main>
       <SubHero
-        crumbs={['TourLand', 'Seasons']}
+        crumbs={['Modotravels', 'Seasons']}
         eyebrow="When to go"
         title="Two monsoons. Always somewhere in sun."
         img="https://images.unsplash.com/photo-1546708973-c0d27b302cee?w=2000&q=80&auto=format&fit=crop"

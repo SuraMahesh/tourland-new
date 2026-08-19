@@ -25,7 +25,7 @@ export function Logo({ size = 30 }: LogoProps) {
         />
         <circle cx="42" cy="79" r="3.5" fill="#d97742" />
       </svg>
-      <span>TourLand</span>
+      <span>Modotravels</span>
     </div>
   );
 }

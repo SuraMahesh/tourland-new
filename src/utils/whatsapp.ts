@@ -4,7 +4,7 @@
 
 import type { BookingDetails } from '../types';
 
-export const WHATSAPP_NUMBER = '+94772008000';
+export const WHATSAPP_NUMBER = '+94776546377';
 export const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, '')}`;
 
 interface WhatsAppMessageOptions {

@@ -14,7 +14,7 @@ export function ReviewsPage() {
   return (
     <main>
       <SubHero
-        crumbs={['TourLand', 'Reviews']}
+        crumbs={['Modotravels', 'Reviews']}
         eyebrow="From our travellers"
         title="Real stories from real trips."
         img="https://images.unsplash.com/photo-1518509562904-e7ef99cddc85?w=2000&q=80&auto=format&fit=crop"

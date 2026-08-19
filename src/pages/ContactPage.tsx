@@ -57,7 +57,7 @@ export function ContactPage() {
   return (
     <main>
       <SubHero
-        crumbs={['TourLand', 'Contact']}
+        crumbs={['Modotravels', 'Contact']}
         eyebrow="Get in touch"
         title="Talk to a human in Colombo."
         img="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=2000&q=80&auto=format&fit=crop"
@@ -95,7 +95,7 @@ export function ContactPage() {
                   </svg>
                 </div>
                 <div>
-                  <div style={{ fontWeight: 600, fontSize: 17 }}>WhatsApp · +94 77 200 8000</div>
+                  <div style={{ fontWeight: 600, fontSize: 17 }}>WhatsApp · +94 77 654 6377</div>
                   <div className="mute" style={{ fontSize: 13 }}>
                     24/7 · average reply 6 minutes
                   </div>
@@ -105,7 +105,7 @@ export function ContactPage() {
                 </span>
               </a>
               <a
-                href="mailto:hello@tourland.lk"
+                href="travelsmodo@gmail.com"
                 className="card"
                 style={{
                   padding: '24px 28px',
@@ -121,7 +121,7 @@ export function ContactPage() {
                   ✉
                 </div>
                 <div>
-                  <div style={{ fontWeight: 600, fontSize: 17 }}>hello@tourland.lk</div>
+                  <div style={{ fontWeight: 600, fontSize: 17 }}>travelsmodo@gmail.com</div>
                   <div className="mute" style={{ fontSize: 13 }}>
                     Replies within 4 hours, Mon–Sun
                   </div>

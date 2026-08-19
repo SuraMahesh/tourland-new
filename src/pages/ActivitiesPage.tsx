@@ -18,7 +18,7 @@ export function ActivitiesPage({ go }: ActivitiesPageProps) {
   return (
     <main>
       <SubHero
-        crumbs={['TourLand', 'Activities']}
+        crumbs={['Modotravels', 'Activities']}
         eyebrow="Things to do"
         title="Six categories. Hundreds of experiences."
         img="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=2000&q=80&auto=format&fit=crop"

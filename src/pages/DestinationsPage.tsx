@@ -15,7 +15,7 @@ export function DestinationsPage({ go }: DestinationsPageProps) {
   return (
     <main>
       <SubHero
-        crumbs={['TourLand', 'Destinations']}
+        crumbs={['Modotravels', 'Destinations']}
         eyebrow="Destinations"
         title="Six regions to choose from."
         img="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=2000&q=80&auto=format&fit=crop"

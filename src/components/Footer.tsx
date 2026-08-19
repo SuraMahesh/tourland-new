@@ -26,7 +26,7 @@ export function Footer({ go }: FooterProps) {
               <path d="M50 21 C58 37 57 54 44 72" stroke="var(--sunset)" strokeWidth="5" strokeLinecap="round" />
               <circle cx="42" cy="79" r="3.5" fill="var(--sunset)" />
             </svg>
-            TourLand
+            Modotravels
           </div>
           <p style={{
             color: 'rgba(248,244,234,.6)',
@@ -35,7 +35,7 @@ export function Footer({ go }: FooterProps) {
             marginTop: 18,
             maxWidth: 340,
           }}>
-            Sri Lanka, curated. Independent local trip-builder based in Colombo and Galle. Travel agency licence SLTDA 04/0089.
+            We design curated, independent journeys crafted by local trip builders who know the island's secrets inside and out. From mist-shrouded tea plantations and ancient heritage sites to sun-drenched surf breaks and wild elephant safaris, we build seamless, immersive itineraries tailored to your unique travel style.
           </p>
           {/* <div className="lk-mini">
             <MiniMap small />
@@ -89,7 +89,7 @@ export function Footer({ go }: FooterProps) {
         </div>
       </div>
       <div className="ft-bottom">
-        <div>© 2026 TourLand (Pvt) Ltd · 47 Galle Face Court 2, Colombo 03</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>© 2026 Modotravels  · Design & Develop by <a className="footer_link" href="https://felixto.com" target="_blank" rel="noopener noreferrer">Felixto</a></div>
         <div style={{ display: 'flex', gap: 18 }}>
           <a>Privacy</a>
           <a>Terms</a>

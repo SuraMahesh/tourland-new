@@ -154,7 +154,7 @@ export function PlannerPage() {
   return (
     <main style={{ background: 'var(--paper)' }}>
       <SubHero
-        crumbs={['TourLand', 'Plan your tour']}
+        crumbs={['Modotravels', 'Plan your tour']}
         eyebrow="Tour planner"
         title="Build your route in four steps."
         img={U('1604920900522-43c8e2ce7027', 2000)}
@@ -787,7 +787,7 @@ function Step4Transfer({
               Airport pickup at CMB · Bandaranaike Intl
             </div>
             <div className="mute" style={{ fontSize: 13, marginTop: 4 }}>
-              Meet & greet at arrivals with a TourLand sign · 24/7 monitoring of your flight
+              Meet & greet at arrivals with a Modotravels sign · 24/7 monitoring of your flight
             </div>
           </div>
           <div
@@ -1144,7 +1144,7 @@ function ItinerarySidebar({
           </button>
           <button
             className="btn btn-outline-dark btn-sm"
-            onClick={() => generateTripPDF({ ...trip, estKm: routeKm }, itinerary, `tourland-trip-${trip.days}days.pdf`)}
+            onClick={() => generateTripPDF({ ...trip, estKm: routeKm }, itinerary, `Modotravels-trip-${trip.days}days.pdf`)}
           >
             PDF
           </button>
@@ -1484,7 +1484,7 @@ function FinalReview({ trip, itinerary }: { trip: TripData; itinerary: Itinerary
             <button
               className="btn btn-outline-dark btn-lg"
               onClick={() =>
-                generateTripPDF({ ...trip, estKm: p.routeKm }, itinerary, `tourland-trip-${trip.days}days.pdf`)
+                generateTripPDF({ ...trip, estKm: p.routeKm }, itinerary, `Modotravels-trip-${trip.days}days.pdf`)
               }
             >
               📄 Download PDF

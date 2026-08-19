@@ -1,4 +1,4 @@
-# TourLand App - Completion Report
+# Modotravels App - Completion Report
 
 **Project:** Full-Stack React Travel Planner  
 **Status:** ✅ **COMPLETE & FULLY FUNCTIONAL**  
@@ -182,7 +182,7 @@ A sophisticated, multi-page travel planning web application for Sri Lanka tours.
 ## 🚀 Running the App
 
 ```bash
-cd /Users/suranga/Desktop/private/tourland-app
+cd /Users/suranga/Desktop/private/Modotravels-app
 
 # Development server
 npm run dev
@@ -300,7 +300,7 @@ src/
 
 ## 🎉 Conclusion
 
-The TourLand application is **fully functional and production-ready** with:
+The Modotravels application is **fully functional and production-ready** with:
 - ✅ All 9 pages implemented and tested
 - ✅ Complete URL routing
 - ✅ All interactive features working

@@ -4,7 +4,7 @@
 
 import type { BookingDetails } from '../types';
 
-export const BOOKING_EMAIL = 'hello@tourland.lk';
+export const BOOKING_EMAIL = 'hello@Modotravels.lk';
 
 /**
  * Builds the booking email subject and body from a confirmed booking
@@ -16,7 +16,7 @@ export function createBookingEmailContent(b: BookingDetails): { subject: string;
   const subject = `Tour booking — ${tourist.name} · ${b.days} day${b.days > 1 ? 's' : ''} from ${b.startDate}`;
 
   const body = [
-    'NEW TOUR BOOKING — TourLand',
+    'NEW TOUR BOOKING — Modotravels',
     '',
     'TOURIST DETAILS',
     `Name: ${tourist.name}`,

@@ -370,7 +370,7 @@ export const REVIEWS: Review[] = [
   },
   {
     id: 2, name: 'James Whitaker', from: 'London', stars: 5, when: '10 days, Feb 2026',
-    text: 'Sigiriya at sunrise, then a hot-air balloon over Dambulla — TourLand built the trip around a couple of bucket-list ideas and the rest was their suggestions. All bullseyes.',
+    text: 'Sigiriya at sunrise, then a hot-air balloon over Dambulla — Modotravels built the trip around a couple of bucket-list ideas and the rest was their suggestions. All bullseyes.',
   },
   {
     id: 3, name: 'Riya Iyer', from: 'Bengaluru', stars: 4, when: '7 days, Dec 2025',

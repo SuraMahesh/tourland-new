@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* ---------- TourLand · Design Tokens ---------- */
+/* ---------- Modotravels · Design Tokens ---------- */
 :root {
   /* Palette — jungle, sand, sunset, turquoise */
   --ink: #0a1410;
@@ -2055,6 +2055,7 @@ textarea {
     padding-right: 16px;
   }
 }
+
 /* Leaflet map pins */
 .map-pin {
   display: block;
@@ -2099,7 +2100,7 @@ textarea {
     align-items: stretch;
   }
 
-  .plan-pay-row > div {
+  .plan-pay-row>div {
     flex: 1 1 0;
     min-width: 0;
   }
@@ -2209,5 +2210,15 @@ textarea {
     width: 32px;
     height: 32px;
     font-size: 12px;
+  }
+}
+
+.footer_link {
+  underline-offset: 2px;
+  color: white;
+  cursor: pointer;
+
+  hover {
+    color: gray;
   }
 }
