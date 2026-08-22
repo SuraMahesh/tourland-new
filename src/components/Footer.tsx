@@ -1,5 +1,4 @@
 import { NAV } from '../data';
-import Logo  from '../assets/logo.jpeg';
 
 interface FooterProps {
   go: (route: string, params?: any) => void;
