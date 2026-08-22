@@ -1,4 +1,5 @@
 import { NAV } from '../data';
+import Logo  from '../assets/logo.jpeg';
 
 interface FooterProps {
   go: (route: string, params?: any) => void;
@@ -18,21 +19,14 @@ export function Footer({ go }: FooterProps) {
             fontSize: 20,
             letterSpacing: '-.02em',
           }}>
-            <svg width="24" height="24" viewBox="0 0 96 96" fill="none" aria-hidden="true">
-              <path
-                d="M50 8 C68 18 80 40 76 60 C72 80 52 91 36 85 C20 79 12 58 18 40 C23 25 36 12 50 8 Z"
-                fill="var(--bone)"
-              />
-              <path d="M50 21 C58 37 57 54 44 72" stroke="var(--sunset)" strokeWidth="5" strokeLinecap="round" />
-              <circle cx="42" cy="79" r="3.5" fill="var(--sunset)" />
-            </svg>
-            Modotravels
+         {/* <img src={Logo} alt="Logo" style={{width: "200px"}} /> */}
+         <p>Modo Traverls</p>
           </div>
           <p style={{
             color: 'rgba(248,244,234,.6)',
             fontSize: 14,
             lineHeight: 1.55,
-            marginTop: 18,
+            marginTop: 10,
             maxWidth: 340,
           }}>
             We design curated, independent journeys crafted by local trip builders who know the island's secrets inside and out. From mist-shrouded tea plantations and ancient heritage sites to sun-drenched surf breaks and wild elephant safaris, we build seamless, immersive itineraries tailored to your unique travel style.

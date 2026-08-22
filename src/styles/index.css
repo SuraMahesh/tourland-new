@@ -432,6 +432,7 @@ textarea {
   color: white;
   font-size: 12px;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .wa-pill svg {
@@ -622,11 +623,21 @@ textarea {
   transform: scale(0.98);
 }
 
+.headerLogo {
+  width: 80px;
+  height: auto;
+  object-fit: contain;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .hd-inner {
     padding: 0 16px;
     height: 64px;
+  }
+
+  .headerLogo {
+    width: 60px;
   }
 
   .nav-desktop {
@@ -851,7 +862,7 @@ textarea {
 }
 
 .hero-reel img {
-  animation: kenburns 20s ease-in-out infinite alternate;
+  /* animation: kenburns 20s ease-in-out infinite alternate; */
   transform-origin: center;
 }
 
