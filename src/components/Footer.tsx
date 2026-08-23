@@ -37,18 +37,18 @@ export function Footer({ go }: FooterProps) {
         <div>
           <h6>Explore</h6>
           {NAV.slice(1, 5).map(([k, l]) => (
-            <a key={k} onClick={() => go(k as string)}>
+            <a key={k} href={`/${k}`} onClick={(event) => { event.preventDefault(); go(k as string); }}>
               {l}
             </a>
           ))}
-          <a onClick={() => go('reviews')}>Reviews</a>
+          <a href="/reviews" onClick={(event) => { event.preventDefault(); go('reviews'); }}>Reviews</a>
         </div>
         <div>
           <h6>Plan</h6>
-          <a onClick={() => go('planner')}>Tour Planner</a>
-          <a onClick={() => go('contact')}>Airport Pickup</a>
-          <a onClick={() => go('contact')}>Talk to a planner</a>
-          <a>Travel insurance</a>
+          <a href="/planner" onClick={(event) => { event.preventDefault(); go('planner'); }}>Tour Planner</a>
+          <a href="/contact" onClick={(event) => { event.preventDefault(); go('contact'); }}>Airport Pickup</a>
+          <a href="/contact" onClick={(event) => { event.preventDefault(); go('contact'); }}>Talk to a planner</a>
+          <a href="/contact" onClick={(event) => { event.preventDefault(); go('contact'); }}>Travel insurance</a>
         </div>
         <div>
           <h6>Newsletter</h6>
@@ -63,6 +63,7 @@ export function Footer({ go }: FooterProps) {
           <div style={{ display: 'flex', gap: 6 }}>
             <input
               type="email"
+              aria-label="Email address for the Modotravels newsletter"
               placeholder="you@email.com"
               style={{
                 flex: 1,
@@ -84,9 +85,9 @@ export function Footer({ go }: FooterProps) {
       <div className="ft-bottom">
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>© 2026 Modotravels  · Design & Develop by <a className="footer_link" href="https://felixto.com" target="_blank" rel="noopener noreferrer">Felixto</a></div>
         <div style={{ display: 'flex', gap: 18 }}>
-          <a>Privacy</a>
-          <a>Terms</a>
-          <a>Sustainability</a>
+          <a href="/contact">Privacy</a>
+          <a href="/contact">Terms</a>
+          <a href="/contact">Sustainability</a>
         </div>
       </div>
     </footer>

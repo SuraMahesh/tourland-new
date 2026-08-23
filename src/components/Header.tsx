@@ -45,7 +45,7 @@ export function Header({ route, go, transparent = false }: HeaderProps) {
   return (
     <header className={'hd' + (isTransparent ? ' is-transparent' : '')}>
       <div className="hd-inner">
-        <button onClick={() => handleNavClick('home')} style={{ display: 'flex' }}>
+        <button aria-label="Go to Modotravels home" onClick={() => handleNavClick('home')} style={{ display: 'flex' }}>
           <img src={Logo} alt="Logo" className="headerLogo" />
         </button>
 
@@ -54,8 +54,9 @@ export function Header({ route, go, transparent = false }: HeaderProps) {
           {NAV.map(([k, l]) => (
             <motion.a
               key={k}
+              href={`/${k === 'home' ? '' : k}`}
               className={route === k ? 'active' : ''}
-              onClick={() => go(k)}
+              onClick={(event) => { event.preventDefault(); go(k); }}
               whileHover={{ rotate: 2 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               style={{ cursor: 'pointer', display: 'inline-block' }}
@@ -85,6 +86,8 @@ export function Header({ route, go, transparent = false }: HeaderProps) {
         {/* Mobile Menu Button */}
         <button
           className="mobile-menu-btn"
+          aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={mobileMenuOpen}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           style={{
             display: isMobile ? 'block' : 'none',

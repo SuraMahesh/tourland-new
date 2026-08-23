@@ -1,7 +1,7 @@
 import type { Destination, Region, Activity, Hotel, Season, Review, HowItWorks, Vehicle } from '../types';
 
 const U = (id: string, w: number = 1600) => {
-  return `https://images.unsplash.com/photo-${id}?w=${w}&q=80&auto=format&fit=crop`;
+  return `https://images.unsplash.com/photo-${id}?w=${w}&q=72&auto=format&fit=crop`;
 };
 
 export const DESTINATIONS: Destination[] = [

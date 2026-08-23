@@ -18,7 +18,7 @@ export function SubHero({ eyebrow, title, img, crumbs }: SubHeroProps) {
   return (
     <section ref={ref} className="subhero">
       <div className="subhero-media">
-        <img src={img} alt="" />
+        <img src={img} alt={title} width="1600" height="900" fetchPriority="high" />
       </div>
       <div className="subhero-shade" />
       <div className="subhero-inner">

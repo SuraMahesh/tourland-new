@@ -1,18 +1,17 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Header, Footer, Seo, WaFab } from './components';
-import {
-  HomePage,
-  DestinationsPage,
-  DestinationDetailPage,
-  SeasonsPage,
-  ActivitiesPage,
-  ReviewsPage,
-  ContactPage,
-  PlannerPage,
-} from './pages';
 import type { Tweaks, PageParams } from './types';
 import { useTweaks } from './hooks/useTweaks';
+
+const HomePage = lazy(() => import('./pages/HomePage').then((module) => ({ default: module.HomePage })));
+const DestinationsPage = lazy(() => import('./pages/DestinationsPage').then((module) => ({ default: module.DestinationsPage })));
+const DestinationDetailPage = lazy(() => import('./pages/DestinationDetailPage').then((module) => ({ default: module.DestinationDetailPage })));
+const SeasonsPage = lazy(() => import('./pages/SeasonsPage').then((module) => ({ default: module.SeasonsPage })));
+const ActivitiesPage = lazy(() => import('./pages/ActivitiesPage').then((module) => ({ default: module.ActivitiesPage })));
+const ReviewsPage = lazy(() => import('./pages/ReviewsPage').then((module) => ({ default: module.ReviewsPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then((module) => ({ default: module.ContactPage })));
+const PlannerPage = lazy(() => import('./pages/PlannerPage').then((module) => ({ default: module.PlannerPage })));
 
 const TWEAK_DEFAULTS: Tweaks = {
   cardLayout: 'grid',
@@ -44,16 +43,18 @@ function AppContent() {
     <div data-screen-label={currentRoute}>
       <Seo />
       <Header route={currentRoute} go={go} transparent={isHome} />
-      <Routes>
-        <Route path="/" element={<HomePage go={go} t={t} />} />
-        <Route path="/destinations" element={<DestinationsPage go={go} />} />
-        <Route path="/destination/:id" element={<DestinationDetailPage go={go} />} />
-        <Route path="/seasons" element={<SeasonsPage />} />
-        <Route path="/activities" element={<ActivitiesPage go={go} />} />
-        <Route path="/planner" element={<PlannerPage />} />
-        <Route path="/reviews" element={<ReviewsPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-      </Routes>
+      <Suspense fallback={<main aria-busy="true" style={{ minHeight: '60vh' }} />}>
+        <Routes>
+          <Route path="/" element={<HomePage go={go} t={t} />} />
+          <Route path="/destinations" element={<DestinationsPage go={go} />} />
+          <Route path="/destination/:id" element={<DestinationDetailPage go={go} />} />
+          <Route path="/seasons" element={<SeasonsPage />} />
+          <Route path="/activities" element={<ActivitiesPage go={go} />} />
+          <Route path="/planner" element={<PlannerPage />} />
+          <Route path="/reviews" element={<ReviewsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
+      </Suspense>
       <Footer go={go} />
       <WaFab />
     </div>

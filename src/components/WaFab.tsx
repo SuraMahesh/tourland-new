@@ -6,6 +6,7 @@ export function WaFab() {
     <button
       className="wa-fab"
       title="Chat on WhatsApp"
+      aria-label="Chat with Modotravels on WhatsApp"
       onClick={(e) => {
         e.preventDefault();
         contactViaWhatsApp();
