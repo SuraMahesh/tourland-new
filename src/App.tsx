@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { Header, Footer, WaFab } from './components';
+import { Header, Footer, Seo, WaFab } from './components';
 import {
   HomePage,
   DestinationsPage,
@@ -42,6 +42,7 @@ function AppContent() {
 
   return (
     <div data-screen-label={currentRoute}>
+      <Seo />
       <Header route={currentRoute} go={go} transparent={isHome} />
       <Routes>
         <Route path="/" element={<HomePage go={go} t={t} />} />

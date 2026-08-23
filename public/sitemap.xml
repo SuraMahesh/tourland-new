@@ -1,56 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-
-<url>
-  <loc>https://modotravels.com/</loc>
-  <lastmod>2026-08-21T13:47:04.917Z</lastmod>
-  <changefreq>daily</changefreq>
-  <priority>0.8</priority>
-</url>
-<url>
-  <loc>https://modotravels.com/</loc>
-  <lastmod>2026-08-21T13:47:04.917Z</lastmod>
-  <changefreq>daily</changefreq>
-  <priority>0.8</priority>
-</url>
-<url>
-  <loc>https://modotravels.com/</loc>
-  <lastmod>2026-08-21T13:47:04.917Z</lastmod>
-  <changefreq>daily</changefreq>
-  <priority>0.8</priority>
-</url>
-<url>
-  <loc>https://modotravels.com/destinations</loc>
-  <lastmod>2026-08-21T13:47:04.917Z</lastmod>
-  <changefreq>daily</changefreq>
-  <priority>0.8</priority>
-</url>
-<url>
-  <loc>https://modotravels.com/seasons</loc>
-  <lastmod>2026-08-21T13:47:04.917Z</lastmod>
-  <changefreq>daily</changefreq>
-  <priority>0.8</priority>
-</url>
-<url>
-  <loc>https://modotravels.com/activities</loc>
-  <lastmod>2026-08-21T13:47:04.917Z</lastmod>
-  <changefreq>daily</changefreq>
-  <priority>0.8</priority>
-</url>
-<url>
-  <loc>https://modotravels.com/planner</loc>
-  <lastmod>2026-08-21T13:47:04.917Z</lastmod>
-  <changefreq>daily</changefreq>
-  <priority>0.8</priority>
-</url>
-<url>
-  <loc>https://modotravels.com/contact</loc>
-  <lastmod>2026-08-21T13:47:04.917Z</lastmod>
-  <changefreq>daily</changefreq>
-  <priority>0.8</priority>
-</url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://modotravels.com/</loc></url>
+  <url><loc>https://modotravels.com/destinations</loc></url>
+  <url><loc>https://modotravels.com/seasons</loc></url>
+  <url><loc>https://modotravels.com/activities</loc></url>
+  <url><loc>https://modotravels.com/planner</loc></url>
+  <url><loc>https://modotravels.com/reviews</loc></url>
+  <url><loc>https://modotravels.com/contact</loc></url>
+  <url><loc>https://modotravels.com/destination/sigiriya</loc></url>
+  <url><loc>https://modotravels.com/destination/ella</loc></url>
+  <url><loc>https://modotravels.com/destination/yala</loc></url>
+  <url><loc>https://modotravels.com/destination/mirissa</loc></url>
+  <url><loc>https://modotravels.com/destination/kandy</loc></url>
+  <url><loc>https://modotravels.com/destination/galle</loc></url>
+  <url><loc>https://modotravels.com/destination/nuwaraeliya</loc></url>
+  <url><loc>https://modotravels.com/destination/trincomalee</loc></url>
+  <url><loc>https://modotravels.com/destination/polonnaruwa</loc></url>
+  <url><loc>https://modotravels.com/destination/dambulla</loc></url>
+  <url><loc>https://modotravels.com/destination/anuradhapura</loc></url>
+  <url><loc>https://modotravels.com/destination/haputale</loc></url>
+  <url><loc>https://modotravels.com/destination/adamspeak</loc></url>
+  <url><loc>https://modotravels.com/destination/hortonplains</loc></url>
+  <url><loc>https://modotravels.com/destination/knuckles</loc></url>
+  <url><loc>https://modotravels.com/destination/udawalawe</loc></url>
+  <url><loc>https://modotravels.com/destination/wilpattu</loc></url>
+  <url><loc>https://modotravels.com/destination/minneriya</loc></url>
+  <url><loc>https://modotravels.com/destination/sinharaja</loc></url>
+  <url><loc>https://modotravels.com/destination/unawatuna</loc></url>
+  <url><loc>https://modotravels.com/destination/tangalle</loc></url>
+  <url><loc>https://modotravels.com/destination/hikkaduwa</loc></url>
+  <url><loc>https://modotravels.com/destination/bentota</loc></url>
+  <url><loc>https://modotravels.com/destination/weligama</loc></url>
+  <url><loc>https://modotravels.com/destination/arugambay</loc></url>
+  <url><loc>https://modotravels.com/destination/pasikuda</loc></url>
+  <url><loc>https://modotravels.com/destination/negombo</loc></url>
+  <url><loc>https://modotravels.com/destination/kalpitiya</loc></url>
 </urlset>
