@@ -7,10 +7,6 @@ import { openWhatsApp, createTripInquiryMessage, createBookingMessage } from '..
 import { openBookingEmail, BOOKING_EMAIL } from '../utils/email';
 import type { VehicleId, TouristDetails, BookingDetails } from '../types';
 
-const U = (id: string, w: number = 1600) => {
-  return `https://images.unsplash.com/photo-${id}?w=${w}&q=80&auto=format&fit=crop`;
-};
-
 interface PlannerStep {
   n: number;
   t: string;
@@ -195,7 +191,7 @@ export function PlannerPage() {
         crumbs={['Modotravels', 'Plan your tour']}
         eyebrow="Tour planner"
         title="Build your route in four steps."
-        img={U('1604920900522-43c8e2ce7027', 2000)}
+        img="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=2000&q=80&auto=format&fit=crop"
       />
 
       <section className="container" style={{ paddingTop: 48, paddingBottom: 120, marginTop: 12 }}>
