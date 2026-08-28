@@ -629,12 +629,15 @@ textarea {
   object-fit: contain;
 }
 
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .hd-inner {
     padding: 0 16px;
     height: 64px;
   }
+
+  
 
   .headerLogo {
     width: 60px;
@@ -828,25 +831,34 @@ textarea {
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
-  height: 100vh;
-  min-height: 780px;
-  overflow: visible;
-  background: var(--ink);
-  color: var(--bone);
+  height: calc(100svh - 72px);
+  min-height: 0;
+  margin: 0 auto;
+  background: var(--paper);
+  color: var(--ink);
 }
 
 .hero-media {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--bone);
+      height: calc(100svh - 100px);
 }
 
-.hero-media video,
 .hero-media img {
-  position: absolute;
+  position: relative;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.hero-media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 25, 24, .08) 35%, rgba(10, 25, 24, .7) 100%);
 }
 
 .hero-reel {
@@ -877,14 +889,23 @@ textarea {
 }
 
 .hero-inner {
-  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 42%) minmax(0, 58%);
   height: 100%;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  
+}
+
+.hero-booking {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 120px 32px 56px;
-  max-width: 1480px;
-  margin: 0 auto;
+  gap: 20px;
+  padding: clamp(32px, 5vw, 64px) clamp(24px, 4vw, 56px) 32px clamp(24px, 2.5vw, 40px);
+  background: var(--paper);
 }
 
 .hero-top {
@@ -900,18 +921,41 @@ textarea {
 
 .hero-title h1 {
   margin: 0;
-  color: var(--bone);
+  color: var(--ink);
 }
 
 .hero-title .lede {
-  margin-top: 24px;
-  font-size: 18px;
+  margin-top: 16px;
+  font-size: 15px;
   line-height: 1.45;
   max-width: 520px;
-  color: rgba(248, 244, 234, 0.85);
+  color: var(--mute);
+}
+
+.quick-booking {
+  width: 100%;
+  max-width: 460px;
+}
+
+.quick-booking h2 {
+  margin: 10px 0 14px;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+.booking-note {
+  margin: 14px 0 0;
+  color: var(--mute);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .hero-meta {
+  position: absolute;
+  right: 28px;
+  bottom: 28px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -942,6 +986,45 @@ textarea {
   gap: 6px;
   max-width: 780px;
   box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.6);
+}
+
+.hero-booking .searchbar {
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: var(--r-lg);
+  padding: 14px;
+  gap: 0;
+  background: var(--bone);
+  box-shadow: 0 16px 40px -28px rgba(10, 25, 24, .5);
+}
+
+.hero-booking .searchbar .sb-field {
+  min-width: 0;
+  padding: 8px 10px;
+  border-right: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-booking .searchbar .sb-field:last-of-type {
+  border-bottom: 0;
+}
+
+.hero-booking .searchbar .sb-go {
+  width: 100%;
+  height: 48px;
+  border-radius: var(--r);
+  margin-top: 10px;
+}
+
+@media (min-width: 769px) {
+  .hero-booking .searchbar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-booking .searchbar .sb-go {
+    grid-column: 1 / -1;
+  }
 }
 
 .searchbar .sb-field {
@@ -1036,7 +1119,7 @@ textarea {
 
 .hero-stats {
   display: flex;
-  gap: 48px;
+  gap: 24px;
   color: rgba(248, 244, 234, 0.7);
   font-size: 12px;
   letter-spacing: 0.05em;
@@ -1054,46 +1137,56 @@ textarea {
   margin-bottom: 2px;
 }
 
+.hero-booking .hero-stats {
+  color: var(--mute);
+}
+
+.hero-booking .hero-stats div b {
+  color: var(--ink);
+}
+
 @media (max-width: 768px) {
   .hero {
-    min-height: 900px;
+    height: auto;
+    min-height: 0;
   }
 
   .hero-inner {
-    padding: 80px 16px 40px;
-    justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
   }
 
-  .hero-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
-    margin-bottom: 40px;
+  .hero-booking {
+    gap: 36px;
+    /* padding: 72px 20px 40px; */
+  }
+
+  .hero-media {
+    display: none;
   }
 
   .hero-title h1 {
-    font-size: clamp(32px, 6vw, 48px);
+    font-size: clamp(40px, 10vw, 56px);
     line-height: 0.95;
+    white-space: nowrap;
+  }
+
+  .hero-title h1 br {
+    display: none;
   }
 
   .hero-title .lede {
     font-size: 14px;
   }
 
-  .hero-meta {
-    display: none;
-  }
-
-  .hero-bottom {
-    gap: 20px;
-  }
-
-  .hero-stats {
+  .hero-booking .hero-stats {
     gap: 20px;
     font-size: 10px;
+    flex-wrap: wrap;
   }
 
-  .hero-stats div b {
+  .hero-booking .hero-stats div b {
     font-size: 18px;
   }
 }
@@ -1759,6 +1852,86 @@ textarea {
 
 .subhero .crumbs .sep {
   opacity: 0.45;
+}
+
+/* ---------- Reviews ---------- */
+.reviews-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.reviews-intro {
+  max-width: 600px;
+  margin: 48px auto 0;
+  text-align: center;
+}
+
+.reviews-content {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.reviews-heading {
+  margin-bottom: 64px;
+  text-align: center;
+}
+
+.reviews-cards {
+  gap: 32px;
+  margin-bottom: 80px;
+}
+
+.reviews-submit-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 1fr);
+  gap: 64px;
+  align-items: start;
+}
+
+.reviews-form-card,
+.reviews-why {
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .reviews-stats-section {
+    padding: 56px 16px !important;
+  }
+
+  .reviews-stats {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .reviews-intro {
+    margin-top: 36px;
+  }
+
+  .reviews-content {
+    padding-top: 48px !important;
+    padding-bottom: 56px !important;
+  }
+
+  .reviews-heading {
+    margin-bottom: 36px;
+  }
+
+  .reviews-cards {
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .reviews-submit-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .reviews-form-card {
+    padding: 32px 20px !important;
+  }
 }
 
 /* Tiny map mark */

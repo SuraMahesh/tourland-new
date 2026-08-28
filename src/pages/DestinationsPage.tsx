@@ -23,11 +23,7 @@ export function DestinationsPage({ go }: DestinationsPageProps) {
       <section className="container sec">
         <div className="sec-head">
           <div className="lh" style={{ maxWidth: 680 }}>
-            <div className="idx-strip">
-              <span className="n">28</span>
-              <span className="l" />
-              <span className="eyebrow">places worth a stop</span>
-            </div>
+       
             <h2 className="h-3" style={{ marginTop: 14 }}>
               Filter by region, season, or interest.
             </h2>

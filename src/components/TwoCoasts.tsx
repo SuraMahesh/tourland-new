@@ -35,13 +35,7 @@ export function TwoCoasts({ go }: TwoCoastsProps) {
       <div className="season-wrap" >
         {/* LEFT — headline + island */}
         <div>
-          <div className="idx-strip" style={{ color: 'rgba(248,244,234,.5)' }}>
-            <span className="n" style={{ color: 'var(--bone)' }}>
-              02
-            </span>
-            <span className="l" style={{ background: 'rgba(248,244,234,.3)' }} />
-            <span className="eyebrow on-dark">When to go</span>
-          </div>
+     
           <h2 className="h-2" style={{ color: 'var(--bone)', marginTop: 18 }}>
             Two coasts.
             <br />

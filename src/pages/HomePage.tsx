@@ -79,10 +79,10 @@ function DateRangePicker({ value, onChange }: { value: string; onChange: (v: str
         style={{
           width: '100%',
           padding: '12px 16px',
-          border: '1px solid rgba(248,244,234,.2)',
+          border: '1px solid var(--line-2)',
           borderRadius: 'var(--r)',
-          background: 'rgba(44,62,80,.4)',
-          color: 'var(--bone)',
+          background: 'var(--bone)',
+          color: 'var(--ink)',
           cursor: 'pointer',
           fontSize: 14,
           textAlign: 'left',
@@ -225,15 +225,10 @@ export function HomePage({ go, t }: HomePageProps) {
   return (
     <main ref={ref}>
       <section className="hero">
-        <div className="hero-media">
-          <div className="hero-reel is-active">
-            <img src={now.img} alt={now.label} width="1600" height="1000" fetchPriority="high" />
-          </div>
-        </div>
         <div className="hero-inner">
-          <div className="hero-top">
+          <div className="hero-booking">
             <div className="hero-title">
-              <div className="eyebrow on-dark" style={{ marginBottom: 18 }}>
+              <div className="eyebrow" style={{ marginBottom: 18 }}>
                 ● Live in Colombo · 28°C · 17 May 2026
               </div>
               <h1 className="h-1">
@@ -243,34 +238,10 @@ export function HomePage({ go, t }: HomePageProps) {
               </h1>
               <p className="lede">Eight regions, two monsoons, one small island. Build your route with planners who live here.</p>
             </div>
-            <div className="hero-meta">
-              <div className="now">{now.coords}</div>
-              <div>
-                Reel {String(reel + 1).padStart(2, '0')} / {String(HERO_REELS.length).padStart(2, '0')} · {now.label}
-              </div>
-              <div style={{ display: 'flex', gap: 4, marginTop: 8 }}>
-                {HERO_REELS.map((_, i) => (
-                  <button
-                    key={i}
-                    aria-label={`Show ${HERO_REELS[i].label}`}
-                    aria-pressed={i === reel}
-                    onClick={() => setReel(i)}
-                    style={{
-                      width: i === reel ? 32 : 24,
-                      height: 2,
-                      background: i === reel ? 'var(--bone)' : 'rgba(248,244,234,.3)',
-                      border: 0,
-                      padding: 0,
-                      cursor: 'pointer',
-                      transition: 'all .4s',
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="hero-bottom">
-            <div className="searchbar">
+            <div className="quick-booking">
+              <div className="eyebrow">Quick booking</div>
+              <h2>Start with the shape of your trip.</h2>
+              <div className="searchbar">
               <div className="sb-field">
                 <label>Where</label>
                 <select defaultValue="">
@@ -302,24 +273,43 @@ export function HomePage({ go, t }: HomePageProps) {
               <button className="sb-go" aria-label="Open trip planner" onClick={() => go('planner')}>
                 →
               </button>
+              </div>
+              <p className="booking-note">A first draft, shaped around your pace. Refined by a local planner.</p>
             </div>
-            <div className="hero-stats">
-              <div>
-                <b>28</b>destinations
-              </div>
-              <div>
-                <b>06</b>regions
-              </div>
-              <div>
-                <b>120</b>vetted hotels
-              </div>
-              <div>
-                <b>2.1k</b>trips built · 4.9★
+      
+          </div>
+          <div className="hero-media">
+            <div className="hero-reel is-active">
+              <img src={now.img} alt={now.label} width="1600" height="1000" fetchPriority="high" />
+            </div>
+            <div className="hero-media-overlay" />
+            <div className="hero-meta">
+              <div className="now">{now.coords}</div>
+              <div>Reel {String(reel + 1).padStart(2, '0')} / {String(HERO_REELS.length).padStart(2, '0')} · {now.label}</div>
+              <div style={{ display: 'flex', gap: 4, marginTop: 8 }}>
+                {HERO_REELS.map((_, i) => (
+                  <button
+                    key={i}
+                    aria-label={`Show ${HERO_REELS[i].label}`}
+                    aria-pressed={i === reel}
+                    onClick={() => setReel(i)}
+                    style={{
+                      width: i === reel ? 32 : 24,
+                      height: 2,
+                      background: i === reel ? 'var(--bone)' : 'rgba(248,244,234,.5)',
+                      border: 0,
+                      padding: 0,
+                      cursor: 'pointer',
+                      transition: 'all .4s',
+                    }}
+                  />
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
+
 
       {/* <Marquee
         items={[
@@ -336,23 +326,10 @@ export function HomePage({ go, t }: HomePageProps) {
 
       <section className="sec container">
         <SecHead
-          n="01"
-          eyebrow="Where to go"
+
           title="Six regions, one small island."
           lede="From hill-country tea estates to leopard country and surf coves — handpicked by planners who've travelled every one."
-        // right={
-        //   <div className="flex gap-2">
-        //     {(['grid', 'asym', 'carousel'] as const).map((v) => (
-        //       <button
-        //         key={v}
-        //         className={'chip' + (t.cardLayout === v ? ' active' : '')}
-        //         onClick={() => setTweak('cardLayout', v)}
-        //       >
-        //         {v}
-        //       </button>
-        //     ))}
-        //   </div>
-        // }
+   
         />
         <DestinationGrid layout={t.cardLayout} dest={DESTINATIONS.slice(0, 8)} onPick={(id) => go('destination', { id })} />
         <div className="mt-6 center">
@@ -367,7 +344,7 @@ export function HomePage({ go, t }: HomePageProps) {
       </section>
 
       <section className="sec container">
-        <SecHead n="03" eyebrow="Things to do" title="Curated experiences. Nothing on the bus-tour list." lede="Local guides, eco-rated operators, small groups." />
+        <SecHead  title="Curated experiences. Nothing on the bus-tour list." lede="Local guides, eco-rated operators, small groups." />
         <div className="things-wrap">
           {ACTIVITIES.slice(0, 6).map((a) => (
             <article key={a.id} className="card reveal" onClick={() => go('activities')} style={{ cursor: 'pointer' }}>
@@ -393,7 +370,7 @@ export function HomePage({ go, t }: HomePageProps) {
 
 
       <section className="sec container">
-        <SecHead n="05" eyebrow="How it works" title="From idea to itinerary, in four steps." />
+        <SecHead  title="From idea to itinerary, in four steps." />
         <div className="grid grid-2 xl:grid-4">
           {HOW_IT_WORKS.map((s, i) => (
             <div
@@ -427,8 +404,6 @@ export function HomePage({ go, t }: HomePageProps) {
       <section style={{ background: 'var(--jungle)', color: 'var(--bone)' }}>
         <div className="container sec">
           <SecHead
-            n="06"
-            eyebrow="Recent travellers"
             title="What people say after they get home."
             right={
               <button className="btn btn-outline-dark" onClick={() => go('reviews')}>
@@ -445,7 +420,7 @@ export function HomePage({ go, t }: HomePageProps) {
       </section>
 
       <section className="container sec">
-        <SecHead n="07" eyebrow="Frequently asked" title="Questions we get all the time." />
+        <SecHead title="Questions we get all the time." />
         <FAQAccordion />
       </section>
     </main>
