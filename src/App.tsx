@@ -31,7 +31,7 @@ function AppContent() {
     if (route === 'destination' && p.id) {
       navigate(`/destination/${p.id}`);
     } else {
-      navigate(`/${route === 'home' ? '' : route}`);
+      navigate(`/${route === 'home' ? '' : route}`, { state: p });
     }
     window.scrollTo({ top: 0, behavior: 'instant' });
   };

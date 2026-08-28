@@ -4,11 +4,24 @@ import { SecHead, DestinationCard, ReviewCard, TwoCoasts } from '../components';
 import { DESTINATIONS, ACTIVITIES, REVIEWS, HOW_IT_WORKS } from '../data';
 import type { Tweaks, PageParams } from '../types';
 
+function getToday(): Date {
+  const today = new Date();
+  return new Date(today.getFullYear(), today.getMonth(), today.getDate());
+}
+
+function formatBookingRange(start: Date, end: Date): string {
+  const fmt = (date: Date) => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return `${fmt(start)} – ${fmt(end)}, ${end.getFullYear()}`;
+}
+
 function DateRangePicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const [showCalendar, setShowCalendar] = useState(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 1, 1)); // Feb 2026
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    const today = getToday();
+    return new Date(today.getFullYear(), today.getMonth(), 1);
+  });
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const getDaysInMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -16,6 +29,7 @@ function DateRangePicker({ value, onChange }: { value: string; onChange: (v: str
 
   const handleDateClick = (day: number) => {
     const selected = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    if (selected < getToday()) return;
     if (!startDate || (startDate && endDate)) {
       setStartDate(selected);
       setEndDate(null);
@@ -31,8 +45,7 @@ function DateRangePicker({ value, onChange }: { value: string; onChange: (v: str
 
   useEffect(() => {
     if (startDate && endDate) {
-      const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      onChange(`${fmt(startDate)} – ${fmt(endDate)}, 2026`);
+      onChange(formatBookingRange(startDate, endDate));
     }
   }, [startDate, endDate, onChange]);
 
@@ -71,6 +84,13 @@ function DateRangePicker({ value, onChange }: { value: string; onChange: (v: str
     const d = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
     return d.toDateString() === endDate.toDateString();
   };
+
+  const isPastDate = (day: number | null) => {
+    if (!day) return false;
+    return new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day) < getToday();
+  };
+
+  const isCurrentMonth = currentMonth.getFullYear() === getToday().getFullYear() && currentMonth.getMonth() === getToday().getMonth();
 
   return (
     <div style={{ position: 'relative', zIndex: 100 }}>
@@ -123,8 +143,9 @@ function DateRangePicker({ value, onChange }: { value: string; onChange: (v: str
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
             <button
+              disabled={isCurrentMonth}
               onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: isMobile ? 18 : 20, padding: isMobile ? '8px' : '0', borderRadius: 'var(--r)' }}
+              style={{ background: 'none', border: 'none', cursor: isCurrentMonth ? 'not-allowed' : 'pointer', fontSize: isMobile ? 18 : 20, padding: isMobile ? '8px' : '0', borderRadius: 'var(--r)', opacity: isCurrentMonth ? 0.35 : 1 }}
             >
               ←
             </button>
@@ -148,6 +169,7 @@ function DateRangePicker({ value, onChange }: { value: string; onChange: (v: str
             {days.map((day, i) => (
               <button
                 key={i}
+                disabled={!day || isPastDate(day)}
                 onClick={() => day && handleDateClick(day)}
                 style={{
                   padding: isMobile ? '10px 4px' : '8px',
@@ -163,7 +185,7 @@ function DateRangePicker({ value, onChange }: { value: string; onChange: (v: str
                   cursor: day ? 'pointer' : 'default',
                   fontSize: isMobile ? 13 : 12,
                   fontWeight: day ? 500 : 400,
-                  opacity: day ? 1 : 0.3,
+                  opacity: day ? (isPastDate(day) ? 0.3 : 1) : 0.3,
                   transition: 'all 0.15s ease',
                 }}
               >
@@ -204,7 +226,15 @@ interface HomePageProps {
 export function HomePage({ go, t }: HomePageProps) {
   const ref = useReveal();
   const [reel, setReel] = useState(0);
-  const [dateRange, setDateRange] = useState('Feb 14 – 28, 2026');
+  const [dateRange, setDateRange] = useState(() => {
+    const start = getToday();
+    const end = new Date(start);
+    end.setDate(end.getDate() + 14);
+    return formatBookingRange(start, end);
+  });
+  const [destination, setDestination] = useState('');
+  const [travellers, setTravellers] = useState('2 adults');
+  const [style, setStyle] = useState('');
 
   useEffect(() => {
     const id = setInterval(() => setReel((r) => (r + 1) % 6), 5500);
@@ -244,7 +274,7 @@ export function HomePage({ go, t }: HomePageProps) {
               <div className="searchbar">
               <div className="sb-field">
                 <label>Where</label>
-                <select defaultValue="">
+                <select value={destination} onChange={(event) => setDestination(event.target.value)}>
                   <option value="">All of Sri Lanka</option>
                   {DESTINATIONS.map((d) => (
                     <option key={d.id}>{d.name}</option>
@@ -258,11 +288,11 @@ export function HomePage({ go, t }: HomePageProps) {
               </div>
               <div className="sb-field">
                 <label>Travellers</label>
-                <input type="text" placeholder="2 adults" defaultValue="2 adults" />
+                <input type="text" placeholder="2 adults" value={travellers} onChange={(event) => setTravellers(event.target.value)} />
               </div>
               <div className="sb-field">
                 <label>Style</label>
-                <select defaultValue="">
+                <select value={style} onChange={(event) => setStyle(event.target.value)}>
                   <option value="">Surprise me</option>
                   <option>Nature & wildlife</option>
                   <option>Culture & heritage</option>
@@ -270,8 +300,12 @@ export function HomePage({ go, t }: HomePageProps) {
                   <option>Family · kids</option>
                 </select>
               </div>
-              <button className="sb-go" aria-label="Open trip planner" onClick={() => go('planner')}>
-                →
+              <button
+                className="sb-go"
+                aria-label="Open trip planner"
+                onClick={() => go('planner', { destination, dateRange, travellers, style })}
+              >
+               Continue →
               </button>
               </div>
               <p className="booking-note">A first draft, shaped around your pace. Refined by a local planner.</p>

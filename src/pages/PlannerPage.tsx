@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { SubHero } from '../components';
 import { ACTIVITIES, VEHICLES, DAILY_KM_ALLOWANCE } from '../data';
 import { generateTripPDF } from '../utils/pdf';
@@ -130,21 +131,58 @@ function advanceDueDate(startDate: string): Date {
   return d;
 }
 
+function todayIsoDate(): string {
+  const today = new Date();
+  return [today.getFullYear(), today.getMonth() + 1, today.getDate()]
+    .map((part, index) => index === 0 ? String(part) : String(part).padStart(2, '0'))
+    .join('-');
+}
+
 const fmtLong = (d: Date) =>
   d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
+function parseDateRange(value: string): { startDate: string; days: number } {
+  const match = value.match(/^([A-Za-z]{3}) (\d{1,2}) – (?:(\w{3}) )?(\d{1,2}), (\d{4})$/);
+  if (!match) return { startDate: todayIsoDate(), days: 15 };
+
+  const [, startMonth, startDay, endMonth = startMonth, endDay, year] = match;
+  const start = new Date(`${startMonth} ${startDay}, ${year}`);
+  const end = new Date(`${endMonth} ${endDay}, ${year}`);
+  const days = Math.max(1, Math.round((end.getTime() - start.getTime()) / 86400000) + 1);
+  const localStartDate = [start.getFullYear(), start.getMonth() + 1, start.getDate()]
+    .map((part, index) => index === 0 ? String(part) : String(part).padStart(2, '0'))
+    .join('-');
+  return { startDate: localStartDate, days };
+}
+
+const HERO_DESTINATION_IDS: Record<string, string> = {
+  Sigiriya: 'sigiriya',
+  Ella: 'ella',
+  'Yala National Park': 'yala',
+  Mirissa: 'mirissa',
+  Kandy: 'kandy',
+  'Nuwara Eliya': 'nuwaraeliya',
+  Trincomalee: 'trinco',
+};
+
 export function PlannerPage() {
+  const location = useLocation();
+  const booking = location.state as { destination?: string; dateRange?: string; travellers?: string; style?: string } | null;
+  const selectedDates = parseDateRange(booking?.dateRange ?? '');
+  const destinationId = HERO_DESTINATION_IDS[booking?.destination ?? ''] ?? 'colombo';
+  const adults = Number.parseInt(booking?.travellers ?? '2', 10) || 2;
+  const tripStyle: TripData['style'] = booking?.style === 'Nature & wildlife' ? 'packed' : booking?.style === 'Family · kids' ? 'relaxed' : 'balanced';
   const [step, setStep] = useState<number>(1);
   const [trip, setTrip] = useState<TripData>({
-    startDate: '2026-02-14',
-    days: 2,
-    travellers: { adults: 2, children: 0 },
-    regions: ['colombo'],
+    startDate: selectedDates.startDate,
+    days: selectedDates.days,
+    travellers: { adults, children: 0 },
+    regions: [destinationId],
     activities: [],
     vehicle: 'sedan',
     estKm: 0,
     pickupAirport: true,
-    style: 'balanced',
+    style: tripStyle,
   });
 
   const set = (patch: Partial<TripData>) => setTrip((t) => ({ ...t, ...patch }));
@@ -266,6 +304,7 @@ function Step1Dates({
           <input
             type="date"
             value={trip.startDate}
+            min={todayIsoDate()}
             onChange={(e) => set({ startDate: e.target.value })}
           />
         </div>
