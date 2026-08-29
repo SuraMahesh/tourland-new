@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useReveal } from '../hooks/useReveal';
 import { SubHero, ReviewCard } from '../components';
 import { REVIEWS } from '../data';
 export function ReviewsPage() {
+  const ref = useReveal();
   const [sent, setSent] = useState(false);
   const [rating, setRating] = useState(0);
 
@@ -12,7 +14,7 @@ export function ReviewsPage() {
   ];
 
   return (
-    <main>
+    <main ref={ref}>
       <SubHero
         crumbs={['Modotravels', 'Reviews']}
         eyebrow="From our travellers"
@@ -122,7 +124,7 @@ export function ReviewsPage() {
                   <textarea placeholder="Share what made your trip special…" style={{ width: '100%', padding: '12px 16px', border: '1px solid var(--line-2)', borderRadius: 'var(--r)', fontSize: 14, minHeight: 140, fontFamily: 'inherit', boxSizing: 'border-box', resize: 'vertical' }} />
                 </div>
 
-                <button className="btn btn-primary" type="submit" style={{ width: '100%' }}>
+                <button className="btn btn-primary" type="submit" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   Share your story <span className="arrow">→</span>
                 </button>
               </form>
