@@ -7,9 +7,9 @@ export function SeasonsPage() {
         crumbs={['Modotravels', 'Seasons']}
         eyebrow="When to go"
         title="Two monsoons. Always somewhere in sun."
-        img="https://images.unsplash.com/photo-1578519050142-afb511e518de?w=2000&q=80&auto=format&fit=crop"
+        img="https://images.unsplash.com/photo-1544015759-237f87d55ef3?w=1600&q=72&auto=format&fit=crop"
       />
-      <section className="container sec">
+      <section className="container sec ">
         <div className="grid" style={{ gridTemplateColumns: '1.4fr 1fr', gap: 64, alignItems: 'start' }}>
           <div>
             <div className="eyebrow">The short version</div>

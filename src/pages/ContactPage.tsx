@@ -60,7 +60,7 @@ export function ContactPage() {
         crumbs={['Modotravels', 'Contact']}
         eyebrow="Get in touch"
         title="Talk to a human in Colombo."
-        img="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=2000&q=80&auto=format&fit=crop"
+        img="https://images.unsplash.com/photo-1465924655546-6c184df810a9?w=1600&q=72&auto=format&fit=crop"
       />
       <section className="container sec">
         <div className="contact-wrapper" >

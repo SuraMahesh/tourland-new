@@ -89,6 +89,7 @@ export function TwoCoasts({ go }: TwoCoastsProps) {
           <div
             style={{
               marginTop: 32,
+              marginBottom: 12,
               padding: '24px 28px',
               borderRadius: 'var(--r-lg)',
               background: 'linear-gradient(135deg, rgba(217,119,66,.18), rgba(31,138,138,.12))',
