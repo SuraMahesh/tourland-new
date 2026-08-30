@@ -2,6 +2,7 @@ export { Logo } from './Logo';
 export { Header } from './Header';
 export { Footer } from './Footer';
 export { WaFab } from './WaFab';
+export { CookieConsent } from './CookieConsent';
 export { Seo } from './Seo';
 export { Marquee } from './Marquee';
 export { MiniMap } from './MiniMap';

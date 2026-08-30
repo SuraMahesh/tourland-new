@@ -751,6 +751,101 @@ textarea {
   opacity: 0.9;
 }
 
+.cookie-banner {
+  position: fixed;
+  left: 24px;
+  right: auto;
+  bottom: 24px;
+  width: min(34vw, 480px);
+  max-width: calc(100vw - 32px);
+  z-index: 1000;
+  background: rgba(19, 25, 32, 0.96);
+  border: 1px solid rgba(248, 244, 234, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.26);
+  backdrop-filter: blur(12px);
+}
+
+.cookie-banner__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 20px;
+  color: var(--bone);
+}
+
+.cookie-banner__content p {
+  margin: 6px 0 0;
+  color: rgba(248, 244, 234, 0.72);
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: none;
+}
+
+.cookie-banner__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.legal-page {
+  display: grid;
+  gap: 24px;
+  padding-top: 48px;
+  padding-bottom: 96px;
+}
+
+.legal-card {
+  background: var(--bone);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  padding: 28px 28px 20px;
+  box-shadow: var(--shadow-card-soft);
+}
+
+.legal-card h2 {
+  margin: 0 0 14px;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  letter-spacing: -0.04em;
+}
+
+.legal-card p,
+.legal-card li {
+  color: var(--mute);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.legal-card ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+@media (max-width: 720px) {
+  .cookie-banner {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+    max-width: none;
+  }
+
+  .cookie-banner__content {
+    align-items: flex-start;
+  }
+
+  .cookie-banner__actions {
+    justify-content: stretch;
+  }
+
+  .cookie-banner__actions button {
+    flex: 1;
+  }
+}
+
 /* ---------- Cards ---------- */
 .card {
   background: var(--bone);
@@ -2148,6 +2243,7 @@ textarea {
   .grid-3,
   .grid-4 {
     grid-template-columns: 1fr;
+    padding-bottom: 20px;
   }
 
   /* Section rhythm */

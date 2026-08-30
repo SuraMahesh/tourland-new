@@ -6,3 +6,5 @@ export { ActivitiesPage } from './ActivitiesPage';
 export { ReviewsPage } from './ReviewsPage';
 export { ContactPage } from './ContactPage';
 export { PlannerPage } from './PlannerPage';
+export { PrivacyPolicyPage } from './PrivacyPolicyPage';
+export { TermsPage } from './TermsPage';

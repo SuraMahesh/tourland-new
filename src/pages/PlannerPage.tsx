@@ -1158,7 +1158,7 @@ function ItinerarySidebar({
         <div style={{ marginTop: 22, display: 'flex', gap: 8 }}>
           <button
             className="btn btn-on-dark"
-            style={{ flex: 1 }}
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
             onClick={() => {
               if (step >= 4) {
                 openWhatsApp({

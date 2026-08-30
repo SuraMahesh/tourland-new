@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { Header, Footer, Seo, WaFab } from './components';
+import { Header, Footer, Seo, WaFab, CookieConsent } from './components';
 import type { Tweaks, PageParams } from './types';
 import { useTweaks } from './hooks/useTweaks';
 
@@ -12,6 +12,8 @@ const ActivitiesPage = lazy(() => import('./pages/ActivitiesPage').then((module)
 const ReviewsPage = lazy(() => import('./pages/ReviewsPage').then((module) => ({ default: module.ReviewsPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage').then((module) => ({ default: module.ContactPage })));
 const PlannerPage = lazy(() => import('./pages/PlannerPage').then((module) => ({ default: module.PlannerPage })));
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then((module) => ({ default: module.PrivacyPolicyPage })));
+const TermsPage = lazy(() => import('./pages/TermsPage').then((module) => ({ default: module.TermsPage })));
 
 const TWEAK_DEFAULTS: Tweaks = {
   cardLayout: 'grid',
@@ -53,9 +55,12 @@ function AppContent() {
           <Route path="/planner" element={<PlannerPage />} />
           <Route path="/reviews" element={<ReviewsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
         </Routes>
       </Suspense>
       <Footer go={go} />
+      <CookieConsent />
       <WaFab />
     </div>
   );

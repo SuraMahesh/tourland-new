@@ -85,9 +85,8 @@ export function Footer({ go }: FooterProps) {
       <div className="ft-bottom">
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>© 2026 Modotravels  · Design & Develop by <a className="footer_link" href="https://felixto.com" target="_blank" rel="noopener noreferrer">Felixto</a></div>
         <div style={{ display: 'flex', gap: 18 }}>
-          <a href="/contact">Privacy</a>
-          <a href="/contact">Terms</a>
-          <a href="/contact">Sustainability</a>
+          <a href="/privacy-policy" onClick={(event) => { event.preventDefault(); go('privacy-policy'); }}>Privacy</a>
+          <a href="/terms" onClick={(event) => { event.preventDefault(); go('terms'); }}>Terms</a>
         </div>
       </div>
     </footer>

@@ -151,6 +151,7 @@ export function TwoCoasts({ go }: TwoCoastsProps) {
             <button
               className="btn btn-on-dark btn-sm"
               onClick={() => go('seasons')}
+              style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
             >
               Full calendar <span className="arrow">→</span>
             </button>
