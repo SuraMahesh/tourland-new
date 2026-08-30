@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { SubHero } from '../components';
 import { WHATSAPP_LINK, contactViaWhatsApp } from '../utils/whatsapp';
+import Whatsapp from '../assets/w.png';
+import Email from '../assets/email.png';
 
 const COUNTRIES = [
   { code: '+1', flag: '🇺🇸' },
@@ -81,19 +83,16 @@ export function ContactPage() {
                 className="card"
                 style={{
                   padding: '24px 28px',
-                  display: 'grid',
-                  gridTemplateColumns: '48px 1fr auto',
+                  display: 'flex',
+                  // gridTemplateColumns: '48px 1fr auto',
                   alignItems: 'center',
                   gap: 18,
                   cursor: 'pointer',
                   textDecoration: 'none',
                 }}
               >
-                <div style={{ width: 48, height: 48, borderRadius: 12, background: '#25d366', display: 'grid', placeItems: 'center' }}>
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="white">
-                    <path d="M12 2C6.48 2 2 6.48 2 12c0 1.76.46 3.43 1.27 4.9L2 22l5.25-1.37C8.7 21.51 10.31 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z" />
-                  </svg>
-                </div>
+          
+                <img src={Whatsapp} alt="" style={{width: "50px"}} />
                 <div>
                   <div style={{ fontWeight: 600, fontSize: 17 }}>WhatsApp · +94 77 654 6377</div>
                   <div className="mute" style={{ fontSize: 13 }}>
@@ -109,17 +108,15 @@ export function ContactPage() {
                 className="card"
                 style={{
                   padding: '24px 28px',
-                  display: 'grid',
-                  gridTemplateColumns: '48px 1fr auto',
+                  display: 'flex',
+                  // gridTemplateColumns: '48px 1fr auto',
                   alignItems: 'center',
                   gap: 18,
                   cursor: 'pointer',
                   textDecoration: 'none',
                 }}
               >
-                <div style={{ width: 48, height: 48, borderRadius: 12, background: 'var(--ink)', color: 'var(--bone)', display: 'grid', placeItems: 'center', fontSize: 20 }}>
-                  ✉
-                </div>
+                <img src={Email} alt="" style={{width: "50px"}} />
                 <div>
                   <div style={{ fontWeight: 600, fontSize: 17 }}>travelsmodo@gmail.com</div>
                   <div className="mute" style={{ fontSize: 13 }}>

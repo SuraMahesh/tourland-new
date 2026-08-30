@@ -32,7 +32,7 @@ export function CookieConsent() {
           </p>
         </div>
         <div className="cookie-banner__actions">
-          <button type="button" className="btn btn-light btn-sm" onClick={() => saveChoice('essential')}>
+          <button style={{display:'flex', justifyContent: 'center', alignItems: 'center'}} type="button" className="btn btn-light btn-sm" onClick={() => saveChoice('essential')}>
             Essential only
           </button>
           <button type="button" className="btn btn-primary btn-sm" onClick={() => saveChoice('accepted')}>

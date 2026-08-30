@@ -93,7 +93,7 @@ function DateRangePicker({ value, onChange }: { value: string; onChange: (v: str
   const isCurrentMonth = currentMonth.getFullYear() === getToday().getFullYear() && currentMonth.getMonth() === getToday().getMonth();
 
   return (
-    <div style={{ position: 'relative', zIndex: 100 }}>
+    <div style={{ position: 'relative' }}>
       <button
         onClick={() => setShowCalendar(!showCalendar)}
         style={{
