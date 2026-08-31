@@ -104,7 +104,7 @@ export function ContactPage() {
                 </span>
               </a>
               <a
-                href="travelsmodo@gmail.com"
+                href="mailto:travelsmodo@gmail.com"
                 className="card"
                 style={{
                   padding: '24px 28px',
