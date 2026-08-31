@@ -191,7 +191,7 @@ export function PlannerPage() {
         crumbs={['Modotravels', 'Plan your tour']}
         eyebrow="Tour planner"
         title="Build your route in four steps."
-        img="https://images.unsplash.com/photo-1544015759-237f87d55ef3?w=1600&q=72&auto=format&fit=crop"
+        img="/assets/destinations/teaestates.jpg"
       />
 
       <section className="container" style={{ paddingTop: 48, paddingBottom: 120, marginTop: 12, marginBottom: 8 }}>

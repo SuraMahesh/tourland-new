@@ -62,7 +62,7 @@ export function ContactPage() {
         crumbs={['Modotravels', 'Contact']}
         eyebrow="Get in touch"
         title="Talk with the Modo team. We're here to help."
-        img="https://images.unsplash.com/photo-1665849050332-8d5d7e59afb6?w=1600&q=72&auto=format&fit=crop"
+        img="/assets/destinations/kandy.jpg"
       />
       <section className="container sec">
         <div className="contact-wrapper" >

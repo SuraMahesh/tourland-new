@@ -1,7 +1,22 @@
 import type { Destination, Region, Activity, Hotel, Season, Review, HowItWorks, Vehicle } from '../types';
 
+// Map of Unsplash IDs to local image paths
+const IMAGE_MAP: { [key: string]: string } = {
+  '1578519050142-afb511e518de': '/assets/destinations/ella.jpg',
+  '1612862862126-865765df2ded': '/assets/destinations/sigiriya.jpg',
+  '1544015759-237f87d55ef3': '/assets/destinations/teaestates.jpg',
+  '1747164628765-9394c8496a9c': '/assets/destinations/teaestates.jpg',
+  '1465924655546-6c184df810a9': '/assets/destinations/galle.jpg',
+  '1704797390325-b057758d8c3d': '/assets/destinations/galle.jpg',
+  '1744156928176-e2488685d619': '/assets/destinations/trincomalee.jpg',
+  '1756671401467-100a1946e300': '/assets/destinations/trincomalee.jpg',
+  '1665849050332-8d5d7e59afb6': '/assets/destinations/kandy.jpg',
+  '1665849050430-5e8c16bacf7e': '/assets/destinations/kandy.jpg',
+};
+
 const U = (id: string, w: number = 1600) => {
-  return `https://images.unsplash.com/photo-${id}?w=${w}&q=72&auto=format&fit=crop`;
+  // Return local path if mapped, otherwise keep as is for other uses
+  return IMAGE_MAP[id] || `https://images.unsplash.com/photo-${id}?w=${w}&q=72&auto=format&fit=crop`;
 };
 
 export const DESTINATIONS: Destination[] = [
@@ -285,13 +300,13 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'whale', name: 'Blue Whale Watching', category: 'Wildlife', duration: '4 hrs', difficulty: 'Easy',
-    img: 'https://gildedlanka.com/wp-content/uploads/2024/11/Whale-Watching-in-Sri-Lanka.jpg',
+    img: '/assets/activities/whale-watching.jpg',
     overview: 'Mirissa\'s continental shelf draws the largest animal on Earth between December and April.',
     steps: ['Pre-book a slow, eco-rated boat', 'Depart 6:30am', 'Spot blow plumes 8–11km offshore', 'Back to harbour by 11'],
   },
   {
     id: 'cook', name: 'Village Curry Cookery', category: 'Food', duration: '3 hrs', difficulty: 'Easy',
-    img: 'https://media.tacdn.com/media/attractions-splice-spp-674x446/15/b7/0b/98.jpg',
+    img: '/assets/activities/curry-cookery.jpg',
     overview: 'A hands-on Sri Lankan village cookery experience in the Matale–Dambulla cultural heartland — make rice and curry, kiribath, and other traditional favourites with a local family.',
     steps: ['Drive to a village home in the Matale–Dambulla area', 'Cook traditional Sri Lankan dishes with our host', 'Share a home-cooked rice and curry lunch', 'Take recipes home'],
   },

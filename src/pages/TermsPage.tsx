@@ -7,7 +7,7 @@ export function TermsPage() {
         crumbs={['Modotravels', 'Terms']}
         eyebrow="Terms"
         title="Booking terms and conditions."
-        img="https://images.unsplash.com/photo-1612862862126-865765df2ded?w=1600&q=72&auto=format&fit=crop"
+        img="/assets/destinations/sigiriya.jpg"
       />
 
       <section className="container sec legal-page">

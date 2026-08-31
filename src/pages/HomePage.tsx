@@ -242,12 +242,12 @@ export function HomePage({ go, t }: HomePageProps) {
   }, []);
 
   const HERO_REELS = [
-    { img: 'https://images.unsplash.com/photo-1578519050142-afb511e518de?w=1600&q=72&auto=format&fit=crop', label: 'Nine Arch Bridge, Ella', coords: '06° 56′ N · 80° 38′ E', city: 'Ella', temp: 22 },
-    { img: 'https://images.unsplash.com/photo-1612862862126-865765df2ded?w=1600&q=72&auto=format&fit=crop', label: 'Sigiriya rock fortress', coords: '07° 57′ N · 80° 45′ E', city: 'Sigiriya', temp: 30 },
-    { img: 'https://images.unsplash.com/photo-1544015759-237f87d55ef3?w=1600&q=72&auto=format&fit=crop', label: 'Tea estates, Hill Country', coords: '06° 58′ N · 80° 46′ E', city: 'Nuwara Eliya', temp: 18 },
-    { img: 'https://images.unsplash.com/photo-1465924655546-6c184df810a9?w=1600&q=72&auto=format&fit=crop', label: 'Stilt fishermen, South coast', coords: '05° 58′ N · 80° 26′ E', city: 'Galle', temp: 28 },
-    { img: 'https://images.unsplash.com/photo-1756671401467-100a1946e300?w=1600&q=72&auto=format&fit=crop', label: 'East coast, Trincomalee', coords: '08° 35′ N · 81° 12′ E', city: 'Trincomalee', temp: 29 },
-    { img: 'https://images.unsplash.com/photo-1665849050332-8d5d7e59afb6?w=1600&q=72&auto=format&fit=crop', label: 'Temple of the Tooth, Kandy', coords: '07° 18′ N · 80° 38′ E', city: 'Kandy', temp: 24 },
+    { img: '/assets/destinations/ella.jpg', label: 'Nine Arch Bridge, Ella', coords: '06° 56′ N · 80° 38′ E', city: 'Ella', temp: 22 },
+    { img: '/assets/destinations/sigiriya.jpg', label: 'Sigiriya rock fortress', coords: '07° 57′ N · 80° 45′ E', city: 'Sigiriya', temp: 30 },
+    { img: '/assets/destinations/teaestates.jpg', label: 'Tea estates, Hill Country', coords: '06° 58′ N · 80° 46′ E', city: 'Nuwara Eliya', temp: 18 },
+    { img: '/assets/destinations/galle.jpg', label: 'Stilt fishermen, South coast', coords: '05° 58′ N · 80° 26′ E', city: 'Galle', temp: 28 },
+    { img: '/assets/destinations/trincomalee.jpg', label: 'East coast, Trincomalee', coords: '08° 35′ N · 81° 12′ E', city: 'Trincomalee', temp: 29 },
+    { img: '/assets/destinations/kandy.jpg', label: 'Temple of the Tooth, Kandy', coords: '07° 18′ N · 80° 38′ E', city: 'Kandy', temp: 24 },
   ];
 
   const now = HERO_REELS[reel];
