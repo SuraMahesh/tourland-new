@@ -5,6 +5,7 @@ import type { Destination } from '../types';
 
 interface MapViewProps {
   pins?: Destination[];
+  pinMeta?: Record<string, { color: string; label: string }>;
   onPick?: (id: string) => void;
   active?: string;
   height?: number;
@@ -13,7 +14,7 @@ interface MapViewProps {
 const SL_CENTER: L.LatLngExpression = [7.87, 80.77];
 const SL_BOUNDS = L.latLngBounds([5.7, 79.4], [10.0, 82.1]);
 
-export function MapView({ pins = [], onPick, active, height = 460 }: MapViewProps) {
+export function MapView({ pins = [], pinMeta, onPick, active, height = 460 }: MapViewProps) {
   const holderRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const layerRef = useRef<L.LayerGroup | null>(null);
@@ -50,14 +51,24 @@ export function MapView({ pins = [], onPick, active, height = 460 }: MapViewProp
 
     pins.forEach((p) => {
       const isActive = p.id === active;
+      const meta = pinMeta?.[p.id] ?? { color: '#2a9d8f', label: p.name };
       const icon = L.divIcon({
         className: '',
-        html: `<span class="map-pin${isActive ? ' is-active' : ''}"></span>`,
+        html: `
+          <span
+            class="map-pin${isActive ? ' is-active' : ''}"
+            style="background:${meta.color}; box-shadow: ${isActive ? `0 0 0 6px ${meta.color}26` : '0 1px 6px rgba(0,0,0,0.35)'};"
+          ></span>
+        `,
         iconSize: [18, 18],
         iconAnchor: [9, 9],
       });
       const marker = L.marker([p.lat, p.lng], { icon }).addTo(layer);
-      marker.bindTooltip(p.name, { direction: 'top', offset: [0, -10] });
+      marker.bindTooltip(`${meta.label} · ${p.name}`, {
+        direction: 'top',
+        offset: [0, -10],
+        className: 'map-tooltip',
+      });
       if (onPick) marker.on('click', () => onPick(p.id));
     });
 

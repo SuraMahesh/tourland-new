@@ -263,9 +263,7 @@ export function HomePage({ go, t }: HomePageProps) {
                 ● Live in {now.city} · {now.temp}°C · {liveDate}
               </div>
               <h1 className="h-1">
-                Sri Lanka.
-                <br />
-                <em style={{ fontStyle: 'normal', color: 'var(--sunset)' }}>Curated.</em>
+                Sri Lanka. <em style={{ fontStyle: 'normal', color: 'var(--sunset)' }}>Curated.</em>
               </h1>
               <p className="lede">Eight regions, two monsoons, one small island. Build your route with planners who live here.</p>
             </div>
@@ -344,20 +342,6 @@ export function HomePage({ go, t }: HomePageProps) {
           </div>
         </div>
       </section>
-
-
-      {/* <Marquee
-        items={[
-          <span key="a">Wildlife</span>,
-          <span key="b">Tea Country</span>,
-          <span key="c">Heritage</span>,
-          <span key="d">Surf</span>,
-          <span key="e">Cuisine</span>,
-          <span key="f">Festivals</span>,
-          <span key="g">Whales</span>,
-          <span key="h">Trains</span>,
-        ]}
-      /> */}
 
       <section className="sec container">
         <SecHead
