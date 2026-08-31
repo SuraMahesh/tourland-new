@@ -18,7 +18,7 @@ export function DestinationsPage({ go }: DestinationsPageProps) {
         crumbs={['Modotravels', 'Destinations']}
         eyebrow="Destinations"
         title="Six regions to choose from."
-        img="https://images.unsplash.com/photo-1578519050142-afb511e518de?w=1600&q=72&auto=format&fit=crop"
+        img="https://images.unsplash.com/photo-1612862862126-865765df2ded?w=1600&q=72&auto=format&fit=crop"
       />
       <section className="container sec">
         <div className="sec-head">

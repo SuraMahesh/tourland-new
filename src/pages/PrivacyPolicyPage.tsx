@@ -7,7 +7,7 @@ export function PrivacyPolicyPage() {
         crumbs={['Modotravels', 'Privacy Policy']}
         eyebrow="Privacy"
         title="How we handle your data."
-        img="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600&q=72&auto=format&fit=crop"
+        img="https://images.unsplash.com/photo-1465924655546-6c184df810a9?w=1600&q=72&auto=format&fit=crop"
       />
 
       <section className="container sec legal-page">

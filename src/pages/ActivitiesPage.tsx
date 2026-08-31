@@ -21,7 +21,7 @@ export function ActivitiesPage({ go }: ActivitiesPageProps) {
         crumbs={['Modotravels', 'Activities']}
         eyebrow="Things to do"
         title="Six categories. Hundreds of experiences."
-        img="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=2000&q=80&auto=format&fit=crop"
+        img="https://images.unsplash.com/photo-1578519050142-afb511e518de?w=2000&q=80&auto=format&fit=crop"
       />
       <section className="container sec">
         <div className="flex gap-2 mt-2" style={{ flexWrap: 'wrap', marginBottom: 48 }}>

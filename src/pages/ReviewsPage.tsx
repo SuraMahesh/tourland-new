@@ -19,7 +19,7 @@ export function ReviewsPage() {
         crumbs={['Modotravels', 'Reviews']}
         eyebrow="From our travellers"
         title="Real stories from real trips."
-        img="https://images.unsplash.com/photo-1665849050332-8d5d7e59afb6?w=1600&q=72&auto=format&fit=crop"
+        img="https://images.unsplash.com/photo-1756671401467-100a1946e300?w=1600&q=72&auto=format&fit=crop"
       />
 
       <section className="reviews-stats-section" style={{ background: 'linear-gradient(135deg, var(--ink) 0%, rgba(44,62,80,.95) 100%)', color: 'var(--bone)', padding: '80px 40px' }}>

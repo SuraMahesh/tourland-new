@@ -285,21 +285,21 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'whale', name: 'Blue Whale Watching', category: 'Wildlife', duration: '4 hrs', difficulty: 'Easy',
-    img: U('1704797390501-37d39f2f6921'),
+    img: 'https://gildedlanka.com/wp-content/uploads/2024/11/Whale-Watching-in-Sri-Lanka.jpg',
     overview: 'Mirissa\'s continental shelf draws the largest animal on Earth between December and April.',
     steps: ['Pre-book a slow, eco-rated boat', 'Depart 6:30am', 'Spot blow plumes 8–11km offshore', 'Back to harbour by 11'],
   },
   {
     id: 'cook', name: 'Village Curry Cookery', category: 'Food', duration: '3 hrs', difficulty: 'Easy',
-    img: U('1747164628765-9394c8496a9c'),
-    overview: 'Hand-grind spices, make pol sambol, simmer dhal — eat your work with a Ceylon family.',
-    steps: ['Market visit at Nuwara Eliya', 'Cook 6 dishes with our host', 'Sit-down lunch on the verandah', 'Take recipes home'],
+    img: 'https://media.tacdn.com/media/attractions-splice-spp-674x446/15/b7/0b/98.jpg',
+    overview: 'A hands-on Sri Lankan village cookery experience in the Matale–Dambulla cultural heartland — make rice and curry, kiribath, and other traditional favourites with a local family.',
+    steps: ['Drive to a village home in the Matale–Dambulla area', 'Cook traditional Sri Lankan dishes with our host', 'Share a home-cooked rice and curry lunch', 'Take recipes home'],
   },
   {
     id: 'hike', name: 'Adam\'s Peak Pilgrimage', category: 'Adventure', duration: 'Overnight', difficulty: 'Hard',
     img: U('1711797750174-c3750dd9d7c9'),
     overview: 'Climb 5,500 steps in the dark to a 2,243m summit. Sunrise above the cloud-line. Dec–May.',
-    steps: ['Bus to Dalhousie · arrive 9pm', 'Climb starts 2am', 'Summit before 6am sunrise', 'Descend by 9am, sleep all day'],
+    steps: ['Private vehicle transfer to Dalhousie · arrive 9pm', 'Climb starts 2am', 'Summit before 6am sunrise', 'Descend by 9am, sleep all day'],
   },
 ];
 

@@ -61,8 +61,8 @@ export function ContactPage() {
       <SubHero
         crumbs={['Modotravels', 'Contact']}
         eyebrow="Get in touch"
-        title="Talk to a human in Colombo."
-        img="https://images.unsplash.com/photo-1465924655546-6c184df810a9?w=1600&q=72&auto=format&fit=crop"
+        title="Talk with the Modo team. We're here to help."
+        img="https://images.unsplash.com/photo-1665849050332-8d5d7e59afb6?w=1600&q=72&auto=format&fit=crop"
       />
       <section className="container sec">
         <div className="contact-wrapper" >
