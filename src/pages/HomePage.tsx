@@ -367,7 +367,7 @@ export function HomePage({ go, t }: HomePageProps) {
    
         />
         <DestinationGrid layout={t.cardLayout} dest={DESTINATIONS.slice(0, 8)} onPick={(id) => go('destination', { id })} />
-        <div className="mt-6 center">
+        <div className="mt-6 center" style={{marginBottom: 8}}>
           <button className="btn btn-light" onClick={() => go('destinations')}>
             See all 28 destinations <span className="arrow">→</span>
           </button>
