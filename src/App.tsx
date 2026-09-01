@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { Header, Footer, Seo, WaFab, CookieConsent } from './components';
+import { Header, Footer, WaFab, CookieConsent } from './components';
 import type { Tweaks, PageParams } from './types';
 import { useTweaks } from './hooks/useTweaks';
 
@@ -43,7 +43,7 @@ function AppContent() {
 
   return (
     <div data-screen-label={currentRoute}>
-      <Seo />
+      {/* <Seo /> */}
       <Header route={currentRoute} go={go} transparent={isHome} />
       <Suspense fallback={<main aria-busy="true" style={{ minHeight: '60vh' }} />}>
         <Routes>
