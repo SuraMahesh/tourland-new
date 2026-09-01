@@ -48,14 +48,16 @@ function setMeta(attribute: 'name' | 'property', key: string, content: string) {
   element.content = content;
 }
 
-function setLink(rel: string, href: string) {
+function setLink(rel: string, href: string, type?: string) {
   let element = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
   if (!element) {
     element = document.createElement('link');
     element.rel = rel;
+    if (type) element.type = type;
     document.head.appendChild(element);
   }
   element.href = href;
+  if (type) element.type = type;
 }
 
 export function Seo() {
@@ -66,8 +68,8 @@ export function Seo() {
     const destination = DESTINATIONS.find((item) => item.id === destinationId);
     const metadata = destination
       ? {
-          title: `${destination.name}, Sri Lanka | Modotravels`,
-          description: `${destination.name}: local travel advice, best time to visit, entry fees, and nearby places to include in your Sri Lanka itinerary.`,
+          title: `Modo Travels - Curated Sri Lanka Journeys`,
+          description: `Plan a more personal Sri Lanka journey with local insight, considered routes, and practical advice from Modotravels`,
         }
       : PAGE_METADATA[pathname] || {
           title: 'Sri Lanka travel planning | Modotravels',
@@ -89,6 +91,8 @@ export function Seo() {
     setMeta('name', 'twitter:description', metadata.description);
     if (destination) setMeta('name', 'twitter:image', destination.img);
     setLink('canonical', canonicalUrl);
+    setLink('icon', '/favicon.jpeg', 'image/jpeg');
+    setLink('apple-touch-icon', '/favicon.jpeg');
 
     const schema = destination
       ? {
