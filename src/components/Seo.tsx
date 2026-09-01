@@ -9,7 +9,7 @@ const DEFAULT_DESCRIPTION =
 
 const PAGE_METADATA: Record<string, { title: string; description: string }> = {
   '/': {
-    title: 'Sri Lanka, curated | Modotravels',
+    title: 'Modo Travels - Curated Sri Lanka Journeys',
     description: DEFAULT_DESCRIPTION,
   },
   '/destinations': {
