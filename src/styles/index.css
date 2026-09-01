@@ -91,10 +91,13 @@ textarea {
 }
 
 .h-1 {
-  font-size: clamp(68px, 6vw, 92px);
+  font-size: clamp(48px, 6vw, 84px);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.15;
+}
+
+.h-1-nowrap {
   white-space: nowrap;
 }
 

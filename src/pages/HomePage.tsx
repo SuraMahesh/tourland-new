@@ -262,7 +262,7 @@ export function HomePage({ go, t }: HomePageProps) {
               <div className="eyebrow" style={{ marginBottom: 18 }}>
                 ● Live in {now.city} · {now.temp}°C · {liveDate}
               </div>
-              <h1 className="h-1">
+              <h1 className="h-1 h-1-nowrap">
                 <em style={{ fontStyle: 'normal', color: 'var(--sunset)' }}>Modo</em> Travels
               </h1>
               <p className="lede">Eight regions, two monsoons, one small island. Build your route with planners who live here.</p>
