@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { DESTINATIONS } from '../data';
 
-const SITE_URL = 'https://modotravels.com';
+const SITE_URL = 'https://www.modotravels.com';
 const SITE_NAME = 'Modotravels';
 const DEFAULT_DESCRIPTION =
   'Plan a more personal Sri Lanka journey with local insight, considered routes, and practical advice from Modotravels.';
