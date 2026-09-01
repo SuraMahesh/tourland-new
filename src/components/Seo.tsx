@@ -85,11 +85,14 @@ export function Seo() {
     setMeta('property', 'og:title', metadata.title);
     setMeta('property', 'og:description', metadata.description);
     setMeta('property', 'og:url', canonicalUrl);
-    if (destination) setMeta('property', 'og:image', destination.img);
+    setMeta('property', 'og:image', destination ? destination.img : `${SITE_URL}/meta.jpg`);
+    setMeta('property', 'og:image:type', 'image/jpeg');
+    setMeta('property', 'og:image:width', '1200');
+    setMeta('property', 'og:image:height', '630');
     setMeta('name', 'twitter:card', 'summary_large_image');
     setMeta('name', 'twitter:title', metadata.title);
     setMeta('name', 'twitter:description', metadata.description);
-    if (destination) setMeta('name', 'twitter:image', destination.img);
+    setMeta('name', 'twitter:image', destination ? destination.img : `${SITE_URL}/meta.jpg`);
     setLink('canonical', canonicalUrl);
     setLink('icon', '/favicon.jpeg', 'image/jpeg');
     setLink('apple-touch-icon', '/favicon.jpeg');
