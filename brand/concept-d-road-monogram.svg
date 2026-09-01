@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none">
-  <!-- Concept D · Road Monogram — a "T" whose stem is a winding road,
-       morning sun in the corner. T for Tour; the stem is the journey. -->
-  <rect width="96" height="96" rx="22" fill="#0d3b2e"/>
-  <circle cx="68" cy="30" r="9" fill="#d97742"/>
-  <rect x="22" y="24" width="38" height="11" rx="5.5" fill="#f8f4ea"/>
-  <path d="M41 35 C47 48 41 58 34 66 C30 70 28 73 28 77" stroke="#f8f4ea" stroke-width="12" stroke-linecap="round"/>
-  <path d="M41 38 C45 48 39 57 33 65 C30 68 29 71 29 74" stroke="#d97742" stroke-width="1.8" stroke-dasharray="4 4.5"/>
-</svg>
