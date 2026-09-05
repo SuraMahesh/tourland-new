@@ -87,18 +87,45 @@ Still to do:
 
 ## 4. Performance (Core Web Vitals)
 
-Page speed is a ranking signal. Current state and what to improve, in order of
-impact:
+Lighthouse (local, production build): **Accessibility 100, Best Practices 100,
+SEO 100 on every audited page**; Performance ~88–96 mobile / ~97 desktop.
+What's in place — keep these invariants when editing:
 
-1. **Images are the main cost.** Destination heroes load from Unsplash at
-   w=1600. Serve responsive sizes (`srcset` or lower `w=` for cards), add
-   `loading="lazy"` to below-the-fold images, and `fetchpriority="high"` +
-   explicit `width`/`height` on the LCP hero image.
-2. **JS bundle**: the build warns about a >500 kB chunk. Leaflet and
-   framer-motion are the likely culprits — keep map components lazy-loaded so
-   they don't ship on the home page.
-3. Measure with https://pagespeed.web.dev against the live URL; watch LCP
-   (target <2.5 s) and CLS (<0.1).
+- **Responsive images**: every `<img>` for destination/activity photos uses
+  `srcSet` from `src/utils/img.ts`. Local images in `public/assets/**` need a
+  pre-generated `-800.jpg` variant — when adding an image, run
+  `sips -Z 800 -s format jpeg -s formatOptions 70 name.jpg --out name-800.jpg`.
+- **Hero preload**: each page's `heroImg` in `PAGE_METADATA` is emitted as a
+  `<link rel="preload" as="image">` by the prerenderer — set it for new pages.
+- **Fonts are self-hosted** (`public/fonts/*.woff2`, variable, latin +
+  latin-ext) with `@font-face` at the top of `index.css` using
+  `font-display: optional` — text never repaints or shifts when fonts arrive.
+  Never reintroduce a Google Fonts stylesheet or CSS `@import`.
+- **Static rendering + hydration**: `scripts/prerender.mjs` renders every
+  route's full markup into `#root` via `src/ssr-entry.tsx`, and `main.tsx`
+  hydrates it. **The build-time render and the first client render must produce
+  identical markup** — no `new Date()`, `window`, `Math.random`, or
+  `localStorage` in initial render output. Fill viewer-dependent values in a
+  mount effect (see the date effect in HomePage), or gate browser-only UI on
+  `useHydrated()` (see LazyMapView). Date-heavy routes can opt out via
+  `SKIP_STATIC` in the prerender script (currently `/planner`). A hydration
+  mismatch shows up as React error #418 in the console and forfeits the LCP
+  win — check the browser console after touching initial-render code.
+- **Leaflet is lazy**: always use `LazyMapView`, never import `MapView` or
+  `MiniMap` into eagerly-loaded code. framer-motion was removed (header
+  animations are CSS in `index.css`).
+- **CLS**: the route Suspense fallback must stay `minHeight: 100vh` so the
+  footer never renders in-viewport mid-load. Give every new `<img>` explicit
+  `width`/`height`.
+- **Accessibility invariants**: heading levels never skip (footer uses h2,
+  cards h3); form controls get `htmlFor`/`id` label association; text colors
+  use `--mute`/`--sunset-ink` (not raw `--sunset`) on light backgrounds.
+
+Re-check after significant UI changes: `npm run build && npm run preview`,
+then Lighthouse in Chrome DevTools, or https://pagespeed.web.dev on the live
+site. Watch LCP (<2.5 s) and CLS (<0.1). The remaining mobile-performance gap
+is the client-side-rendered SPA boot; closing it fully would mean rendering
+page content into the prerendered HTML (SSG + hydration).
 
 ## 5. Off-page
 

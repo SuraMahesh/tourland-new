@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { imgSrcSet, CARD_SIZES } from '../utils/img';
 import { useReveal } from '../hooks/useReveal';
-import { SecHead, DestinationCard, ReviewCard, TwoCoasts } from '../components';
+import { SecHead, DestinationCard, ReviewCard } from '../components';
+import { TwoCoasts } from '../components/TwoCoasts';
 import { DESTINATIONS, ACTIVITIES, REVIEWS, HOW_IT_WORKS } from '../data';
 import type { Tweaks, PageParams } from '../types';
 
@@ -22,7 +24,7 @@ function DateRangePicker({ value, onChange }: { value: string; onChange: (v: str
     const today = getToday();
     return new Date(today.getFullYear(), today.getMonth(), 1);
   });
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 768);
 
   const getDaysInMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   const getFirstDayOfMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth(), 1).getDay();
@@ -226,12 +228,8 @@ interface HomePageProps {
 export function HomePage({ go, t }: HomePageProps) {
   const ref = useReveal();
   const [reel, setReel] = useState(0);
-  const [dateRange, setDateRange] = useState(() => {
-    const start = getToday();
-    const end = new Date(start);
-    end.setDate(end.getDate() + 14);
-    return formatBookingRange(start, end);
-  });
+  const [dateRange, setDateRange] = useState('');
+  const [liveDate, setLiveDate] = useState('');
   const [destination, setDestination] = useState('');
   const [travellers, setTravellers] = useState('2 adults');
   const [style, setStyle] = useState('');
@@ -240,6 +238,20 @@ export function HomePage({ go, t }: HomePageProps) {
     const id = setInterval(() => setReel((r) => (r + 1) % 6), 5500);
     return () => clearInterval(id);
   }, []);
+
+  // Deliberate post-hydration fill: these values depend on the viewer's
+  // clock, so the build-time render and first client render leave them empty.
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    const start = getToday();
+    const end = new Date(start);
+    end.setDate(end.getDate() + 14);
+    setDateRange(formatBookingRange(start, end));
+    setLiveDate(
+      new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date()),
+    );
+  }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const HERO_REELS = [
     { img: '/assets/destinations/ella.jpg', label: 'Nine Arch Bridge, Ella', coords: '06° 56′ N · 80° 38′ E', city: 'Ella', temp: 22 },
@@ -251,7 +263,7 @@ export function HomePage({ go, t }: HomePageProps) {
   ];
 
   const now = HERO_REELS[reel];
-  const liveDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date());
+
 
   return (
     <main ref={ref}>
@@ -263,7 +275,7 @@ export function HomePage({ go, t }: HomePageProps) {
                 ● Live in {now.city} · {now.temp}°C · {liveDate}
               </div>
               <h1 className="h-1 h-1-nowrap">
-                <em style={{ fontStyle: 'normal', color: 'var(--sunset)' }}>Modo</em> Travels
+                <em style={{ fontStyle: 'normal', color: 'var(--sunset-ink)' }}>Modo</em> Travels
               </h1>
               <p className="lede">Eight regions, two monsoons, one small island. Build your route with planners who live here.</p>
             </div>
@@ -272,8 +284,8 @@ export function HomePage({ go, t }: HomePageProps) {
               <h2>Start with the shape of your trip.</h2>
               <div className="searchbar">
               <div className="sb-field">
-                <label>Where</label>
-                <select value={destination} onChange={(event) => setDestination(event.target.value)}>
+                <label htmlFor="sb-where">Where</label>
+                <select id="sb-where" value={destination} onChange={(event) => setDestination(event.target.value)}>
                   <option value="">All of Sri Lanka</option>
                   {DESTINATIONS.map((d) => (
                     <option key={d.id}>{d.name}</option>
@@ -286,12 +298,12 @@ export function HomePage({ go, t }: HomePageProps) {
                 <DateRangePicker value={dateRange} onChange={setDateRange} />
               </div>
               <div className="sb-field">
-                <label>Travellers</label>
-                <input type="text" placeholder="2 adults" value={travellers} onChange={(event) => setTravellers(event.target.value)} />
+                <label htmlFor="sb-travellers">Travellers</label>
+                <input id="sb-travellers" type="text" placeholder="2 adults" value={travellers} onChange={(event) => setTravellers(event.target.value)} />
               </div>
               <div className="sb-field">
-                <label>Style</label>
-                <select value={style} onChange={(event) => setStyle(event.target.value)}>
+                <label htmlFor="sb-style">Style</label>
+                <select id="sb-style" value={style} onChange={(event) => setStyle(event.target.value)}>
                   <option value="">Surprise me</option>
                   <option>Nature & wildlife</option>
                   <option>Culture & heritage</option>
@@ -301,7 +313,6 @@ export function HomePage({ go, t }: HomePageProps) {
               </div>
               <button
                 className="sb-go"
-                aria-label="Open trip planner"
                 onClick={() => go('planner', { destination, dateRange, travellers, style })}
               >
                Continue →
@@ -313,7 +324,7 @@ export function HomePage({ go, t }: HomePageProps) {
           </div>
           <div className="hero-media">
             <div className="hero-reel is-active">
-              <img src={now.img} alt={now.label} width="1600" height="1000" fetchPriority="high" />
+              <img src={now.img} srcSet={imgSrcSet(now.img)} sizes="(max-width: 900px) 100vw, 60vw" alt={now.label} width="1600" height="1000" fetchPriority="high" />
             </div>
             <div className="hero-media-overlay" />
             <div className="hero-meta">
@@ -368,13 +379,13 @@ export function HomePage({ go, t }: HomePageProps) {
           {ACTIVITIES.slice(0, 6).map((a) => (
             <article key={a.id} className="card reveal" onClick={() => go('activities')} style={{ cursor: 'pointer' }}>
               <div className="ph" style={{ aspectRatio: '5/4' }}>
-                <img src={a.img} alt={a.name} loading="lazy" width="1200" height="960" />
+                <img src={a.img} srcSet={imgSrcSet(a.img)} sizes={CARD_SIZES} alt={a.name} loading="lazy" width="1200" height="960" />
               </div>
               <div className="bd">
                 <div className="mono" style={{ color: 'var(--mute)', marginBottom: 6 }}>
                   {a.category} · {a.duration} · {a.difficulty}
                 </div>
-                <h4>{a.name}</h4>
+                <h3>{a.name}</h3>
                 <p>{a.overview.slice(0, 110)}…</p>
                 <div className="meta">
                   <span>We can arrange</span>
@@ -406,7 +417,7 @@ export function HomePage({ go, t }: HomePageProps) {
               <div className="mono" style={{ color: 'var(--sunset)', marginBottom: 14 }}>
                 {s.n}
               </div>
-              <h4 className="h-4">{s.t}</h4>
+              <h3 className="h-4">{s.t}</h3>
               <p className="mute" style={{ marginTop: 10, fontSize: 14 }}>
                 {s.d}
               </p>
@@ -508,9 +519,9 @@ function FAQAccordion() {
               gap: 16,
             }}
           >
-            <h4 style={{ margin: 0, textAlign: 'left', fontWeight: 600, fontSize: 16, color: 'var(--ink)', maxWidth: '90%' }}>
+            <h3 style={{ margin: 0, textAlign: 'left', fontWeight: 600, fontSize: 16, color: 'var(--ink)', maxWidth: '90%' }}>
               {faq.q}
-            </h4>
+            </h3>
             <span
               style={{
                 color: 'var(--sunset)',

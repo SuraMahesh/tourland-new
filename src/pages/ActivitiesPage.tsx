@@ -138,7 +138,7 @@ export function ActivitiesPage({ go }: ActivitiesPageProps) {
                       alignItems: 'baseline',
                     }}
                   >
-                    <span className="mono" style={{ color: 'var(--sunset)' }}>0{i + 1}</span>
+                    <span className="mono" style={{ color: 'var(--sunset-ink)' }}>0{i + 1}</span>
                     <span style={{ fontSize: 15 }}>{s}</span>
                   </li>
                 ))}

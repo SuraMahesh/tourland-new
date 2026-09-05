@@ -4,58 +4,70 @@ export const SITE_URL = 'https://www.modotravels.com';
 export const SITE_NAME = 'Modotravels';
 export const DEFAULT_DESCRIPTION =
   'Plan a more personal Sri Lanka journey with local insight, considered routes, and practical advice from Modotravels.';
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/meta.png`;
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/meta.jpg`;
 
 export interface PageMeta {
   title: string;
   description: string;
+  // Above-the-fold hero image, preloaded from the prerendered HTML for LCP.
+  heroImg?: string;
 }
 
 export const PAGE_METADATA: Record<string, PageMeta> = {
   '/': {
+    heroImg: '/assets/destinations/ella.jpg',
     title: 'Modotravels | Sri Lanka Tours, Travel Planning & Local Guides',
     description: DEFAULT_DESCRIPTION,
   },
   '/guide': {
+    heroImg: '/assets/destinations/ella.jpg',
     title: 'How to Travel Sri Lanka: Complete Guide | Modotravels',
     description:
       'How to travel Sri Lanka: visas, best time to go, getting around, costs, sample itineraries, and the most beautiful places to visit — from local planners.',
   },
   '/destinations': {
+    heroImg: '/assets/destinations/sigiriya.jpg',
     title: "Sri Lanka's Most Beautiful Places & Destinations | Modotravels",
     description:
       'Discover the most beautiful places in Sri Lanka — beaches, hill country, ancient cities, and wildlife parks — with local advice for every destination.',
   },
   '/seasons': {
+    heroImg: '/assets/destinations/galle.jpg',
     title: 'Best time to visit Sri Lanka | Modotravels',
     description:
       'Use our Sri Lanka seasonal guide to match each coast, region, and experience to the best time of year.',
   },
   '/activities': {
+    heroImg: '/assets/destinations/ella.jpg',
     title: 'Things to do in Sri Lanka | Modotravels',
     description:
       'Find memorable things to do in Sri Lanka, from scenic train rides and safaris to surfing and rainforest walks.',
   },
   '/planner': {
+    heroImg: '/assets/destinations/teaestates.jpg',
     title: 'Plan your Sri Lanka trip | Modotravels',
     description:
       'Build a practical Sri Lanka itinerary with vehicle options, route planning, and local trip support.',
   },
   '/reviews': {
+    heroImg: '/assets/destinations/trincomalee.jpg',
     title: 'Sri Lanka travel reviews | Modotravels',
     description:
       'Read traveller stories and honest impressions from journeys planned with Modotravels in Sri Lanka.',
   },
   '/contact': {
+    heroImg: '/assets/destinations/kandy.jpg',
     title: 'Contact Modotravels | Sri Lanka travel planning',
     description:
       'Talk to Modotravels about planning a thoughtful, locally informed trip around Sri Lanka.',
   },
   '/privacy-policy': {
+    heroImg: '/assets/destinations/galle.jpg',
     title: 'Privacy policy | Modotravels',
     description: 'How Modotravels collects, uses, and protects your personal information.',
   },
   '/terms': {
+    heroImg: '/assets/destinations/sigiriya.jpg',
     title: 'Terms of service | Modotravels',
     description:
       'The terms that apply when you plan and book a Sri Lanka journey with Modotravels.',
@@ -135,6 +147,7 @@ export interface ResolvedSeo {
   canonical: string;
   ogType: 'website' | 'article';
   ogImage: string;
+  heroImg?: string;
   robots: string;
   schema: object[];
 }
@@ -222,6 +235,7 @@ export function resolveSeo(rawPath: string, destinations: Destination[]): Resolv
     canonical,
     ogType: destination ? 'article' : 'website',
     ogImage,
+    heroImg: destination ? destination.img : PAGE_METADATA[pathname]?.heroImg,
     robots: isKnownPage ? 'index, follow' : 'noindex, follow',
     schema,
   };

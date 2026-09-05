@@ -296,8 +296,9 @@ function Step1Dates({
 
       <div className="grid mt-6" style={{ gridTemplateColumns: '1fr 1fr', gap: 20 }}>
         <div className="field">
-          <label>Start date</label>
+          <label htmlFor="trip-start">Start date</label>
           <input
+            id="trip-start"
             type="date"
             value={trip.startDate}
             min={todayIsoDate()}
@@ -305,8 +306,10 @@ function Step1Dates({
           />
         </div>
         <div className="field">
-          <label>Duration · {trip.days} days</label>
+          <label htmlFor="trip-days">Duration · {trip.days} days</label>
           <input
+            id="trip-days"
+            aria-label={`Trip duration: ${trip.days} days`}
             type="range"
             min="1"
             max="28"
@@ -1046,7 +1049,7 @@ function ItinerarySidebar({
                 >
                   {String(day.day).padStart(2, '0')}
                 </div>
-                <div style={{ fontSize: 10, color: 'rgba(248,244,234,.4)', marginTop: 2 }}>
+                <div style={{ fontSize: 10, color: 'rgba(248,244,234,.75)', marginTop: 2 }}>
                   {day.date}
                 </div>
               </div>
@@ -1187,7 +1190,7 @@ function ItinerarySidebar({
         <div
           style={{
             fontSize: 11,
-            color: 'rgba(248,244,234,.45)',
+            color: 'rgba(248,244,234,.75)',
             marginTop: 10,
             textAlign: 'center',
           }}
@@ -1525,7 +1528,7 @@ function FinalReview({ trip, itinerary }: { trip: TripData; itinerary: Itinerary
               📄 Download PDF
             </button>
           </div>
-          <div style={{ fontSize: 12, color: 'rgba(248,244,234,.45)', marginTop: 14 }}>
+          <div style={{ fontSize: 12, color: 'rgba(248,244,234,.75)', marginTop: 14 }}>
             The email opens in your mail app, pre-filled with your details and full plan, addressed to {BOOKING_EMAIL}.
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { NAV } from '../data';
+import { NAV } from '../data/nav';
 
 interface FooterProps {
   go: (route: string, params?: any) => void;
@@ -35,7 +35,7 @@ export function Footer({ go }: FooterProps) {
           </div> */}
         </div>
         <div>
-          <h6>Explore</h6>
+          <h2>Explore</h2>
           {NAV.slice(1, 5).map(([k, l]) => (
             <a key={k} href={`/${k}`} onClick={(event) => { event.preventDefault(); go(k as string); }}>
               {l}
@@ -45,14 +45,14 @@ export function Footer({ go }: FooterProps) {
           <a href="/guide" onClick={(event) => { event.preventDefault(); go('guide'); }}>Travel guide</a>
         </div>
         <div>
-          <h6>Plan</h6>
+          <h2>Plan</h2>
           <a href="/planner" onClick={(event) => { event.preventDefault(); go('planner'); }}>Tour Planner</a>
           <a href="/contact" onClick={(event) => { event.preventDefault(); go('contact'); }}>Airport Pickup</a>
           <a href="/contact" onClick={(event) => { event.preventDefault(); go('contact'); }}>Talk to a planner</a>
           <a href="/contact" onClick={(event) => { event.preventDefault(); go('contact'); }}>Travel insurance</a>
         </div>
         <div>
-          <h6>Newsletter</h6>
+          <h2>Newsletter</h2>
           <p style={{
             color: 'rgba(248,244,234,.6)',
             fontSize: 13,

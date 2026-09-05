@@ -1,4 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Self-hosted variable fonts (latin subsets) - preloaded from index.html */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: optional;
+  src: url(/fonts/inter-tight-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: optional;
+  src: url(/fonts/inter-tight-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: optional;
+  src: url(/fonts/jetbrains-mono-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: optional;
+  src: url(/fonts/jetbrains-mono-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 
 /* ---------- Modotravels · Design Tokens ---------- */
 :root {
@@ -18,7 +50,8 @@
   --brown: #3d2817;
   --line: rgba(10, 20, 16, 0.12);
   --line-2: rgba(10, 20, 16, 0.06);
-  --mute: rgba(10, 20, 16, 0.58);
+  --mute: rgba(10, 20, 16, 0.68);
+  --sunset-ink: #b0521a;
 
   /* Type */
   --font-display: 'Inter Tight', 'Söhne', 'GT America', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -433,7 +466,7 @@ textarea {
   padding: 8px 14px 8px 10px;
   border-radius: 999px;
   background: #25d366;
-  color: white;
+  color: #08351b;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -442,7 +475,7 @@ textarea {
 .wa-pill svg {
   width: 14px;
   height: 14px;
-  fill: white;
+  fill: #08351b;
 }
 
 /* ---------- Mobile Navigation ---------- */
@@ -707,7 +740,7 @@ textarea {
   justify-content: space-between;
 }
 
-.ft h6 {
+.ft h2 {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -885,7 +918,7 @@ textarea {
   padding: 20px 22px 22px;
 }
 
-.card .bd h4 {
+.card .bd h3 {
   margin: 0 0 6px;
   font-size: 20px;
   font-weight: 500;
@@ -915,7 +948,7 @@ textarea {
   border-color: rgba(248, 244, 234, 0.1);
 }
 
-.card-dark .bd h4 {
+.card-dark .bd h3 {
   color: var(--bone);
 }
 
@@ -2658,5 +2691,39 @@ textarea {
 
   hover {
     color: gray;
+  }
+}
+/* Decorative numeral rendered via pseudo-element (no text node for a11y scanners) */
+.coast-watermark::after {
+  content: attr(data-num);
+}
+
+/* CSS replacements for the former framer-motion header animations */
+.nav-desktop .nav-link {
+  transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.6, 1);
+}
+.nav-desktop .nav-link:hover {
+  transform: rotate(2deg);
+}
+.mobile-menu-overlay {
+  animation: menu-fade-in 0.3s ease both;
+}
+.mobile-menu-overlay .mobile-menu-item {
+  animation: menu-item-in 0.3s ease both;
+}
+@keyframes menu-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes menu-item-in {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-desktop .nav-link,
+  .mobile-menu-overlay,
+  .mobile-menu-overlay .mobile-menu-item {
+    animation: none;
+    transition: none;
   }
 }

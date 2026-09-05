@@ -17,7 +17,7 @@ function DestLink({ id, go, children }: { id: string; go: GoFn; children: ReactN
         event.preventDefault();
         go('destination', { id });
       }}
-      style={{ color: 'var(--sunset)', fontWeight: 500 }}
+      style={{ color: 'var(--sunset-ink)', fontWeight: 500 }}
     >
       {children}
     </a>
@@ -32,7 +32,7 @@ function PageLink({ to, go, children }: { to: string; go: GoFn; children: ReactN
         event.preventDefault();
         go(to);
       }}
-      style={{ color: 'var(--sunset)', fontWeight: 500 }}
+      style={{ color: 'var(--sunset-ink)', fontWeight: 500 }}
     >
       {children}
     </a>
@@ -164,7 +164,7 @@ export function GuidePage({ go }: GuidePageProps) {
         <div className="grid grid-3" style={{ gap: 20, alignItems: 'stretch' }}>
           {ITINERARIES.map((it) => (
             <article key={it.name} style={{ padding: 28, background: 'var(--bone)', borderRadius: 'var(--r-lg)', border: '1px solid var(--line-2)', display: 'flex', flexDirection: 'column' }}>
-              <div className="mono" style={{ color: 'var(--sunset)', fontSize: 12, marginBottom: 8 }}>{it.days}</div>
+              <div className="mono" style={{ color: 'var(--sunset-ink)', fontSize: 12, marginBottom: 8 }}>{it.days}</div>
               <h3 className="h-4" style={{ marginBottom: 12 }}>{it.name}</h3>
               <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--mute)', marginBottom: 16 }}>{it.note}</p>
               <div style={{ marginTop: 'auto', fontSize: 14, lineHeight: 1.9 }}>
@@ -215,7 +215,7 @@ export function GuidePage({ go }: GuidePageProps) {
 
       <section className="container sec">
         <SecHead title="Frequently asked questions." />
-        <div style={{ maxWidth: 780 }}>
+        <div style={{ maxWidth: 780, paddingLeft: 12 }}>
           {GUIDE_FAQS.map((faq) => (
             <details key={faq.q} style={{ borderTop: '1px solid var(--line-2)', padding: '4px 0' }}>
               <summary className="h-4" style={{ cursor: 'pointer', padding: '16px 0', listStylePosition: 'outside' }}>

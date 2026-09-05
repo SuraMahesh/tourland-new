@@ -21,7 +21,7 @@ const TWEAK_DEFAULTS: Tweaks = {
   accent: '#d97742',
 };
 
-function AppContent() {
+export function AppContent() {
   const [t] = useTweaks(TWEAK_DEFAULTS);
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,7 +46,7 @@ function AppContent() {
     <div data-screen-label={currentRoute}>
       <Seo />
       <Header route={currentRoute} go={go} transparent={isHome} />
-      <Suspense fallback={<main aria-busy="true" style={{ minHeight: '60vh' }} />}>
+      <Suspense fallback={<main aria-busy="true" style={{ minHeight: '100vh' }} />}>
         <Routes>
           <Route path="/" element={<HomePage go={go} t={t} />} />
           <Route path="/destinations" element={<DestinationsPage go={go} />} />

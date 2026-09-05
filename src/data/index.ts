@@ -404,14 +404,7 @@ export const HOW_IT_WORKS: HowItWorks[] = [
   { n: '04', t: 'Travel', d: '24/7 ground concierge by WhatsApp. One number, every day of your trip.' },
 ];
 
-export const NAV = [
-  ['home', 'Home'],
-  ['destinations', 'Destinations'],
-  ['seasons', 'Seasons'],
-  ['activities', 'Activities'],
-  ['planner', 'Plan Tour'],
-  ['contact', 'Contact'],
-] as const;
+export { NAV } from './nav';
 
 export interface CoastData {
   id: string;

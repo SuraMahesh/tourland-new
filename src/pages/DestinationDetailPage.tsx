@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
-import { MapView } from '../components';
+import { imgSrcSet } from '../utils/img';
+import { LazyMapView } from '../components';
 import { DESTINATIONS } from '../data';
 import type { PageParams } from '../types';
 
@@ -15,7 +16,7 @@ export function DestinationDetailPage({ go }: DestinationDetailPageProps) {
     <main>
       <section className="subhero" style={{ height: 640 }}>
         <div className="subhero-media">
-          <img src={d.img.replace('w=1600', 'w=2400')} alt={d.name} />
+          <img src={d.img} srcSet={imgSrcSet(d.img)} sizes="100vw" alt={d.name} width="1600" height="900" fetchPriority="high" />
         </div>
         <div className="subhero-shade" />
         <div className="subhero-inner">
@@ -102,7 +103,7 @@ export function DestinationDetailPage({ go }: DestinationDetailPageProps) {
               ))}
             </div>
             <div className="mt-4">
-              <MapView pins={[d]} active={d.id} height={320} />
+              <LazyMapView pins={[d]} active={d.id} height={320} />
             </div>
           </aside>
         </div>

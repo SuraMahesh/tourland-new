@@ -63,7 +63,12 @@ export function MapView({ pins = [], pinMeta, onPick, active, height = 460 }: Ma
         iconSize: [18, 18],
         iconAnchor: [9, 9],
       });
-      const marker = L.marker([p.lat, p.lng], { icon }).addTo(layer);
+      const marker = L.marker([p.lat, p.lng], { icon, keyboard: Boolean(onPick) }).addTo(layer);
+      const markerElement = marker.getElement();
+      if (markerElement) {
+        markerElement.setAttribute('role', onPick ? 'button' : 'img');
+        markerElement.setAttribute('aria-label', `${meta.label} · ${p.name}`);
+      }
       marker.bindTooltip(`${meta.label} · ${p.name}`, {
         direction: 'top',
         offset: [0, -10],

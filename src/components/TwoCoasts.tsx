@@ -1,5 +1,5 @@
 import { COAST_DATA, DESTINATIONS } from '../data';
-import { MapView } from './MapView';
+import { LazyMapView } from './LazyMapView';
 
 const MONTHS_SHORT = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 const TODAY_MONTH = new Date().getMonth();
@@ -30,6 +30,8 @@ export function TwoCoasts({ go }: TwoCoastsProps) {
       {/* Decorative giant numerals in background */}
       <div
         aria-hidden="true"
+        className="coast-watermark"
+        data-num="02"
         style={{
           position: 'absolute',
           top: 80,
@@ -42,9 +44,7 @@ export function TwoCoasts({ go }: TwoCoastsProps) {
           lineHeight: 0.85,
           pointerEvents: 'none',
         }}
-      >
-        02
-      </div>
+      />
 
       <div className="season-wrap" >
         {/* LEFT — headline + island */}
@@ -62,7 +62,7 @@ export function TwoCoasts({ go }: TwoCoastsProps) {
           </p>
 
           <div style={{ marginTop: 28, borderRadius: 'var(--r-lg)', overflow: 'hidden', border: '1px solid rgba(248,244,234,.18)', boxShadow: '0 20px 60px rgba(0,0,0,.18)' }}>
-            <MapView pins={mapPins} pinMeta={mapMeta} active={mapPins[0]?.id} height={320} />
+            <LazyMapView pins={mapPins} pinMeta={mapMeta} active={mapPins[0]?.id} height={320} />
           </div>
 
           {/* <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', gap: 8, fontSize: 12, color: 'rgba(248,244,234,.6)' }}>

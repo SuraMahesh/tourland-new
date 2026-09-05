@@ -1,4 +1,5 @@
 import type { Destination, Hotel, Review } from '../types';
+import { imgSrcSet, CARD_SIZES } from '../utils/img';
 
 interface DestinationCardProps {
   d: Destination;
@@ -10,7 +11,6 @@ export function DestinationCard({ d, onClick, variant = 'grid' }: DestinationCar
   const cardProps = {
     role: onClick ? 'link' : undefined,
     tabIndex: onClick ? 0 : undefined,
-    'aria-label': onClick ? `Explore ${d.name}` : undefined,
     onKeyDown: onClick ? (event: React.KeyboardEvent<HTMLElement>) => {
       if (event.key === 'Enter' || event.key === ' ') onClick();
     } : undefined,
@@ -19,14 +19,14 @@ export function DestinationCard({ d, onClick, variant = 'grid' }: DestinationCar
     return (
       <article {...cardProps} className="card" onClick={onClick} style={{ cursor: 'pointer', display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 0 }}>
         <div className="ph" style={{ height: 280 }}>
-          <img src={d.img} alt={d.name} loading="lazy" width="1200" height="900" />
+          <img src={d.img} srcSet={imgSrcSet(d.img)} sizes={CARD_SIZES} alt={d.name} loading="lazy" width="1200" height="900" />
         </div>
         <div className="bd" style={{ padding: '28px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <div>
             <div className="mono" style={{ color: 'var(--mute)', marginBottom: 10 }}>
               {d.region}
             </div>
-            <h4 style={{ fontSize: 28, letterSpacing: '-.025em' }}>{d.name}</h4>
+            <h3 style={{ fontSize: 28, letterSpacing: '-.025em' }}>{d.name}</h3>
             <p style={{ marginTop: 10 }}>{d.desc}</p>
           </div>
           <div className="meta" style={{ marginTop: 20, justifyContent: 'space-between' }}>
@@ -44,13 +44,13 @@ export function DestinationCard({ d, onClick, variant = 'grid' }: DestinationCar
     return (
       <article {...cardProps} className="card" onClick={onClick} style={{ cursor: 'pointer', minWidth: 360, flex: '0 0 360px', scrollSnapAlign: 'start' }}>
         <div className="ph" style={{ aspectRatio: '4/5' }}>
-          <img src={d.img} alt={d.name} loading="lazy" width="1200" height="1500" />
+          <img src={d.img} srcSet={imgSrcSet(d.img)} sizes={CARD_SIZES} alt={d.name} loading="lazy" width="1200" height="1500" />
         </div>
         <div className="bd">
           <div className="mono" style={{ color: 'var(--mute)', marginBottom: 6 }}>
             {d.region}
           </div>
-          <h4>{d.name}</h4>
+          <h3>{d.name}</h3>
           <p>{d.desc.slice(0, 90)}…</p>
         </div>
       </article>
@@ -60,13 +60,13 @@ export function DestinationCard({ d, onClick, variant = 'grid' }: DestinationCar
   return (
     <article {...cardProps} className="card" onClick={onClick} style={{ cursor: 'pointer' }}>
       <div className="ph" style={{ aspectRatio: '4/3' }}>
-        <img src={d.img} alt={d.name} loading="lazy" width="1200" height="900" />
+        <img src={d.img} srcSet={imgSrcSet(d.img)} sizes={CARD_SIZES} alt={d.name} loading="lazy" width="1200" height="900" />
       </div>
       <div className="bd">
         <div className="mono" style={{ color: 'var(--mute)', marginBottom: 6 }}>
           {d.region}
         </div>
-        <h4>{d.name}</h4>
+        <h3>{d.name}</h3>
         <p>{d.desc.slice(0, 110)}…</p>
         <div className="meta">
           <span>✦ {d.tag}</span>
@@ -105,13 +105,13 @@ export function HotelCard({ h }: HotelCardProps) {
         </span>
       )}
       <div className="ph" style={{ aspectRatio: '4/3' }}>
-        <img src={h.img} alt={h.name} loading="lazy" width="1200" height="900" />
+        <img src={h.img} srcSet={imgSrcSet(h.img)} sizes={CARD_SIZES} alt={h.name} loading="lazy" width="1200" height="900" />
       </div>
       <div className="bd">
         <div className="mono" style={{ color: 'var(--mute)', marginBottom: 6 }}>
           {h.city}
         </div>
-        <h4>{h.name}</h4>
+        <h3>{h.name}</h3>
         <p>{h.blurb}</p>
         <div className="meta" style={{ justifyContent: 'space-between' }}>
           <span>

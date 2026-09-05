@@ -138,7 +138,7 @@ export function ContactPage() {
             {sent ? (
               <div style={{ padding: 48, textAlign: 'center' }}>
                 <div style={{ fontSize: 48, color: 'var(--sunset)' }}>✓</div>
-                <h4 className="h-4 mt-2">Message received.</h4>
+                <h3 className="h-4 mt-2">Message received.</h3>
                 <p className="mute mt-2">We've copied your planner. Reply usually within four hours.</p>
               </div>
             ) : (
@@ -155,7 +155,7 @@ export function ContactPage() {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     style={{ borderColor: errors.name ? 'var(--sunset)' : 'var(--line)' }}
                   />
-                  {errors.name && <span style={{ fontSize: 12, color: 'var(--sunset)', marginTop: 4 }}>{errors.name}</span>}
+                  {errors.name && <span style={{ fontSize: 12, color: 'var(--sunset-ink)', marginTop: 4 }}>{errors.name}</span>}
                 </div>
                 <div className="field">
                   <label>Email</label>
@@ -166,7 +166,7 @@ export function ContactPage() {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     style={{ borderColor: errors.email ? 'var(--sunset)' : 'var(--line)' }}
                   />
-                  {errors.email && <span style={{ fontSize: 12, color: 'var(--sunset)', marginTop: 4 }}>{errors.email}</span>}
+                  {errors.email && <span style={{ fontSize: 12, color: 'var(--sunset-ink)', marginTop: 4 }}>{errors.email}</span>}
                 </div>
                 <div className="field" style={{ gridColumn: '1/-1' }}>
                   <label>Phone (with WhatsApp)</label>
@@ -228,11 +228,12 @@ export function ContactPage() {
                       }}
                     />
                   </div>
-                  {errors.phone && <span style={{ fontSize: 12, color: 'var(--sunset)', marginTop: 6, display: 'block' }}>{errors.phone}</span>}
+                  {errors.phone && <span style={{ fontSize: 12, color: 'var(--sunset-ink)', marginTop: 6, display: 'block' }}>{errors.phone}</span>}
                 </div>
                 <div className="field" style={{ gridColumn: '1/-1' }}>
-                  <label>Topic</label>
+                  <label htmlFor="contact-topic">Topic</label>
                   <select
+                    id="contact-topic"
                     value={formData.topic}
                     onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
                     className="topic-select"
@@ -251,7 +252,7 @@ export function ContactPage() {
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     style={{ borderColor: errors.message ? 'var(--sunset)' : 'var(--line)' }}
                   />
-                  {errors.message && <span style={{ fontSize: 12, color: 'var(--sunset)', marginTop: 6, display: 'block' }}>{errors.message}</span>}
+                  {errors.message && <span style={{ fontSize: 12, color: 'var(--sunset-ink)', marginTop: 6, display: 'block' }}>{errors.message}</span>}
                 </div>
                 <div style={{ gridColumn: '1/-1', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="mute" style={{ fontSize: 12 }}>

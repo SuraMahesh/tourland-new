@@ -63,7 +63,7 @@ export function ReviewsPage() {
             {sent ? (
               <div style={{ padding: '48px 0', textAlign: 'center' }}>
                 <div style={{ fontSize: 64, color: 'var(--sunset)', marginBottom: 16 }}>✓</div>
-                <h4 className="h-4">Thank you!</h4>
+                <h3 className="h-4">Thank you!</h3>
                 <p className="mute" style={{ marginTop: 8, fontSize: 14 }}>Your review is being read by our team. Look for a personal response within 24 hours.</p>
               </div>
             ) : (
@@ -135,15 +135,15 @@ export function ReviewsPage() {
             <div className="eyebrow" style={{ marginBottom: 24, color: 'var(--sunset)' }}>Why we ask</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
               <div>
-                <h4 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 8px', color: 'var(--ink)' }}>We genuinely care</h4>
+                <h3 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 8px', color: 'var(--ink)' }}>We genuinely care</h3>
                 <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--mute)', margin: 0 }}>Your feedback helps us understand what works and what doesn't. Every review shapes how we plan future trips.</p>
               </div>
               <div>
-                <h4 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 8px', color: 'var(--ink)' }}>You deserve recognition</h4>
+                <h3 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 8px', color: 'var(--ink)' }}>You deserve recognition</h3>
                 <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--mute)', margin: 0 }}>We showcase your story (with permission) to inspire others and build trust with future travellers.</p>
               </div>
               <div>
-                <h4 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 8px', color: 'var(--ink)' }}>We reply personally</h4>
+                <h3 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 8px', color: 'var(--ink)' }}>We reply personally</h3>
                 <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--mute)', margin: 0 }}>Your planner will reach out within 24 hours. We don't treat reviews as data—we treat them as conversations.</p>
               </div>
             </div>

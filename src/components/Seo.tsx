@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { DESTINATIONS } from '../data';
 import { buildMetaTags, resolveSeo } from '../data/seoMeta';
 
 function setMeta(attribute: 'name' | 'property', key: string, content: string) {
@@ -27,7 +26,25 @@ export function Seo() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const seo = resolveSeo(pathname, DESTINATIONS);
+    let cancelled = false;
+    // The destinations data is ~40KB; loading it on demand keeps it out of the
+    // critical bundle. Prerendered pages already ship correct head tags, so a
+    // slightly-late client update only matters for in-app navigation.
+    import('../data').then(({ DESTINATIONS }) => {
+      if (cancelled) return;
+      applySeo(pathname, DESTINATIONS);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname]);
+
+  return null;
+}
+
+function applySeo(pathname: string, destinations: Parameters<typeof resolveSeo>[1]) {
+  {
+    const seo = resolveSeo(pathname, destinations);
 
     document.title = seo.title;
     for (const tag of buildMetaTags(seo)) {
@@ -43,7 +60,5 @@ export function Seo() {
       document.head.appendChild(schemaElement);
     }
     schemaElement.textContent = JSON.stringify(seo.schema);
-  }, [pathname]);
-
-  return null;
+  }
 }
