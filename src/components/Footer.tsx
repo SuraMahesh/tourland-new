@@ -42,6 +42,7 @@ export function Footer({ go }: FooterProps) {
             </a>
           ))}
           <a href="/reviews" onClick={(event) => { event.preventDefault(); go('reviews'); }}>Reviews</a>
+          <a href="/guide" onClick={(event) => { event.preventDefault(); go('guide'); }}>Travel guide</a>
         </div>
         <div>
           <h6>Plan</h6>

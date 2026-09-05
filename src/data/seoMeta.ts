@@ -13,13 +13,18 @@ export interface PageMeta {
 
 export const PAGE_METADATA: Record<string, PageMeta> = {
   '/': {
-    title: 'Modo Travels - Curated Sri Lanka Journeys',
+    title: 'Modotravels | Sri Lanka Tours, Travel Planning & Local Guides',
     description: DEFAULT_DESCRIPTION,
   },
-  '/destinations': {
-    title: 'Sri Lanka destinations | Modotravels',
+  '/guide': {
+    title: 'How to Travel Sri Lanka: Complete Guide | Modotravels',
     description:
-      'Explore Sri Lanka destinations by coast, hill country, culture, and wildlife, with local advice for every stop.',
+      'How to travel Sri Lanka: visas, best time to go, getting around, costs, sample itineraries, and the most beautiful places to visit — from local planners.',
+  },
+  '/destinations': {
+    title: "Sri Lanka's Most Beautiful Places & Destinations | Modotravels",
+    description:
+      'Discover the most beautiful places in Sri Lanka — beaches, hill country, ancient cities, and wildlife parks — with local advice for every destination.',
   },
   '/seasons': {
     title: 'Best time to visit Sri Lanka | Modotravels',
@@ -56,6 +61,40 @@ export const PAGE_METADATA: Record<string, PageMeta> = {
       'The terms that apply when you plan and book a Sri Lanka journey with Modotravels.',
   },
 };
+
+export interface GuideFaq {
+  q: string;
+  a: string;
+}
+
+// Rendered on the /guide page and emitted as FAQPage structured data —
+// keep the two in sync by only editing this list.
+export const GUIDE_FAQS: GuideFaq[] = [
+  {
+    q: 'Do I need a visa to travel to Sri Lanka?',
+    a: 'Most nationalities need an Electronic Travel Authorization (ETA), applied for online before arrival at the official portal eta.gov.lk. The standard tourist ETA allows a 30-day double-entry stay and can be extended in Colombo. Always check the official portal for current fees and eligibility for your passport.',
+  },
+  {
+    q: 'What is the best time to visit Sri Lanka?',
+    a: 'There is no single season — the island has two monsoons. The south and west coasts and hill country are at their best from December to April, while the east coast shines from May to September. The Cultural Triangle is good almost year-round, so a well-routed trip works in any month.',
+  },
+  {
+    q: 'How many days do you need in Sri Lanka?',
+    a: 'Seven days is enough for one region done well — for example the south coast plus hill country. Ten to fourteen days lets you loop the classic route: Cultural Triangle, Kandy, the hill country by train, a safari, and the southern beaches without rushing.',
+  },
+  {
+    q: 'How do you get around Sri Lanka?',
+    a: 'The most practical way is a private car with a local driver, which typically costs less than travellers expect and turns transfer days into sightseeing days. The Kandy–Ella train is one of the most scenic rides in the world and worth building the route around. Tuk-tuks cover short local hops.',
+  },
+  {
+    q: 'Is Sri Lanka safe for tourists?',
+    a: 'Sri Lanka is generally a safe destination and locals are famously welcoming to travellers. Take the usual precautions you would anywhere — guard valuables on busy beaches and trains, use registered drivers, and respect ocean conditions and wildlife-park rules.',
+  },
+  {
+    q: 'How much does a Sri Lanka trip cost?',
+    a: 'Outside international flights, backpackers manage on roughly USD 30–50 per day, mid-range travellers on about USD 80–150 per day for two including a driver, and boutique trips run upwards from there. Entrance fees for major sites like Sigiriya (about USD 30) are the main fixed extras.',
+  },
+];
 
 export function absoluteUrl(pathOrUrl: string): string {
   return pathOrUrl.startsWith('http') ? pathOrUrl : `${SITE_URL}${pathOrUrl}`;
@@ -162,7 +201,20 @@ export function resolveSeo(rawPath: string, destinations: Destination[]): Resolv
           agencySchema,
           { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: SITE_URL },
         ]
-      : [agencySchema];
+      : pathname === '/guide'
+        ? [
+            agencySchema,
+            {
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: GUIDE_FAQS.map((faq) => ({
+                '@type': 'Question',
+                name: faq.q,
+                acceptedAnswer: { '@type': 'Answer', text: faq.a },
+              })),
+            },
+          ]
+        : [agencySchema];
 
   return {
     title: meta.title,

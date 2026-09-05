@@ -466,3 +466,4 @@ export const COAST_DATA: CoastData[] = [
     accent: '#7fae8c',
   },
 ];
+export { GUIDE_FAQS } from './seoMeta';

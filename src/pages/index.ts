@@ -8,3 +8,4 @@ export { ContactPage } from './ContactPage';
 export { PlannerPage } from './PlannerPage';
 export { PrivacyPolicyPage } from './PrivacyPolicyPage';
 export { TermsPage } from './TermsPage';
+export { GuidePage } from './GuidePage';

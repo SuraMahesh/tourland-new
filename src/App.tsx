@@ -8,6 +8,7 @@ const HomePage = lazy(() => import('./pages/HomePage').then((module) => ({ defau
 const DestinationsPage = lazy(() => import('./pages/DestinationsPage').then((module) => ({ default: module.DestinationsPage })));
 const DestinationDetailPage = lazy(() => import('./pages/DestinationDetailPage').then((module) => ({ default: module.DestinationDetailPage })));
 const SeasonsPage = lazy(() => import('./pages/SeasonsPage').then((module) => ({ default: module.SeasonsPage })));
+const GuidePage = lazy(() => import('./pages/GuidePage').then((module) => ({ default: module.GuidePage })));
 const ActivitiesPage = lazy(() => import('./pages/ActivitiesPage').then((module) => ({ default: module.ActivitiesPage })));
 const ReviewsPage = lazy(() => import('./pages/ReviewsPage').then((module) => ({ default: module.ReviewsPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage').then((module) => ({ default: module.ContactPage })));
@@ -51,6 +52,7 @@ function AppContent() {
           <Route path="/destinations" element={<DestinationsPage go={go} />} />
           <Route path="/destination/:id" element={<DestinationDetailPage go={go} />} />
           <Route path="/seasons" element={<SeasonsPage />} />
+          <Route path="/guide" element={<GuidePage go={go} />} />
           <Route path="/activities" element={<ActivitiesPage go={go} />} />
           <Route path="/planner" element={<PlannerPage />} />
           <Route path="/reviews" element={<ReviewsPage />} />

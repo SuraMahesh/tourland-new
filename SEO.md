@@ -61,7 +61,15 @@ tags (favicon, preconnects, theme-color) outside them.
 ## 3. Content strategy (the biggest long-term lever)
 
 Technical SEO gets you crawled; content gets you ranked. Travel queries are won
-with helpful, specific pages:
+with helpful, specific pages.
+
+Implemented so far: `/guide` ("How to Travel Sri Lanka: Complete Guide") targets
+the "how to travel sri lanka" cluster with trip facts, itineraries, transport
+advice, and an FAQ emitted as `FAQPage` structured data (eligible for rich
+results). The destinations page title targets "beautiful places in Sri Lanka".
+FAQ copy lives in `GUIDE_FAQS` in `src/data/seoMeta.ts`.
+
+Still to do:
 
 - **Target long-tail queries** the site already has pages for: "best time to
   visit Sri Lanka" (/seasons), "things to do in Sri Lanka" (/activities),
